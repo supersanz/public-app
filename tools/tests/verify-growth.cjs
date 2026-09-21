@@ -1,0 +1,130 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+function fixture(initial){
+ const listeners={},store=initial?{'daily-quest-430-v2':JSON.stringify(initial)}:{};
+ const element={innerHTML:'',textContent:'',value:'',checked:true,classList:{toggle(){}},setAttribute(){},remove(){},focus(){},addEventListener(){}};
+ const document={getElementById:()=>element,querySelector:s=>s==='.status span:last-child'?element:null,querySelectorAll:()=>[],addEventListener:(name,fn,capture)=>{(listeners[name]??=[]).push({fn,capture})},createElement:()=>({...element}),body:{append(){},classList:{toggle(){}}}};
+ const context=vm.createContext({LevelCurve:require(process.cwd()+'/scripts/experience-levels.js'),document,window:{scrollTo(){},addEventListener(){}},localStorage:{getItem:k=>store[k]||null,setItem:(k,v)=>store[k]=v},setTimeout(){},console,Date,Set,DOMParser:class{},navigator:{}});
+ const run=s=>vm.runInContext(s,context);
+ for(const file of ['scripts/app-core.js','scripts/records-and-inventory.js','scripts/base-components.js','scripts/record-date-and-layout.js','scripts/activity-rewards-and-history.js','scripts/alarm-time-picker.js','scripts/legacy-avatar.js'])run(fs.readFileSync(file,'utf8'));
+ run('render=()=>{};toast=()=>{}');return {run,element,listeners,store,context};
+}
+const {run,element,listeners,store,context}=fixture();
+assert.equal(run('[0,1,2,3].map(level).join()'),'5,5,5,5');
+run('recordDate=today();saveActivities([10,9,12,13,11])');
+assert.equal(run('player().earned'),85,'movie/game 25 + caffeine 60 = 85');
+assert.equal(run('player().xp'),85);assert.equal(run('totals().join()'),'0,0,0,25,60');
+assert.ok(run('pages.history().includes("+85 EXP")'));
+run('saveActivities([10,9,12,13,11])');assert.equal(run('player().earned'),170,'repeat recordings earn EXP');
+run('saveActivities([0,1,2,3]);data.logs[0].exp[0]=40');
+assert.equal(run('level(0)'),6,'individual recorded EXP drives level');assert.equal(run('player().earned'),320);
+const before=run('JSON.stringify(data)');
+run("recordDate='2999-01-01';saveActivities([4],15,['alcohol'])");assert.equal(run('JSON.stringify(data)'),before,'future blocked');
+run("recordDate='2000-01-01';saveActivities([4],15,['alcohol'])");assert.equal(run('JSON.stringify(data)'),before,'past blocked');
+element.value='술 마시고 담배 피웠어';
+const voiceEvent={target:{closest:s=>s==='[data-voice-save]'?{}:null},stopImmediatePropagation(){}};
+listeners.click.find(x=>x.capture).fn(voiceEvent);assert.equal(run('JSON.stringify(data)'),before,'voice past penalty blocked');
+run('recordDate=today()');listeners.click.find(x=>x.capture).fn(voiceEvent);
+assert.equal(run('data.logs[0].penalty'),25);listeners.click.find(x=>x.capture).fn(voiceEvent);assert.equal(run('data.logs[0].penalty'),25);
+const guard=listeners.click.filter(x=>x.capture)[2].fn;
+function click(dataset){guard({target:{closest:()=>({dataset})},preventDefault(){},stopImmediatePropagation(){}})}
+const oldEquipment=run('data.equipped.join()');click({outfit:'12'});assert.equal(run('data.equipped.join()'),oldEquipment);assert.equal(run('lockedPreview'),12);
+run('data.logs[0].exp[9]=1500');assert.equal(run('level(3)'),20);assert.equal(run('unlocked(12)'),true);
+click({reward:'12'});assert.ok(run('data.equipped.includes(12)'));assert.ok(run('avatarLayers()').includes('data-equipped-layer="12"'));
+click({outfit:'12'});assert.ok(!run('data.equipped.includes(12)'));
+assert.ok(run('cats.every((_,c)=>rewardSteps.every(l=>unlocks.some(u=>u[0]===c&&u[1]===l)))'));
+assert.ok(!run('pages.home()').includes('오늘 기록하기'));assert.ok(!run('pages.home()').includes('MY DAILY QUEST'));
+assert.ok(!run('pages.style()').includes('성장 보상'));assert.ok(!run('pages.touch()').includes('type="date"'));
+assert.ok(!run('pages.alarm()').includes('<input'));
+click({alarmEditor:'0,0'});assert.equal(run('modal'),'alarmEditor');element.value='08:45';click({commitAlarm:''});assert.equal(run('data.alarms[0][0]'),'08:45');
+run("historyDate='2000-01-01';historyMonth=new Date(2000,0,1)");assert.ok(!run('pages.history()').includes('data-modal="record"'));
+const priorDate=run('recordDate');click({page:'touch'});assert.equal(run('recordDate'),priorDate);
+run('recordDate=today()');const snapshot=run('JSON.stringify(data)');context.localStorage.setItem=()=>{throw Error('quota')};run("saveActivities([4],0,['alcohol'])");assert.equal(run('JSON.stringify(data)'),snapshot);
+const saved=JSON.parse(store['daily-quest-430-v2']);const reloaded=fixture(saved);assert.equal(reloaded.run('level(0)'),6,'no repeat migration');
+const legacy=fixture({logs:[{date:new Date().toLocaleDateString('sv-SE'),ids:[0,1,2,3,9,10,11],penalty:0}],worn:0,skin:2,friends:[],alarms:[['07:00','23:30',true,true],['09:00','00:30',true,true]]});
+assert.equal(legacy.run('[0,1,2,3].map(level).join()'),'5,5,5,5');assert.equal(legacy.run('player().earned'),140);
+// Updated UI: readonly reward tracks, immediate wheel dialog, AM/PM boundaries,
+// alarm switches, failed-save rollback and persistence of the extended catalog.
+const ui=fixture(),uiRun=ui.run;
+const uiHandler=ui.listeners.click.filter(x=>x.capture).at(-1).fn;
+const uiClick=dataset=>uiHandler({target:{closest:()=>({dataset})},preventDefault(){},stopImmediatePropagation(){}});
+assert.equal((uiRun('pages.rewards()').match(/class="reward-lane"/g)||[]).length,5);
+assert.ok(!/착용|data-reward=/.test(uiRun('pages.rewards()')),'reward view never equips');
+uiClick({page:'alarm'});assert.equal(uiRun('modal'),'','alarm tab opens without a popup');
+uiClick({openWheel:'0,0'});assert.equal(uiRun('modal'),'timeWheel');assert.ok(uiRun('dialog()').includes('role="listbox"'));
+assert.equal(uiRun('wheelTime({period:0,hour:12,minute:0})'),'00:00');
+assert.equal(uiRun('wheelTime({period:1,hour:12,minute:59})'),'12:59');
+assert.equal(uiRun('wheelTime({period:1,hour:11,minute:59})'),'23:59');
+uiRun('wheelDraft={period:1,hour:9,minute:35}');uiClick({saveWheel:''});assert.equal(uiRun('data.alarms[0][0]'),'21:35');assert.equal(uiRun('modal'),'');
+uiClick({alarmSwitch:'0,2'});assert.equal(uiRun('data.alarms[0][2]'),false);
+uiClick({openWheel:'1,1'});uiRun('wheelDraft={period:0,hour:12,minute:0}');uiClick({saveWheel:''});assert.equal(uiRun('data.alarms[1][1]'),'00:00');
+ui.context.localStorage.setItem=()=>{throw Error('quota')};uiClick({alarmSwitch:'0,2'});assert.equal(uiRun('data.alarms[0][2]'),false,'toggle rollback');
+const sport=fixture();sport.run("data.equipped=[clothes.indexOf('모노 트랙 재킷')];persist()");
+const sportReload=fixture(JSON.parse(sport.store['daily-quest-430-v2']));
+assert.equal(sportReload.run("data.equipped.includes(clothes.indexOf('모노 트랙 재킷'))"),true,'new sports equipment survives reload');
+assert.ok(sportReload.run('avatarLayers()').includes('pixel-wardrobe-v2.png'));
+console.log('PASS: EXP/date regressions; five readonly reward lanes; wheel times and switches; sports sprite render and equipment reload.');
+
+const repeat=fixture();
+repeat.run('recordDate=today();saveActivities([0]);data.playerResetEarned=player().earned-LevelCurve.total(5)+10;saveActivities([0])');
+assert.equal(repeat.run('player().lv'),5);assert.equal(repeat.run('player().xp'),20);
+assert.equal(repeat.run('data.logs[0].exp[0]'),60);
+assert.ok(repeat.run('pages.history().includes("+60 EXP")'));
+const repeatReload=fixture(JSON.parse(repeat.store['daily-quest-430-v2']));
+assert.equal(repeatReload.run('player().xp'),20);
+repeatReload.run('recordDate=today();saveActivities([0])');assert.equal(repeatReload.run('player().xp'),50);
+legacy.run('recordDate=today();saveActivities([0])');assert.equal(legacy.run('data.logs[0].exp[0]'),50);
+console.log('PASS: repeated EXP, level-up carryover, reload and legacy EXP preserved.');
+
+const balanced=fixture();balanced.run('recordDate=today();saveActivities([0,1,2,3,4,5,6,7,8,9,10])');
+assert.equal(balanced.run('data.logs[0].ids.map(id=>data.logs[0].exp[id]).join()'),'30,40,30,40,40,40,30,25,20,10,15');
+assert.equal(balanced.run('player().earned'),320);
+console.log('PASS: all eleven balanced activity awards');
+
+const music=fixture();
+assert.ok(music.run('pages.touch()').includes('음악 감상'));
+assert.ok(music.run('pages.touch()').includes('노래 부르기'));
+music.run("recordDate=today();saveActivities(musicActivityIds('음악 듣고 노래 불렀어'))");
+assert.equal(music.run('player().earned'),35);
+assert.equal(music.run('data.logs[0].exp[14]'),15);
+assert.equal(music.run('data.logs[0].exp[15]'),20);
+assert.equal(music.run("musicActivityIds('노래부르기 음악감상').join()"),'14,15');
+console.log('PASS: music and singing records and voice aliases');
+// Exercise the actual touch and voice click listeners, not only helpers.
+const expected=[30,40,30,40,40,40,30,25,20,10,15,20,20,20,15,20];
+for(let id=0;id<expected.length;id++){
+ const f=fixture();f.run(`recordDate=today();page='touch';selected.add(${id})`);
+ const event={target:{closest:()=>({dataset:{save:''}})},preventDefault(){},stopImmediatePropagation(){}};
+ f.listeners.click.find(x=>!x.capture).fn(event);
+ assert.equal(f.run('page'),'history',`touch ${id} navigates to history`);
+ assert.equal(f.run('player().earned'),expected[id],`touch ${id} award`);
+ assert.ok(f.run('pages.history()').includes(`+${expected[id]} EXP`));
+ const restored=fixture(JSON.parse(f.store['daily-quest-430-v2']));
+ assert.equal(restored.run('player().earned'),expected[id]);
+}
+const allVoice=fixture();allVoice.run("recordDate=today();page='voice'");
+allVoice.element.value='학원 공부 독서 코딩 달리기 근력운동 요리 청소 산책 게임 영화 커피 에너지드링크 박카스 음악 감상 노래 부르기';
+const saveVoice={target:{closest:s=>s==='[data-voice-save]'?{}:null},stopImmediatePropagation(){}};
+allVoice.listeners.click.find(x=>x.capture).fn(saveVoice);
+assert.equal(allVoice.run('page'),'history');
+assert.equal(allVoice.run('player().earned'),415);
+assert.equal(allVoice.run('data.logs[0].ids.length'),16,'music aliases do not double-award');
+allVoice.listeners.click.find(x=>x.capture).fn(saveVoice);
+assert.equal(allVoice.run('player().earned'),830,'second save awards exactly once');
+assert.equal(allVoice.run('data.logs[0].ids.length'),16);
+allVoice.run('data.walkExp=7;persist()');
+assert.equal(allVoice.run('player().earned'),837);
+const combinedReload=fixture(JSON.parse(allVoice.store['daily-quest-430-v2']));
+assert.equal(combinedReload.run('player().earned'),837,'record and walking EXP survive reload together');
+const empty=fixture();empty.run("recordDate=today();page='touch'");
+assert.equal(empty.run('saveActivities([])'),false);assert.equal(empty.run('page'),'touch');assert.equal(empty.run('player().earned'),0);
+console.log('PASS: 16 touch handlers, voice save/navigation, exact duplicate awards, combined walking EXP and persistence, empty input');
+
+const counted=fixture();counted.run('recordDate=today();saveActivities([1]);saveActivities([1])');
+assert.equal(counted.run('data.logs[0].counts[1]'),2);
+assert.ok(counted.run('pages.history()').includes('aria-label="공부 x2"'));
+const countedReload=fixture(JSON.parse(counted.store['daily-quest-430-v2']));
+assert.ok(countedReload.run('pages.history()').includes('aria-label="공부 x2"'));
+countedReload.context.localStorage.setItem=()=>{throw Error('quota')};
+countedReload.run('recordDate=today();saveActivities([1])');
+assert.equal(countedReload.run('data.logs[0].counts[1]'),2);
+console.log('PASS: repeated activity count, label, persistence and failed-save rollback');
