@@ -16,13 +16,15 @@ function travelerMotionEarnable(){
  return !travelerForestPreview()||player().lv>=(TravelerRewards.items[motion]?.level||Infinity)||TravelerRewards.state(data.travelerJourney,player().lv).claimed.includes(motion);
 }
 function travelerSleeping(now=new Date()){return typeof travelerScheduledNight==='function'?travelerScheduledNight(now):petSleepState(now,(data.alarms||[]).map(row=>[row[0],row[1],true,true])).sleeping}
-function travelerWalking(){return ['walk','run','deepRun'].includes(travelerState().motion)&&!travelerSleeping()}
+// Presentation follows the displayed day/night mode; XP still uses the sleep schedule.
+function travelerVisualNight(){return typeof travelerNightAt==='function'?travelerNightAt():travelerSleeping()}
+function travelerWalking(){return ['walk','run','deepRun'].includes(travelerState().motion)&&!travelerVisualNight()}
 function travelerArt(){
  const motion=travelerState().motion;
  if(motion==='studyWork')return '';
  if(travelerWalking())return '<canvas class="traveler-slow" width="256" height="256" role="img" aria-label="이동하는 캐릭터"></canvas>';
  const image=`<img src="${travelerStanding}" alt="${travelerTitle(player().lv)}" draggable="false">`;
- if(travelerSleeping()||motion==='still')return image;
+ if(travelerVisualNight()||motion==='still')return image;
  if(motion==='fly')return '<div class="motion-fly"><canvas class="traveler-flight" width="256" height="256" role="img" aria-label="빗자루를 타고 나는 마법사"></canvas></div>';
  return `<div class="motion-${motion}">${image}${motion==='fly'?'<span class="flight-trail">✦</span>':motion.endsWith('Work')?'<span class="work-desk"><i class="work-monitor">'+(motion==='officeWork'?'AI':'⌨')+'</i></span>':''}</div>`;
 }
