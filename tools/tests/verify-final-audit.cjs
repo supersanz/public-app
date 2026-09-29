@@ -1,6 +1,6 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 function fixture(initial){
- const listeners={},store=initial?{'daily-quest-430-v2':JSON.stringify(initial)}:{};
+ const listeners={},store=initial?{'daily-quest-430-release-v1':JSON.stringify(initial)}:{};
  const element={innerHTML:'',textContent:'',value:'',checked:true,classList:{toggle(){}},setAttribute(){},remove(){},focus(){},addEventListener(){}};
  const document={getElementById:()=>element,querySelector:s=>s==='.status span:last-child'?element:null,querySelectorAll:()=>[],addEventListener:(name,fn,capture)=>{(listeners[name]??=[]).push({fn,capture})},createElement:()=>({...element}),body:{append(){},classList:{toggle(){}}}};
  const context=vm.createContext({LevelCurve:require(process.cwd()+'/scripts/experience-levels.js'),document,window:{scrollTo(){},addEventListener(){}},localStorage:{getItem:k=>store[k]||null,setItem:(k,v)=>store[k]=v},setTimeout(){},console,Date,Set,DOMParser:class{},navigator:{}});
@@ -29,7 +29,7 @@ let before=f.run('JSON.stringify(data)');click({saveWheel:''});assert.equal(f.ru
 f.context.localStorage.setItem=()=>{throw Error('full')};
 f.run('wheelDraft={period:0,hour:6,minute:0}');click({saveWheel:''});assert.equal(f.run('JSON.stringify(data)'),before);
 click({alarmSwitch:'0,2'});assert.equal(f.run('JSON.stringify(data)'),before,'switch rollback');
-const restored=fixture(JSON.parse(f.store['daily-quest-430-v2']));assert.equal(restored.run('data.alarms[1][1]'),'22:15');
+const restored=fixture(JSON.parse(f.store['daily-quest-430-release-v1']));assert.equal(restored.run('data.alarms[1][1]'),'22:15');
 for(const id of [4,16]){restored.run('recordDate=today();saveActivities(['+id+'])');assert.equal(restored.run('data.logs[0].exp['+id+']'),40);}
 assert.equal(restored.run('totals()[1]'),80);assert(restored.run('pages.history().includes("필라테스")'));
 console.log('PASS audit: 16 alarm setup combinations, equal-time guard, four time saves, storage reload, alarm save/switch rollback, running/Pilates records.');

@@ -1,6 +1,6 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 function fixture(initial){
- const listeners={},store=initial?{'daily-quest-430-v2':JSON.stringify(initial)}:{};
+ const listeners={},store=initial?{'daily-quest-430-release-v1':JSON.stringify(initial)}:{};
  const element={innerHTML:'',textContent:'',value:'',checked:true,classList:{toggle(){}},setAttribute(){},remove(){},focus(){},addEventListener(){}};
  const document={getElementById:()=>element,querySelector:s=>s==='.status span:last-child'?element:null,querySelectorAll:()=>[],addEventListener:(name,fn,capture)=>{(listeners[name]??=[]).push({fn,capture})},createElement:()=>({...element}),body:{append(){},classList:{toggle(){}}}};
  const context=vm.createContext({LevelCurve:require(process.cwd()+'/scripts/experience-levels.js'),document,window:{scrollTo(){},addEventListener(){}},localStorage:{getItem:k=>store[k]||null,setItem:(k,v)=>store[k]=v},setTimeout(){},console,Date,Set,DOMParser:class{},navigator:{}});
@@ -39,7 +39,7 @@ click({alarmEditor:'0,0'});assert.equal(run('modal'),'alarmEditor');element.valu
 run("historyDate='2000-01-01';historyMonth=new Date(2000,0,1)");assert.ok(!run('pages.history()').includes('data-modal="record"'));
 const priorDate=run('recordDate');click({page:'touch'});assert.equal(run('recordDate'),priorDate);
 run('recordDate=today()');const snapshot=run('JSON.stringify(data)');context.localStorage.setItem=()=>{throw Error('quota')};run("saveActivities([4],0,['alcohol'])");assert.equal(run('JSON.stringify(data)'),snapshot);
-const saved=JSON.parse(store['daily-quest-430-v2']);const reloaded=fixture(saved);assert.equal(reloaded.run('level(0)'),6,'no repeat migration');
+const saved=JSON.parse(store['daily-quest-430-release-v1']);const reloaded=fixture(saved);assert.equal(reloaded.run('level(0)'),6,'no repeat migration');
 const legacy=fixture({logs:[{date:new Date().toLocaleDateString('sv-SE'),ids:[0,1,2,3,9,10,11],penalty:0}],worn:0,skin:2,friends:[],alarms:[['07:00','23:30',true,true],['09:00','00:30',true,true]]});
 assert.equal(legacy.run('[0,1,2,3].map(level).join()'),'5,5,5,5');assert.equal(legacy.run('player().earned'),140);
 // Updated UI: readonly reward tracks, immediate wheel dialog, AM/PM boundaries,
@@ -59,7 +59,7 @@ uiClick({alarmSwitch:'0,2'});assert.equal(uiRun('data.alarms[0][2]'),false);
 uiClick({openWheel:'1,1'});uiRun('wheelDraft={period:0,hour:12,minute:0}');uiClick({saveWheel:''});assert.equal(uiRun('data.alarms[1][1]'),'00:00');
 ui.context.localStorage.setItem=()=>{throw Error('quota')};uiClick({alarmSwitch:'0,2'});assert.equal(uiRun('data.alarms[0][2]'),false,'toggle rollback');
 const sport=fixture();sport.run("data.equipped=[clothes.indexOf('모노 트랙 재킷')];persist()");
-const sportReload=fixture(JSON.parse(sport.store['daily-quest-430-v2']));
+const sportReload=fixture(JSON.parse(sport.store['daily-quest-430-release-v1']));
 assert.equal(sportReload.run("data.equipped.includes(clothes.indexOf('모노 트랙 재킷'))"),true,'new sports equipment survives reload');
 assert.ok(sportReload.run('avatarLayers()').includes('pixel-wardrobe-v2.png'));
 console.log('PASS: EXP/date regressions; five readonly reward lanes; wheel times and switches; sports sprite render and equipment reload.');
@@ -69,7 +69,7 @@ repeat.run('recordDate=today();saveActivities([0]);data.playerResetEarned=player
 assert.equal(repeat.run('player().lv'),5);assert.equal(repeat.run('player().xp'),20);
 assert.equal(repeat.run('data.logs[0].exp[0]'),60);
 assert.ok(repeat.run('pages.history().includes("+60 EXP")'));
-const repeatReload=fixture(JSON.parse(repeat.store['daily-quest-430-v2']));
+const repeatReload=fixture(JSON.parse(repeat.store['daily-quest-430-release-v1']));
 assert.equal(repeatReload.run('player().xp'),20);
 repeatReload.run('recordDate=today();saveActivities([0])');assert.equal(repeatReload.run('player().xp'),50);
 legacy.run('recordDate=today();saveActivities([0])');assert.equal(legacy.run('data.logs[0].exp[0]'),50);
@@ -98,7 +98,7 @@ for(let id=0;id<expected.length;id++){
  assert.equal(f.run('page'),'history',`touch ${id} navigates to history`);
  assert.equal(f.run('player().earned'),expected[id],`touch ${id} award`);
  assert.ok(f.run('pages.history()').includes(`+${expected[id]} EXP`));
- const restored=fixture(JSON.parse(f.store['daily-quest-430-v2']));
+ const restored=fixture(JSON.parse(f.store['daily-quest-430-release-v1']));
  assert.equal(restored.run('player().earned'),expected[id]);
 }
 const allVoice=fixture();allVoice.run("recordDate=today();page='voice'");
@@ -113,7 +113,7 @@ assert.equal(allVoice.run('player().earned'),830,'second save awards exactly onc
 assert.equal(allVoice.run('data.logs[0].ids.length'),16);
 allVoice.run('data.walkExp=7;persist()');
 assert.equal(allVoice.run('player().earned'),837);
-const combinedReload=fixture(JSON.parse(allVoice.store['daily-quest-430-v2']));
+const combinedReload=fixture(JSON.parse(allVoice.store['daily-quest-430-release-v1']));
 assert.equal(combinedReload.run('player().earned'),837,'record and walking EXP survive reload together');
 const empty=fixture();empty.run("recordDate=today();page='touch'");
 assert.equal(empty.run('saveActivities([])'),false);assert.equal(empty.run('page'),'touch');assert.equal(empty.run('player().earned'),0);
@@ -122,7 +122,7 @@ console.log('PASS: 16 touch handlers, voice save/navigation, exact duplicate awa
 const counted=fixture();counted.run('recordDate=today();saveActivities([1]);saveActivities([1])');
 assert.equal(counted.run('data.logs[0].counts[1]'),2);
 assert.ok(counted.run('pages.history()').includes('aria-label="공부 x2"'));
-const countedReload=fixture(JSON.parse(counted.store['daily-quest-430-v2']));
+const countedReload=fixture(JSON.parse(counted.store['daily-quest-430-release-v1']));
 assert.ok(countedReload.run('pages.history()').includes('aria-label="공부 x2"'));
 countedReload.context.localStorage.setItem=()=>{throw Error('quota')};
 countedReload.run('recordDate=today();saveActivities([1])');

@@ -1,5 +1,6 @@
 'use strict';
-const KEY='daily-quest-430-v2', cats=['자기계발','건강','생활력','휴식','카페인'];
+// Start the public release independently of earlier developer/test progress.
+const KEY='daily-quest-430-release-v1', cats=['자기계발','건강','생활력','휴식','카페인'];
 const acts=[['학원',0,'academy'],['공부',0,'study'],['독서',0,'book'],['코딩',0,'computer'],['러닝',1,'running'],['근력운동',1,'dumbbell'],['요리',2,'food'],['청소',2,'home'],['산책',3,'leaf'],['게임',3,'game'],['영화',3,'film'],['커피',4,'coffee'],['에너지드링크',4,'energyCan'],['박카스',4,'tonicBottle'],['음악 감상',3,'headphones'],['노래 부르기',3,'mic'],['필라테스',1,'pilates']];
 // Stable activity IDs: append new quests without changing historical records.
 const QuestCatalog={};
@@ -71,7 +72,7 @@ paths.headphones='M3 13V11a9 9 0 0 1 18 0v2M3 12h4v8H5a2 2 0 0 1-2-2v-6Zm18 0h-4
 function musicActivityIds(text){const compact=text.replace(/\s/g,'');const ids=[];if(/음악감상|음악듣|음악들|노래듣|노래들/.test(compact))ids.push(14);if(/노래부르|노래불|노래방/.test(compact))ids.push(15);return ids}
 const icon=n=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${paths[n]||paths.book}"/></svg>`;
 let saved;try{saved=JSON.parse(localStorage.getItem(KEY)||'null')}catch{}
-let data=saved&&Array.isArray(saved.logs)?saved:{logs:[],worn:0,skin:2,friends:[],alarms:[['07:00','23:30',true,true],['09:00','00:30',true,true]]};
+let data=saved&&Array.isArray(saved.logs)?saved:{logs:[],worn:0,skin:2,friends:[],alarms:[['07:00','23:30',true,true],['09:00','00:30',true,true]],disableScenePreview:true,walkExp:0,playerResetEarned:0,levelBaseline:[0,0,0,0,0],levelCurveVersion:3,petProgressVersion:2};
 let page='home',modal='',selected=new Set(),rankTab='친구',transcript='',recognition,recordDate='';
 const recordingDate=()=>recordDate||today();
 const today=()=>new Date().toLocaleDateString('sv-SE');
