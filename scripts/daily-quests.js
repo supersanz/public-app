@@ -12,10 +12,11 @@ const DailyQuests=(()=>{
    let log=data.logs.find(log=>log.date===date&&log.source==='daily-quest');
    if(!log){log={date,source:'daily-quest',ids:[],exp:{},counts:{},penalty:0};data.logs.push(log);}
    log.ids.push(id);log.exp[id]=xp;log.counts[id]=1;
+   log.midnightIds=[...new Set([...(log.midnightIds||[]),id])];
   }else{
    data.logs=data.logs.filter(log=>{
     if(log.date!==date||log.source!=='daily-quest')return true;
-    log.ids=log.ids.filter(value=>value!==id);delete log.exp[id];delete log.counts[id];return log.ids.length>0;
+    log.ids=log.ids.filter(value=>value!==id);if(log.midnightIds)log.midnightIds=log.midnightIds.filter(value=>value!==id);delete log.exp[id];delete log.counts[id];return log.ids.length>0;
    });
   }
   return true;
@@ -41,7 +42,7 @@ const DailyQuests=(()=>{
   if(complete)data.logs.push({date,source:'weekly-quest',ids:[id],exp:{[id]:xp},counts:{[id]:1},penalty:0});
   else data.logs=data.logs.filter(log=>{
    if(log.source!=='weekly-quest'||log.date<start||log.date>date)return true;
-   log.ids=log.ids.filter(value=>value!==id);delete log.exp[id];delete log.counts[id];return log.ids.length>0;
+   log.ids=log.ids.filter(value=>value!==id);if(log.midnightIds)log.midnightIds=log.midnightIds.filter(value=>value!==id);delete log.exp[id];delete log.counts[id];return log.ids.length>0;
   });
   if(persist())return true;data.logs=JSON.parse(previous);return false;
  }

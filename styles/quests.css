@@ -47,7 +47,7 @@ body{background:#e9e3d4}
 .quest-app .quest-symbol.category-3{background:#d4ddef}
 .quest-app .quest-symbol.category-4{background:#e7dac0}
 .quest-app .quest-check{border-radius:50%}
-.quest-app .quest-card.is-complete{background:#eef5e9;border-color:#66917a}
+.quest-app .quest-card.is-complete{background:#e3f4d7;border-color:#66917a}
 .quest-app .is-complete .quest-check{background:var(--q-green);color:white;border-color:var(--q-green)}
 .quest-app .is-complete .quest-xp{color:#14674f}
 .quest-app .quest-filters button{border-color:var(--q-line);background:var(--q-paper);font-size:12px}
@@ -168,3 +168,73 @@ body{background:#e9e3d4}
 .quest-app .wheel-modal .wheel-readout{color:var(--q-green);font-size:17px;font-weight:700;margin:8px 0 24px}
 .quest-app .wheel-modal .primary{background:var(--q-yellow);color:var(--q-ink);border:1.5px solid var(--q-ink);border-radius:24px;box-shadow:0 2px 0 var(--q-ink);min-height:48px;font-size:16px;font-weight:800}
 .quest-app .wheel-modal :is(button,.time-wheel):focus-visible{outline:2px solid var(--q-green);outline-offset:3px!important}
+
+/* Compact, readable alarm time editor; preserve the 40px wheel step. */
+.quest-app .wheel-modal{padding:18px!important}
+.quest-app .wheel-modal .heading{margin-bottom:8px}
+.quest-app .wheel-modal .heading h2{font-size:28px;margin-top:2px}
+.quest-app .wheel-modal .heading small{font-size:16px}
+.quest-app .wheel-modal .heading .icon{width:40px;height:40px}
+.quest-app .wheel-modal .wheel-guide{font-size:15px;margin:0;line-height:1.5;word-break:keep-all}
+.quest-app .wheel-modal .wheel-label{font-size:16px;top:-24px}
+.quest-app .wheel-modal .wheel-picker{margin:14px 0 0;padding-top:26px}
+.quest-app .wheel-modal .time-wheel{height:160px;padding:60px 0;scrollbar-width:none}
+.quest-app .wheel-modal .wheel-selection{top:86px}
+.quest-app .wheel-modal .wheel-option{font-size:25px;color:#968975}
+.quest-app .wheel-modal .wheel-option.chosen{font-size:31px}
+.quest-app .wheel-modal .wheel-readout{font-size:21px;margin:4px 0 12px}
+.quest-app .wheel-modal .primary{font-size:18px;min-height:50px;margin-top:0}
+/* Readable alarm tab: compact cards instead of stretched empty rows. */
+.app.quest-app .alarm-page{padding:10px 16px 16px;gap:12px}
+.app.quest-app .alarm-page>.journal-heading{min-height:88px;margin:0;padding:4px 0 8px}
+.app.quest-app .alarm-page>.journal-heading h1{font-size:32px}
+.app.quest-app .alarm-page>.journal-heading p{font-size:15px;margin-top:6px}
+.app.quest-app .alarm-page>.journal-heading>.journal-art{width:88px;height:88px}
+.app.quest-app .alarm-page>.journal-heading>div{max-width:calc(100% - 90px)}
+.quest-app .alarm-page>.note{font-size:16px;line-height:1.5;min-height:0;padding:12px 12px 12px 40px;margin:0}
+.quest-app .alarm-page .note>.decor-moon{left:12px;width:18px}
+.quest-app .alarm-page>.alarm-card{flex:0 0 auto;padding:16px;margin:0}
+.quest-app .alarm-page .alarm-card-heading{flex:0 0 auto;min-height:32px;margin-bottom:8px}
+.quest-app .alarm-page .alarm-card-heading h2{font-size:25px}
+.quest-app .alarm-page .alarm-card-heading small{font-size:14px}
+.quest-app .alarm-page .alarm-entry,.quest-app .alarm-page .alarm-entry:last-child{flex:0 0 auto;min-height:72px;padding:10px 0;grid-template-columns:64px minmax(0,1fr) 40px;column-gap:6px}
+.quest-app .alarm-page .alarm-label{font-size:18px;gap:5px}
+.quest-app .alarm-page .alarm-label svg{width:20px;height:20px;flex-basis:20px}
+.quest-app .alarm-page .alarm-time-button strong{gap:6px}
+.quest-app .alarm-page .alarm-period{font-size:19px}
+.quest-app .alarm-page .alarm-digits{font-size:28px;font-weight:700}
+@media(max-width:360px){.app.quest-app .alarm-page{padding-left:12px;padding-right:12px}.quest-app .alarm-page>.alarm-card{padding:12px}.quest-app .alarm-page .alarm-digits{font-size:27px}.quest-app .alarm-page .alarm-period{font-size:17px}}
+/* Academy-only whole-card toggle. */
+.quest-app .academy-card{width:100%;text-align:left;cursor:pointer;transition:background .18s,border-color .18s}
+.quest-app .academy-card .academy-title{display:block;font-size:18px;font-weight:800;letter-spacing:-.5px}
+.quest-app .academy-card .quest-xp{display:block}
+.quest-app .academy-card:not(.is-complete):hover{background:#f4f5e6;border-color:#719780}
+.quest-app .academy-card.is-complete{display:flex;flex-direction:column;justify-content:center;gap:5px;background:#e3f4d7;border-color:#769783;padding:10px 12px;min-height:78px}
+.academy-done-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#168368;color:#fff;font-size:26px;line-height:1}
+.academy-done-label{font-size:14px;font-weight:700;color:#355d4c}
+.quest-app .academy-card:disabled{cursor:default}
+@media(prefers-reduced-motion:reduce){.quest-app .academy-card{transition:none}}
+
+/* Play only after a successful academy completion, not on reload. */
+.quest-app .academy-card{position:relative;isolation:isolate;overflow:hidden}
+.academy-done-mark svg{width:30px;height:30px}
+.academy-done-mark path{stroke:currentColor;stroke-width:2.7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0}
+.academy-celebrate{animation:academy-card-fill .7s ease-out both}
+.academy-celebrate::before{content:'';position:absolute;inset:0;z-index:-1;background:#e3f4d7;pointer-events:none;animation:academy-color-spread .55s ease-out both}
+.academy-celebrate .academy-done-mark{animation:academy-check-pop .55s cubic-bezier(.2,.8,.3,1) .12s both}
+.academy-celebrate .academy-done-mark path{animation:academy-check-draw .35s ease-out .32s both}
+.academy-celebrate .academy-done-label{animation:academy-label-rise .25s ease-out .48s both}
+@keyframes academy-card-fill{0%,75%{background:#fffdf5}100%{background:#e3f4d7}}
+@keyframes academy-color-spread{from{clip-path:circle(0% at 50% 50%)}to{clip-path:circle(75% at 50% 50%)}}
+@keyframes academy-check-pop{0%{opacity:0;transform:scale(.35)}60%{opacity:1;transform:scale(1.14)}82%{transform:scale(.95)}100%{opacity:1;transform:scale(1)}}
+@keyframes academy-check-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes academy-label-rise{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.academy-celebrate,.academy-celebrate::before,.academy-celebrate .academy-done-mark,.academy-celebrate .academy-done-mark path,.academy-celebrate .academy-done-label{animation:none}}
+
+.challenge-status{flex-shrink:0;font-size:13px;font-weight:700;color:var(--q-muted);white-space:nowrap}.challenge-status.is-done{color:var(--q-green)}
+
+/* Each battery cell represents one weekly activity completion. */
+.quest-app .weekly-battery{display:flex;gap:4px;height:18px;padding:3px;margin:10px 0 4px;border:1px solid #8ca58b;border-radius:6px;background:#f5f6eb;overflow:hidden}
+.quest-app .weekly-battery>i{display:block;flex:1;min-width:0;width:auto;height:100%;border-radius:2px;background:#dce5d0;transition:background .25s ease}
+.quest-app .weekly-battery>i.is-filled{background:var(--q-green)}
+@media(prefers-reduced-motion:reduce){.quest-app .weekly-battery>i{transition:none}}

@@ -14,12 +14,11 @@ let questOnboardingActive=false;
  const removedQuestIds=new Set([1,19,20,22,24,25,26,27,28,29,30,31,34,35,36,37,38,39,40,42,43,44]); // Keep historical activity IDs intact.
  const ids=(period='daily')=>period==='weekly'?DailyQuests.weeklyOffering(data,today()):acts.map((_,id)=>id).filter(id=>!removedQuestIds.has(id)&&(QuestCatalog[id]?.period||'daily')===period);
  const state=(id)=>QuestCatalog[id]?.period==='weekly'?({...DailyQuests.weeklyStatus(data,today(),id),...DailyQuests.weeklyProgress(data,today(),WeeklyQuestRules[id])}):DailyQuests.status(data,today(),id);
- const dailyBase={0:30,1:30,2:20,3:30,4:30,5:30,6:25,7:20,8:15,9:10,10:15,11:10,12:10,13:10,14:10,15:15,16:30,17:10,18:20,19:10,21:10,23:15,40:25,41:30,42:30,43:20,44:20};
+ const dailyBase={0:30,1:30,2:20,3:30,4:30,5:30,6:25,7:20,8:15,9:10,10:15,11:10,12:10,13:10,14:10,15:15,16:30,17:10,18:20,19:10,21:10,23:15,40:25,41:30,42:30,43:20,44:20,46:30,47:30,48:30};
  const weeklyBase={32:120,33:150,34:100,36:130,37:100,38:110,39:100,45:100};
  const questXp=id=>dailyBase[id]??weeklyBase[id]??20;
- const challengeSelected=id=>(data.weeklyChallenges?.[DailyQuests.weekStart(today())]||[]).includes(Number(id))||DailyQuests.weeklyStatus(data,today(),Number(id)).done;
- const balancedWeeklyRules=()=>Object.fromEntries(Object.entries(WeeklyQuestRules).filter(([id])=>ids('weekly').includes(Number(id))&&challengeSelected(id)).map(([id,rule])=>[id,{...rule,xp:questXp(Number(id))}]));
- const summary=(period='daily')=>{const list=ids(period).filter(id=>period!=='weekly'||challengeSelected(id));return {done:list.filter(id=>state(id).done).length,total:list.length,xp:list.reduce((sum,id)=>sum+state(id).xp,0)};};
+ const balancedWeeklyRules=()=>Object.fromEntries(Object.entries(WeeklyQuestRules).filter(([id])=>ids('weekly').includes(Number(id))).map(([id,rule])=>[id,{...rule,xp:questXp(Number(id))}]));
+ const summary=(period='daily')=>{const list=ids(period),completed=list.filter(id=>state(id).done);return {done:completed.length,total:list.length,xp:completed.reduce((sum,id)=>sum+state(id).xp,0)};};
  const portrait=gender=>`assets/characters/${gender}/idle-standing.png`;
  const arrow='<span aria-hidden="true">↗</span>';
  function openCharacterChange(){
@@ -70,12 +69,12 @@ let questOnboardingActive=false;
  pages.archive=()=>`<div class="quest-archive"><button class="q-text archive-back" data-page="history">← 활동으로 돌아가기</button>${oldHistory().replace(/<button[^>]*data-page="touch"[^>]*>[\s\S]*?<\/button>/g,'')}</div>`;
  pages.history=()=>{
   const weekly=view==='weekly',s=summary(view),list=ids(view).filter(id=>weekly||questCategory(id)===Number(filter)).sort((a,b)=>questCategory(a)-questCategory(b)||a-b);
-  return `<section class="quest-page"><header class="q-heading"><div><span class="q-kicker">ONE DAY, ONE STEP</span><h1>${weekly?'주간 도전':'오늘의 활동'}</h1><p>${weekly?DailyQuests.weekStart(today())+'부터 · 월요일 시작':new Date().toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'long'})} · 나만의 속도로, 하나씩.</p></div></header><div class="quest-view-tabs" role="group" aria-label="활동과 도전"><button data-quest-view="daily" aria-pressed="${!weekly}">오늘의 활동</button><button data-quest-view="weekly" aria-pressed="${weekly}">주간 도전</button></div><div class="quest-progress-card"><div><span>${weekly?'내가 선택한 도전':'오늘 남긴 활동'}</span><strong>${s.done}<small>${weekly?' / '+s.total+' 달성':'개 기록'}</small></strong></div><span class="earned-pill">+${s.xp} EXP</span><p>${weekly?'매주 월요일 새로운 도전 4개가 열려요. 선택한 도전은 이번 주 동안 변경할 수 없어요.':'오늘 한 일을 골라 남겨보세요. 작은 일상도 경험치가 돼요.'}</p></div>${weekly?'':`<div class="quest-filters" role="group" aria-label="활동 분류">${categoryNames.map((n,i)=>[String(i),n]).map(([id,name])=>`<button data-quest-filter="${id}" aria-pressed="${filter===id}">${name}</button>`).join('')}</div>`}<div class="quest-list">${list.length?list.map(id=>{const a=acts[id],done=state(id);return `<article class="quest-card ${done.done?'is-complete':''}"><span class="quest-symbol category-${questCategory(id)}">${icon(a[2])}</span><div class="quest-card-copy"><h2>${titles[id]||esc(a[0])}${weekly&&done.done?' 완료!':''}</h2>${weekly?`<p class="weekly-description">${esc(WeeklyQuestRules[id].description||'')}</p><span class="weekly-count">${done.count} / ${done.target}${WeeklyQuestRules[id].unit||'회'}</span><div class="weekly-progress" role="progressbar" aria-label="${esc(a[0])}" aria-valuenow="${Math.min(done.count,done.target)}" aria-valuemin="0" aria-valuemax="${done.target}"><i style="width:${Math.min(100,done.count/done.target*100)}%"></i></div>`:''}<span class="quest-xp">${done.done?(weekly?'✓ 달성 · ':'✓ 기록 · '):''}+${done.done?done.xp:questXp(id)} EXP${done.legacy?' · 기존 기록':''}</span></div>${weekly?`<button class="challenge-select" data-quest-challenge="${id}" data-quest-date="${today()}" aria-pressed="${challengeSelected(id)}" ${challengeSelected(id)?'disabled':''}>${done.done?'✓ 달성':challengeSelected(id)?'도전 중':'도전하기'}</button>`:`<button class="quest-check" data-quest-id="${id}" data-quest-date="${today()}" data-quest-complete="${!done.done}" role="checkbox" aria-checked="${done.done}" aria-label="${esc(titles[id]||a[0])} ${done.done?'기록 취소':'활동 기록'}" ${done.legacy?'disabled':''}>${done.done?'✓':'＋'}</button>`}</article>`;}).join(''):'<div class="quest-empty"><h2>이 항목에는 아직 등록된 항목이 없어요.</h2></div>'}</div><button class="archive-link" data-page="archive">${icon('history')} 지난 활동 내역 보기 <span>→</span></button></section>`;
+  return `<section class="quest-page"><header class="q-heading"><div><span class="q-kicker">ONE DAY, ONE STEP</span><h1>${weekly?'주간 도전':'오늘의 활동'}</h1><p>${weekly?DailyQuests.weekStart(today())+'부터 · 월요일 시작':new Date().toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'long'})} · 나만의 속도로, 하나씩.</p></div></header><div class="quest-view-tabs" role="group" aria-label="활동과 도전"><button data-quest-view="daily" aria-pressed="${!weekly}">오늘의 활동</button><button data-quest-view="weekly" aria-pressed="${weekly}">주간 도전</button></div><div class="quest-progress-card"><div><span>${weekly?'이번 주 도전 달성':'오늘 남긴 활동'}</span><strong>${s.done}<small>${weekly?' / '+s.total+' 달성':'개 기록'}</small></strong></div><span class="earned-pill">${weekly?'':'획득 예정 · '}+${s.xp} EXP</span><p>${weekly?'매주 월요일 새로운 도전 4개가 열려요.<br>활동을 기록하면 자동으로 반영돼요.':'오늘의 활동을 기록해 보세요.<br>쌓인 경험치는 자정에 자동으로 지급돼요.'}</p></div>${weekly?'':`<div class="quest-filters" role="group" aria-label="활동 분류">${categoryNames.map((n,i)=>[String(i),n]).map(([id,name])=>`<button data-quest-filter="${id}" aria-pressed="${filter===id}">${name}</button>`).join('')}</div>`}<div class="quest-list">${list.length?list.map(id=>{const a=acts[id],done=state(id);if(!weekly)return `<button type="button" class="quest-card academy-card ${done.done?'is-complete':''}" data-quest-id="${id}" data-quest-date="${today()}" data-quest-complete="${!done.done}" aria-pressed="${done.done}" aria-label="${esc(titles[id]||a[0])} ${done.done?'완료 취소':'활동 기록'}" ${done.legacy?'disabled':''}>${done.done?'<span class="academy-done-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M8 16.5 13.5 22 24 10" pathLength="1" /></svg></span><span class="academy-done-label">'+esc(titles[id]||a[0])+' 완료</span>':`<span class="quest-symbol category-${questCategory(id)}">${icon(a[2])}</span><span class="quest-card-copy"><span class="academy-title">${esc(titles[id]||a[0])}</span><span class="quest-xp">+${questXp(id)} EXP</span></span>`}</button>`;return `<article class="quest-card ${done.done?'is-complete':''}"><span class="quest-symbol category-${questCategory(id)}">${icon(a[2])}</span><div class="quest-card-copy"><h2>${titles[id]||esc(a[0])}${weekly&&done.done?' 완료!':''}</h2>${weekly?`<p class="weekly-description">${esc(WeeklyQuestRules[id].description||'')}</p><div class="weekly-progress weekly-battery" role="progressbar" aria-label="${esc(a[0])}" aria-valuenow="${Math.min(done.count,done.target)}" aria-valuemin="0" aria-valuemax="${done.target}">${Array.from({length:done.target},(_,index)=>`<i class="${index<done.count?'is-filled':''}" aria-hidden="true"></i>`).join('')}</div>`:''}<span class="quest-xp">${done.done?(weekly?'✓ 달성 · ':'✓ 기록 · '):''}+${done.done?done.xp:questXp(id)} EXP${done.legacy?' · 기존 기록':''}</span></div>${weekly?`<span class="challenge-status ${done.done?'is-done':''}">${done.done?'✓ 달성':'진행 중'}</span>`:`<button class="quest-check" data-quest-id="${id}" data-quest-date="${today()}" data-quest-complete="${!done.done}" role="checkbox" aria-checked="${done.done}" aria-label="${esc(titles[id]||a[0])} ${done.done?'기록 취소':'활동 기록'}" ${done.legacy?'disabled':''}>${done.done?'✓':'＋'}</button>`}</article>`;}).join(''):'<div class="quest-empty"><h2>이 항목에는 아직 등록된 항목이 없어요.</h2></div>'}</div><button class="archive-link" data-page="archive">${icon('history')} 지난 활동 내역 보기 <span>→</span></button></section>`;
  };
  const home=pages.home;
  pages.home=()=>{
   const s=summary();
-  return `<header class="quest-home-heading"><div><span class="q-kicker">MY DAILY ADVENTURE</span><h1>${esc(profileName())}의 하루</h1></div><button class="q-round" data-edit-profile aria-label="캐릭터 변경">${icon('user')}</button></header><div class="quest-scene-card">${home().replace(/<div class="character-picker"[\s\S]*?<\/div>/, '')}</div><section class="home-quest-summary"><div><span class="q-kicker">TODAY'S ACTIVITY</span><h2>오늘의 하루를 남겨요.</h2><p>오늘 활동 <b>${s.done}개</b> <span>+${s.xp} EXP</span></p></div><button class="q-primary" data-page="history">활동 기록하기 ${arrow}</button></section>`;
+  return `<header class="quest-home-heading"><div><span class="q-kicker">MY DAILY ADVENTURE</span><h1>${esc(profileName())}의 하루</h1></div><button class="q-round" data-edit-profile aria-label="캐릭터 변경">${icon('user')}</button></header><div class="quest-scene-card">${home().replace(/<div class="character-picker"[\s\S]*?<\/div>/, '')}</div><section class="home-quest-summary"><div><span class="q-kicker">TODAY'S ACTIVITY</span><h2>오늘의 하루를 남겨요.</h2><p>오늘 활동 <b>${s.done}개</b> <span>획득 예정 · +${s.xp} EXP</span></p></div><button class="q-primary" data-page="history">활동 기록하기 ${arrow}</button></section>`;
  };
  const baseRender=render;
  render=function(){
@@ -106,24 +105,15 @@ let questOnboardingActive=false;
   const button=event.target.closest('button');if(!button)return;const d=button.dataset;
   if(!Object.keys(d).some(key=>key.startsWith('quest')||key.startsWith('setup')||key==='editProfile'))return;
   event.preventDefault();event.stopImmediatePropagation();
-  if('questChallenge'in d){
-   const id=Number(d.questChallenge);
-   if(d.questDate!==today()||!ids('weekly').includes(id)){render();return;}
-   if(challengeSelected(id))return;
-   const previous=JSON.stringify(data),key=DailyQuests.weekStart(today());
-   data.weeklyChallenges={...data.weeklyChallenges,[key]:[...(data.weeklyChallenges?.[key]||[]),id]};
-   if(!DailyQuests.syncWeekly(data,today(),balancedWeeklyRules(),()=>true)||!persist()){data=JSON.parse(previous);return;}
-   render();return;
-  }
   if('questId'in d){
    if(d.questDate!==today()){render();toast('새로운 하루가 시작됐어요. 오늘의 퀘스트를 확인해 주세요.');return;}
    const id=Number(d.questId);if(!acts[id]||removedQuestIds.has(id)||WeeklyQuestRules[id])return;
-   const complete=d.questComplete==='true',before=player().lv,award=questXp(id);
+   const complete=d.questComplete==='true',award=questXp(id);
    const saveQuest=(...args)=>DailyQuests.saveWithWeekly(...args,balancedWeeklyRules());
    if(saveQuest(data,today(),id,complete,award,persist)){
     const scroll=window.scrollY;render();window.scrollTo(0,scroll);
+    if(complete)document.querySelector(`[data-quest-id="${id}"]`)?.classList.add('academy-celebrate');
     document.querySelector(`[data-quest-id="${id}"]`)?.focus({preventScroll:true});
-    toast(complete?`${acts[id][0]} 기록! +${award} EXP${player().lv>before?' · 레벨 업!':''}`:'완료를 취소하고 경험치를 되돌렸어요.');
    }return;
   }
   if('questFilter'in d)filter=d.questFilter;
@@ -137,7 +127,7 @@ let questOnboardingActive=false;
   if('setupNext'in d){if(step===2&&!draft.goals.length)return;if(step===3){finishSetup();return;}step++;}
   render();if('setupNext'in d||'setupBack'in d||'editProfile'in d||'setupIntro'in d)window.scrollTo(0,0);
  },true);
- function rollover(){if(lastDate!==today()){lastDate=today();if(!needsSetup()&&!editing&&['home','history'].includes(page))render();}}
+ function rollover(){if(lastDate!==today()){lastDate=today();if(!needsSetup()&&!editing)render();}}
  setInterval(rollover,1000);window.addEventListener('focus',rollover);
  render();if(needsSetup())window.scrollTo(0,0);
 })();

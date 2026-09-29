@@ -48,11 +48,18 @@ acts.push(['카페인 누적',2,'coffee']);
 QuestCatalog[coffeeWeeklyId]={title:'카페인 누적',xp:30,period:'weekly'};
 WeeklyQuestRules[coffeeWeeklyId]={activities:[11,12,13],target:10,xp:30,countUnits:true,unit:'회'};
 WeeklyQuestRules[32].description='이번 주 독서 활동을 3회 기록해 보세요.';
-WeeklyQuestRules[33].description='러닝·근력 운동·필라테스·스트레칭을 합쳐 5회 기록해 보세요.';
+// Append activities so existing records keep their original IDs.
+for(const [title,icon] of [['수영','swimming'],['자전거','cycling'],['등산','hiking']]){
+ const id=acts.length;acts.push([title,1,icon]);
+ QuestCatalog[id]={title,xp:30,period:'daily'};
+ WeeklyQuestRules[33].activities.push(id);
+}
+WeeklyQuestRules[33].description='이번 주 운동 활동을 5회 기록해 보세요.';
 WeeklyQuestRules[coffeeWeeklyId].description='커피·에너지 드링크·박카스 기록을 합쳐 10회.';
 WeeklyQuestRules[36].description='이번 주 요리 활동을 3회 기록해 보세요.';
 WeeklyQuestRules[37].activities=[14,15];
-WeeklyQuestRules[37].description='음악 감상·노래 부르기를 합쳐 5회 기록해 보세요.';
+WeeklyQuestRules[37].target=3;
+WeeklyQuestRules[37].description='이번 주 음악 활동을 3회 기록해 보세요.';
 WeeklyQuestRules[38].description='이번 주 산책 활동을 3회 기록해 보세요.';
 WeeklyQuestRules[39].description='이번 주 물 마시기를 5회 기록해 보세요.';
 const paths={home:'M3 11 12 3l9 8v10h-6v-7H9v7H3Z',book:'M12 5v16M12 5C8 2 3 3 2 4v15c4-2 7-1 10 2 3-3 6-4 10-2V4c-4-2-7-1-10 1',heart:'M20 4c-4-3-8 2-8 2S8 1 4 4c-7 6 8 17 8 17S27 10 20 4ZM3 12h5l2-4 4 8 2-4h5',leaf:'M3 21C0 6 8 3 21 3c0 14-7 19-18 18ZM3 21 17 7',coffee:'M3 7h14v8c0 8-14 8-14 0ZM17 8h3c5 0 3 7-3 7M6 2v2m5-2v2',laptop:'M4 3h16v14H4ZM1 21h22',game:'M7 7h10c5 0 8 15 3 13l-5-4H9l-5 4C-1 22 2 7 7 7ZM7 10v5m-2-3h4m7 0h1m2 2h1',film:'M3 8h18v13H3ZM3 8 2 3l18-2 1 5M7 3l3 4m5-5 3 4',bolt:'m14 2-9 12h6l-1 8 9-12h-6Z',bell:'M4 17h16l-3-4V8a5 5 0 0 0-10 0v5ZM10 21h4',shirt:'m7 3-5 4 3 5 3-2v12h8V10l3 2 3-5-5-4c-2 4-8 4-10 0',trophy:'M7 2h10v9c0 7-10 7-10 0ZM7 5H2v4c0 4 5 4 5 4m10-8h5v4c0 4-5 4-5 4M12 16v6m-5 0h10',history:'M5 2h14v20H5ZM8 7h8M8 12h8M8 17h5',mic:'M9 4a3 3 0 0 1 6 0v9a3 3 0 0 1-6 0ZM5 10v3a7 7 0 0 0 14 0v-3M12 20v3m-4 0h8',touch:'M10 13V4a2 2 0 0 1 4 0v7c9-2 8 7 4 11h-7L4 14c-2-4 3-4 6-1',moon:'M20 15A9 9 0 0 1 9 3a9 9 0 1 0 11 12'};
@@ -69,6 +76,9 @@ paths.dumbbell='M8 10h8v4H8ZM4 7h4v10H4ZM16 7h4v10h-4ZM2 10h2v4H2ZM20 10h2v4h-2Z
 paths.energyCan='M8 3h8m-9 3h10M8 3 7 6v14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6l-1-3M7 18h10m-4-10-4 6h3l-1 3 4-6h-3l1-3Z';
 paths.tonicBottle='M9 2h6v4H9ZM9 6v2l-2 3v9a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-9l-2-3V6M7 12h10M7 18h10m-6-3h2';
 paths.headphones='M3 13V11a9 9 0 0 1 18 0v2M3 12h4v8H5a2 2 0 0 1-2-2v-6Zm18 0h-4v8h2a2 2 0 0 0 2-2v-6Z';
+paths.swimming='M16 5a2 2 0 1 0 4 0 2 2 0 0 0-4 0ZM4 13l5-5 5 3 3 3M9 8 6 5H3M2 17q2-2 4 0t4 0t4 0t4 0t4 0M2 21q2-2 4 0t4 0t4 0t4 0t4 0';
+paths.cycling='M9 18a4 4 0 1 0-8 0 4 4 0 0 0 8 0Zm14 0a4 4 0 1 0-8 0 4 4 0 0 0 8 0ZM5 18l5-9 5 9H5m10 0 3-12h-3M8 6h4m6 0h2l1 3';
+paths.hiking='M2 21 9 8l5 8 3-5 5 10H2ZM6 13l3 2 2-3M9 8V2l6 2-6 2';
 function musicActivityIds(text){const compact=text.replace(/\s/g,'');const ids=[];if(/음악감상|음악듣|음악들|노래듣|노래들/.test(compact))ids.push(14);if(/노래부르|노래불|노래방/.test(compact))ids.push(15);return ids}
 const icon=n=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${paths[n]||paths.book}"/></svg>`;
 let saved;try{saved=JSON.parse(localStorage.getItem(KEY)||'null')}catch{}
@@ -79,7 +89,7 @@ const today=()=>new Date().toLocaleDateString('sv-SE');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(data));return true}catch{toast('저장 공간을 사용할 수 없습니다.');return false}}
 function activityExp(log,id){const value=log.exp?.[id];return Number.isFinite(value)&&value>=0?value:20}
-function totals(){const t=[0,0,0,0,0],seen=new Set();data.logs.filter(l=>l.date<=today()).forEach(l=>(l.ids||[]).forEach(id=>{const key=l.date+':'+id;if(Number.isInteger(id)&&acts[id]&&!seen.has(key)){seen.add(key);t[acts[id][1]]+=activityExp(l,id)}}));return t}
+function totals(){const t=[0,0,0,0,0],seen=new Set();data.logs.filter(l=>l.date<=today()).forEach(l=>(l.ids||[]).forEach(id=>{const key=l.date+':'+id;if(Number.isInteger(id)&&acts[id]&&!seen.has(key)&&!(l.date===today()&&l.midnightIds?.includes(id))){seen.add(key);t[acts[id][1]]+=activityExp(l,id)}}));return t}
 function categoryExp(i){return Math.max(0,totals()[i]-(data.levelBaseline?.[i]||0))}
 function level(i){return (i<4?5:15)+Math.floor(categoryExp(i)/100)}
 function migratePlayerCurve(){

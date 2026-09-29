@@ -1,0 +1,122 @@
+/* White surfaces and readable type; character artwork and motion remain independent. */
+@font-face{font-family:Pretendard;src:url('../assets/fonts/PretendardVariable.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
+:root{--q-paper:#fff;--q-ink:#293545;--q-muted:#647184;--q-yellow:#e9f0ff;--q-green:#168368;--accent:#396bca;--line:#d3dae4;--soft:#eff4fc}
+html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;color:var(--q-ink)}
+.app.quest-app{--q-surface:#f5f7fa;--q-line:#d3dae4;font-family:Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;background:#fff!important;color:var(--q-ink);border-color:var(--q-line);border-width:1px}
+.quest-app :is(button,input,textarea){font-family:inherit}
+.quest-app :is(h1,h2,h3){color:var(--q-ink);letter-spacing:-.025em;line-height:1.4}
+.quest-app :is(.q-heading h1,.quest-home-heading h1,.journal-heading h1),.app.quest-app .alarm-page>.journal-heading h1{font-size:28px;font-weight:700}
+.quest-app :is(.q-heading p,.journal-heading p,.journey-intro,.setup-copy p){font-size:14px!important;line-height:1.6;color:var(--q-muted)}
+.quest-app .q-kicker{font-size:11px;color:var(--q-muted);font-weight:500}
+.quest-app :is(.quest-card,.quest-progress-card,.home-quest-summary,.quest-scene-card,.journey-card,.alarm-card,.reward-next,.reward-complete,.character-change-dialog,.character-option,.name-field input,.goal-options button,.q-round,.wheel-modal){border:1px solid var(--q-line);box-shadow:none;background:#fff}
+.quest-app :is(.quest-card,.journey-card,.alarm-card){border-radius:18px}
+.quest-app :is(.academy-title,.quest-card h2){font-size:18px!important;font-weight:700!important;color:var(--q-ink)}
+.quest-app :is(.quest-card p,.weekly-description){font-size:14px;line-height:1.55;color:var(--q-muted)}
+.quest-app .quest-xp{font-size:13px;font-weight:500;color:#396bca}
+.quest-app .quest-symbol{background:#edf3ff;color:#4168a6;border-radius:10px}
+.quest-app .quest-symbol.category-1{background:#e9f5ef;color:#337c60}
+.quest-app .quest-symbol.category-2{background:#fff3e5;color:#956326}
+.quest-app .quest-symbol.category-3{background:#f0edfa;color:#7860a2}
+.app.quest-app .quest-page .quest-progress-card{background:#6b99ed;border-color:#5788e0;color:#fff;border-radius:22px}
+.app.quest-app .quest-page .quest-progress-card :is(span,strong,small,p,.earned-pill){color:#fff!important}
+.quest-app .quest-progress-card>div>span{font-size:13px}
+.quest-app .quest-progress-card strong{font-size:28px;font-weight:700}
+.quest-app .quest-progress-card p{font-size:14px;line-height:1.55}
+.app.quest-app .quest-page .quest-progress-card .earned-pill{font-size:13px;font-weight:500;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35)}
+.quest-app .quest-view-tabs{border-bottom:1px solid var(--q-line)}
+.quest-app .quest-view-tabs button{font-size:15px;color:var(--q-muted);font-weight:500}
+.quest-app .quest-view-tabs button[aria-pressed=true]{color:#396bca;border-color:#396bca}
+.quest-app .quest-filters button{font-size:14px;border:1px solid var(--q-line);background:#fff;color:var(--q-muted)}
+.quest-app .quest-filters button[aria-pressed=true]{background:#eaf1ff;border-color:#9fb9e8;color:#315fac}
+.quest-app .academy-card:not(.is-complete):hover{background:#f5f8fd;border-color:#9fb9e8}
+.quest-app :is(.academy-card.is-complete,.quest-card.is-complete,.reward-list .is-equipped){background:#e7f4eb;border:1px solid #a7cbb5;box-shadow:none}
+.quest-app .academy-done-label{font-size:14px;color:#27674e}
+.quest-app .academy-celebrate::before{background:#e7f4eb}
+@keyframes academy-card-fill{0%,75%{background:#fff}100%{background:#e7f4eb}}
+.quest-app .weekly-battery{background:#f4f7f5;border-color:#b8cdbf}
+.quest-app .weekly-battery>i{background:#e0e9e3}
+.quest-app .weekly-battery>i.is-filled{background:var(--q-green)}
+.quest-app :is(.archive-link,.alarm-entry){border-color:var(--q-line);border-width:1px}
+.quest-app .archive-link{font-size:14px;color:var(--q-muted)}
+.app.quest-app .nav,.app.quest-app .nav.traveler-nav,.app.quest-app.is-night-home .traveler-nav{background:#fff!important;border-color:var(--q-line)!important;border-width:1px!important;box-shadow:none}
+.app.quest-app .nav button,.app.quest-app .nav.traveler-nav button,.app.quest-app.is-night-home .traveler-nav button{color:#738095!important;font-size:12px}
+.app.quest-app .nav button.active,.app.quest-app .nav.traveler-nav button.active,.app.quest-app.is-night-home .traveler-nav button.active{color:#315fac!important}
+.quest-app .nav button.active svg{background:#e9f0ff;outline-color:#e9f0ff}
+.quest-app :is(.q-primary,.primary,.journey-card button),.quest-app .wheel-modal .primary{background:#6b99ed!important;color:#17212f!important;border:1px solid #5788e0!important;box-shadow:none!important;font-size:16px;font-weight:500;border-radius:16px}
+.quest-app :is(.q-primary,.primary):hover{background:#608cdd!important}
+.quest-app .home-quest-summary{background:#f5f8fd}
+.quest-app .home-quest-summary p{font-size:14px;color:var(--q-muted)}
+.quest-app :is(.reward-complete,.alarm-page>.note){background:#f5f8fd!important;border:1px solid var(--q-line);color:var(--q-muted)}
+.app.quest-app .reward-readable .reward-next{background:transparent!important;border:0!important;outline:none!important;box-shadow:none!important}
+.app.quest-app .reward-next .journey-card{border:0!important;box-shadow:none!important}
+.app.quest-app .reward-next .journey-card button,.app.quest-app .home-quest-summary .q-primary{color:#fff!important;font-size:14px!important;font-weight:700!important}
+.app.quest-app .quest-setup .q-primary{color:#fff!important;font-weight:700!important}
+.quest-app .alarm-page>.note{font-size:14px}
+.quest-app .alarm-card-heading h2{font-size:22px!important}
+.quest-app .alarm-page :is(.alarm-label,.alarm-period){font-size:17px;color:var(--q-ink)}
+.quest-app .alarm-page .alarm-digits{font-size:28px;font-weight:500;color:var(--q-ink)}
+.quest-app .wheel-modal{background:#fff;border:1px solid var(--q-line);box-shadow:0 16px 48px #26334d26}
+.quest-app .wheel-modal .heading h2{font-size:26px;font-weight:700}
+.quest-app .wheel-modal .heading .icon{background:#f5f7fa;border:1px solid var(--q-line)}
+.quest-app .wheel-modal .wheel-selection{background:#edf3ff;border:1px solid #b3c8ed}
+.quest-app .wheel-modal .wheel-option{color:#8994a3}
+.quest-app .wheel-modal .wheel-option.chosen{color:var(--q-ink);font-weight:700}
+.quest-app .wheel-modal .wheel-readout{color:#396bca}
+.quest-app .quest-setup{background:#fff}
+.quest-app .setup-copy h1{font-size:32px;font-weight:700}
+.quest-app .welcome-art:before{background:#edf3ff;border:1px solid #c7d7ef;box-shadow:none}
+.quest-app :is(.welcome-label,.setup-tags span){background:#f5f8fd;border:1px solid var(--q-line);color:var(--q-ink)}
+.quest-app :is(.character-option.chosen,.goal-options button.chosen){background:#edf3ff;border-color:#8eafe5;box-shadow:none}
+.quest-app .welcome-features{font-size:14px}
+.quest-app .welcome-features span{color:var(--q-muted)}
+.quest-app :is(.name-field,.goal-options button){font-size:16px}
+.quest-app :is(.setup-note,.name-field small,.character-reset-notice){font-size:13px;line-height:1.6;color:var(--q-muted)}
+.quest-app :is(button,input):focus-visible{outline:2px solid #396bca;outline-offset:3px}
+@media(max-width:360px){.quest-app .quest-progress-card strong{font-size:25px}.quest-app .quest-progress-card .earned-pill{font-size:12px}.quest-app .challenge-status{font-size:12px}}
+/* Collection cards: equal artwork and details columns, independent of featured reward. */
+.quest-app .reward-list{gap:12px}
+.quest-app .reward-list .journey-bundle{grid-template-columns:minmax(0,1fr) minmax(0,1fr);overflow:hidden;align-items:stretch}
+.quest-app .reward-list .journey-bundle .journey-art{height:100%;min-height:190px;border-radius:0}
+.quest-app .reward-list .journey-card-copy{display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:14px 12px!important;min-width:0;letter-spacing:-.02em}
+.quest-app .reward-list .journey-card-copy>small{font-size:12px;line-height:1.4;font-weight:500;color:var(--q-muted);word-break:keep-all}
+.quest-app .reward-list .journey-card-copy h3{font-size:18px;line-height:1.35;letter-spacing:-.025em;font-weight:700;margin:0;word-break:keep-all;overflow-wrap:anywhere}
+.quest-app .reward-list .bundle-motion{font-size:14px;line-height:1.45;color:var(--q-ink);margin:0;word-break:keep-all}
+.quest-app .reward-list .journey-card .reward-income{font-size:12px;line-height:1.5;color:var(--q-muted);margin:0 0 6px;min-height:0;word-break:keep-all}
+.quest-app .reward-list .journey-card button{width:100%;min-width:0;min-height:36px;margin-top:auto;padding:8px 6px;font-size:13px;font-weight:500;line-height:1.4;letter-spacing:-.015em;border-radius:10px;white-space:normal;word-break:keep-all}
+.quest-app .reward-list .journey-card button:disabled{background:#f0f3f7!important;color:#687587!important;border-color:#d3dae4!important}
+.quest-app .reward-list .journey-card button.equipped{background:#d9eee2!important;color:#246b4c!important;border-color:#a7cbb5!important}
+.quest-app .reward-list .bundle-character{padding-bottom:18px}
+.quest-app .reward-list .bundle-character>img,.quest-app .reward-list .bundle-character>canvas,.quest-app .reward-list .bundle-character>.female-motion{width:118px!important;height:118px!important}
+@media(max-width:360px){.quest-app .reward-list .journey-card-copy{padding:12px 10px!important}.quest-app .reward-list .journey-card-copy h3{font-size:16px}.quest-app .reward-list .bundle-motion{font-size:13px}.quest-app .reward-list .bundle-character>img,.quest-app .reward-list .bundle-character>canvas,.quest-app .reward-list .bundle-character>.female-motion{width:100px!important;height:100px!important}}
+
+/* Pretendard hierarchy: Regular for reading, Medium for controls, Bold for emphasis. */
+.app.quest-app{font-weight:400;line-height:1.5;letter-spacing:-.015em;font-synthesis:none}
+.quest-app :is(button,input,textarea,select){font-family:Pretendard,-apple-system,BlinkMacSystemFont,sans-serif!important}
+.quest-app :is(p,small,.bundle-motion,.weekly-description,.journey-intro,.wheel-guide,.setup-note,.character-reset-notice){font-weight:400!important;letter-spacing:-.01em;line-height:1.6}
+.quest-app :is(p,.weekly-description,.journey-intro,.setup-copy p,.wheel-guide){font-size:14px}
+.quest-app :is(small,.setup-note,.character-reset-notice,.reward-income){font-size:12px}
+.quest-app :is(button,label,input,textarea,select,.q-kicker,.quest-xp,.earned-pill,.challenge-status,.alarm-label,.alarm-period,.wheel-label,.setup-top,.brand,.welcome-label,.welcome-features,.setup-tags,.academy-done-label){font-weight:500!important}
+.quest-app :is(h1,h2,h3,strong,b,.academy-title,.alarm-digits,.wheel-readout){font-weight:700!important;letter-spacing:-.025em}
+.quest-app :is(h1,h2,h3){line-height:1.35;text-wrap:pretty}
+.quest-app :is(.q-heading h1,.quest-home-heading h1,.journal-heading h1){font-size:28px!important}
+.quest-app :is(.home-quest-summary h2,.reward-section-title h2){font-size:20px}
+.quest-app :is(.academy-title,.quest-card h2){font-size:18px!important;line-height:1.4}
+.quest-app :is(.quest-xp,.earned-pill,.challenge-status){font-size:13px;line-height:1.5;letter-spacing:0}
+.quest-app :is(.quest-view-tabs button,.quest-filters button){font-size:14px;line-height:1.45}
+.quest-app .quest-view-tabs button[aria-pressed=true],.quest-app .quest-filters button[aria-pressed=true]{font-weight:700!important}
+.quest-app .quest-progress-card strong{font-size:28px;line-height:1.3;letter-spacing:-.025em}
+.quest-app .quest-progress-card strong small{font-size:18px;font-weight:500!important;line-height:1.3}
+.quest-app .quest-progress-card p{font-size:14px;line-height:1.6}
+.quest-app .quest-progress-card>div>span{font-size:13px;font-weight:500}
+.quest-app .reward-list .journey-card-copy>small{font-size:12px;font-weight:500!important}
+.quest-app .reward-list .bundle-motion{font-size:14px;line-height:1.5}
+.quest-app .reward-list .journey-card .reward-income{font-size:12px;line-height:1.5}
+.quest-app .reward-list .journey-card button{font-size:13px;line-height:1.45}
+.quest-app .wheel-modal .wheel-option{font-weight:400}
+.quest-app .wheel-modal .wheel-option.chosen{font-weight:700!important}
+.quest-app :is(.alarm-digits,.wheel-option,.wheel-readout,.quest-progress-card strong,.earned-pill){font-variant-numeric:tabular-nums}
+.quest-app .nav button{font-size:12px!important;letter-spacing:0;line-height:1.35}
+.quest-app .nav button.active{font-weight:700!important}
+.quest-app .q-kicker{font-size:11px;letter-spacing:.08em;line-height:1.5}
+.quest-app .setup-copy h1{font-size:32px;line-height:1.35}
+@media(max-width:360px){.quest-app .quest-progress-card strong{font-size:25px}.quest-app .quest-progress-card strong small{font-size:16px}.quest-app .earned-pill{font-size:12px}}
