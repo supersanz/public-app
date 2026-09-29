@@ -16,7 +16,7 @@ function travelerNightScene(background){
 }
 function travelerNightWorld(background){
  if(background==='academy')return travelerCafeScene(true);
- if(background==='white')return '<div class="night-world clearing-night" aria-hidden="true"><img src="assets/characters/male/clearing-night.png?v=hair-2" alt=""><div class="sleep-letters"><span>z</span><span>z</span><span>z</span></div></div>';
+ if(background==='white')return '<div class="night-world clearing-night" aria-hidden="true"><img src="assets/characters/male/clearing-night.png" alt=""><div class="sleep-letters"><span>z</span><span>z</span><span>z</span></div></div>';
  const scene=travelerNightScene(background);
  if(!scene)return `<div class="night-rest-room">${travelerScene(background)}<img class="night-rest-character" src="${travelerStanding}" alt="쉬고 있는 마법사"></div>`;
  const stars=background==='desert'||background==='sky'?[[16.5,5,0],[83,2.5,4],[75,16.2,8]].map(([x,y,d])=>`<i class="night-star" style="left:${x}%;top:${y}%;--delay:-${d}s;--duration:${12+d}s"></i>`).join(''):'';
@@ -28,7 +28,7 @@ pages.home=()=>{
  const night=travelerNightAt(),p=player();
 
  if(!night)return travelerDayHome();
- return `<section class="night-home" aria-label="${travelerNightScene(travelerState().background)?.[1]||'밤의 휴식'}">${travelerNightWorld(travelerState().background)}<header class="traveler-hud"><h1>${travelerTitle(p.lv)}</h1><strong>Lv.${p.lv}</strong><small>${p.xp} / ${LevelCurve.required(p.lv).toLocaleString()} EXP</small><div class="traveler-hud-bar" role="progressbar" aria-label="레벨 경험치" aria-valuemin="0" aria-valuemax="${LevelCurve.required(p.lv)}" aria-valuenow="${p.xp}">${bar(p.xp/LevelCurve.required(p.lv)*100)}</div></header></section>`;
+ return `<section class="night-home" aria-label="${travelerNightScene(travelerState().background)?.[1]||'밤의 휴식'}">${travelerNightWorld(travelerState().background)}<header class="traveler-hud"><strong>Lv.${p.lv}</strong><small>${p.xp} / ${LevelCurve.required(p.lv).toLocaleString()} EXP</small><div class="traveler-hud-bar" role="progressbar" aria-label="레벨 경험치" aria-valuemin="0" aria-valuemax="${LevelCurve.required(p.lv)}" aria-valuenow="${p.xp}">${bar(p.xp/LevelCurve.required(p.lv)*100)}</div></header></section>`;
 };
 const nightBaseRender=render;
 render=function(){nightBaseRender();const app=document.getElementById('app'),night=travelerNightAt();app.classList.toggle('is-night-home',page==='home'&&night);app.classList.toggle('is-night-navigation',night)};
@@ -40,7 +40,7 @@ function transitionTravelerNight(){
  const transition=document.startViewTransition(()=>render());
  transition.finished.catch(()=>{}).finally(()=>{nightTransitionBusy=false});
 }
-function syncTravelerNight(){if(document.hidden||nightTransitionBusy)return;const app=document.getElementById('app'),night=travelerNightAt();app.classList.toggle('is-night-navigation',night);if(page==='home'&&app.classList.contains('is-night-home')!==night)transitionTravelerNight()}
+function syncTravelerNight(){if(document.hidden||nightTransitionBusy||(typeof questOnboardingActive!=='undefined'&&questOnboardingActive))return;const app=document.getElementById('app'),night=travelerNightAt();app.classList.toggle('is-night-navigation',night);if(page==='home'&&app.classList.contains('is-night-home')!==night)transitionTravelerNight()}
 document.addEventListener('click',e=>{
  if(!e.target.closest('[data-night-toggle]'))return;
  e.preventDefault();e.stopImmediatePropagation();if(nightTransitionBusy)return;

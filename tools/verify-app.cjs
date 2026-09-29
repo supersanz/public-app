@@ -9,5 +9,11 @@ for(const m of html.matchAll(/(?:src|href)="([^"?]+)(?:\?[^\"]*)?"/g)){
 for(const p of Object.values(JSON.parse(fs.readFileSync('FILE-MAP.json')).images))assert(fs.existsSync(p),p);
 for(const name of ['growth','level-curve','curve-v2','night-schedule','night-time','sleep-exp-matrix','walk-exp','traveler-bundles','title-rewards','character','character-persistence','final-audit'])require('./tests/verify-'+name+'.cjs');
 require('./tests/verify-male-day-preview.cjs');
+require('./tests/verify-daily-quests.cjs');
 console.log('PASS: current application regression suite and renamed runtime resources.');
-
+require('./tests/verify-weekly-quests.cjs');
+require('./tests/verify-quest-balance.cjs');
+require('./tests/verify-reset-preview.cjs');
+require('./tests/verify-curve-v3.cjs');
+require('./tests/verify-optional-challenges.cjs');
+require('./tests/verify-weekly-player-integration.cjs');

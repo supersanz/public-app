@@ -1,0 +1,170 @@
+:root{--q-paper:#fffbed;--q-ink:#493c30;--q-yellow:#ffce42;--q-green:#168368;--q-muted:#786f60;--accent:#168368}
+body{background:#e5e5d8}.app.quest-app{background:var(--q-paper);color:var(--q-ink);padding-bottom:100px!important;min-height:100dvh}.quest-app *{scrollbar-width:thin}.quest-app button:focus-visible,.quest-app input:focus-visible{outline:3px solid #008f6d;outline-offset:3px}.quest-app .status{background:var(--q-paper)!important;color:var(--q-ink)!important;position:relative!important;height:40px;display:flex!important;inset:auto!important}.quest-app .nav{background:var(--q-paper)!important;border-top:1.5px solid var(--q-ink);height:82px;box-shadow:none;backdrop-filter:none}.quest-app .nav button{color:#9b9e8c!important;font-size:11px;gap:7px;justify-content:center;min-width:64px}.quest-app .nav button.active{color:var(--q-ink)!important}.quest-app .nav button.active svg{background:var(--q-yellow);outline:8px solid var(--q-yellow);border-radius:5px;margin-bottom:3px}.quest-app .nav svg{height:21px;width:21px}.q-kicker{display:block;font-size:10px;font-weight:800;letter-spacing:1.7px;color:#717661}.q-primary{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:52px;padding:13px 21px;background:var(--q-yellow);border:1.7px solid var(--q-ink);border-radius:30px;font-weight:800;font-size:14px;box-shadow:0 3px 0 #26291f}.q-primary:hover{background:#ffd655}.q-primary:active{transform:translateY(2px);box-shadow:0 1px 0 #26291f}.q-primary>span{font-size:23px}.q-text{min-height:44px;font-size:13px;font-weight:700;padding:10px 0}.q-round{display:grid;place-items:center;flex-shrink:0;width:43px;height:43px;border:1.5px solid var(--q-ink);border-radius:50%;background:var(--q-paper)}.heading-dot{color:var(--q-green)}
+/* First-run introduction, using the app's own character art. */
+.app.quest-app.is-onboarding{padding:0!important}.quest-setup{min-height:100dvh;padding:30px 26px 28px;display:flex;flex-direction:column}.setup-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--q-muted)}.brand{font-size:17px;letter-spacing:2px;font-weight:900;color:var(--q-ink)}.setup-progress{display:flex;gap:7px;margin-top:20px}.setup-progress i{height:4px;flex:1;background:#e6e8d9;border-radius:4px}.setup-progress .filled{background:var(--q-green)}.setup-copy{margin-top:42px}.setup-copy h1{font-size:35px;line-height:1.3;letter-spacing:-1.8px;font-weight:900;margin:14px 0}.setup-copy h1 em{font-style:normal;background:var(--q-yellow);padding:0 8px;border-radius:8px}.setup-copy p{font-size:13px;color:#737667;word-break:keep-all}.welcome-art{height:245px;position:relative;display:flex;justify-content:center;align-items:center;margin:24px 0 14px;isolation:isolate}.welcome-art:before{content:'';position:absolute;z-index:-1;width:210px;height:210px;border-radius:50%;background:#f9dd78;border:1.5px solid #26291f;box-shadow:10px 9px 0 #ececcd}.welcome-art img{width:210px;height:210px;object-fit:contain;image-rendering:pixelated}.welcome-orbit{position:absolute;font-size:38px}.orbit-one{top:2px;right:26px;color:var(--q-green)}.orbit-two{left:23px;bottom:51px}.welcome-label{position:absolute;bottom:1px;background:var(--q-paper);border:1.5px solid var(--q-ink);border-radius:20px;padding:9px 16px;font-size:11px;font-weight:700;transform:rotate(-4deg)}.welcome-features{display:grid;gap:12px;margin:18px 5px 28px;font-size:12px;font-weight:600}.welcome-features span{color:#52664b}.quest-setup footer{margin-top:auto;padding-top:24px;display:grid;gap:8px}.character-options{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:28px 0}.character-option{border:1.5px solid var(--q-ink);border-radius:22px;padding:15px 14px;background:#f4f2dd}.character-option.chosen{background:var(--q-yellow);box-shadow:0 3px 0 var(--q-ink)}.character-option img{width:100%;height:165px;object-fit:contain;image-rendering:pixelated}.character-option>span{display:flex;justify-content:space-between;font-size:14px;font-weight:800}.name-field{display:grid;gap:10px;font-size:13px;font-weight:700}.name-field input{border:1.5px solid var(--q-ink);border-radius:14px;padding:16px;background:transparent;width:100%;color:var(--q-ink)}.name-field small{color:var(--q-muted);font-weight:400}.goal-options{display:grid;gap:12px;margin:30px 0 20px}.goal-options button{display:flex;align-items:center;gap:14px;border:1.5px solid var(--q-ink);border-radius:16px;padding:18px;font-size:14px;text-align:left}.goal-options button.chosen{background:var(--q-yellow)}.goal-options button span{flex:1;font-weight:700}.goal-options b{font-size:20px}.setup-note{font-size:12px;color:var(--q-muted)}.setup-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:18px 0 30px}.setup-tags span{padding:9px 14px;border:1px solid var(--q-ink);border-radius:20px;font-size:12px;background:#e2f2dc}
+/* Daily checklist */
+.quest-page{padding:25px 22px}.q-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:25px}.q-heading h1{font-size:29px;letter-spacing:-1.4px;margin:7px 0}.q-heading p{font-size:11px;color:var(--q-muted)}.quest-progress-card{border:1.5px solid var(--q-ink);border-radius:24px;padding:21px;background:#f3f1d9;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}.quest-progress-card>div:first-child>span{font-size:12px;color:#676d59;display:block;margin-bottom:8px}.quest-progress-card strong{font-size:34px;line-height:1}.quest-progress-card strong small{font-size:14px;font-weight:500;color:#626951}.earned-pill{padding:11px 13px;background:var(--q-yellow);border:1px solid var(--q-ink);border-radius:20px;font-size:13px;font-weight:800}.q-progress{flex-basis:100%;height:9px;background:#dfdfc7;border-radius:10px;overflow:hidden}.q-progress i{display:block;height:100%;background:var(--q-green);border-radius:inherit;transition:width .2s}.quest-progress-card>p{font-size:10px;color:#707462;margin-top:-7px}.quest-view-tabs{display:flex;border-bottom:1px solid #dedfcd;margin-top:25px}.quest-view-tabs button{flex:1;padding:17px 5px;font-size:13px;color:#8a8c7b;border-bottom:2px solid transparent}.quest-view-tabs button[aria-pressed=true]{color:var(--q-ink);border-bottom-color:var(--q-ink);font-weight:800}.quest-filters{display:flex;gap:7px;overflow-x:auto;padding:18px 0 20px;scrollbar-width:none}.quest-filters button{white-space:nowrap;border:1px solid #d9dbca;padding:8px 13px;border-radius:20px;font-size:11px;min-height:36px}.quest-filters button[aria-pressed=true]{background:var(--q-ink);border-color:var(--q-ink);color:var(--q-paper)}.quest-list{display:grid;gap:13px}.quest-card{display:flex;gap:13px;align-items:center;border:1.5px solid var(--q-ink);border-radius:18px;padding:17px 13px;background:var(--q-paper);min-height:117px}.quest-symbol{width:43px;height:43px;border-radius:50%;display:grid;place-items:center;background:#f5c626;flex-shrink:0}.quest-symbol.category-1{background:#a6d3ba}.quest-symbol.category-2{background:#ffc19b}.quest-symbol.category-3{background:#bccef0}.quest-symbol.category-4{background:#ded4bc}.quest-card-copy{flex:1;min-width:0}.quest-card-copy>small{font-size:9px;letter-spacing:.3px;color:#71745f}.quest-card h2{font-size:14px;letter-spacing:-.5px;margin:4px 0;word-break:keep-all}.quest-card p{font-size:10px;color:#797d6a;line-height:1.5;word-break:keep-all}.quest-xp{display:inline-block;font-size:10px;font-weight:800;color:#887013;margin-top:8px}.quest-check{width:40px;height:40px;flex-shrink:0;border:1.5px solid var(--q-ink);border-radius:12px;font-size:22px;background:var(--q-paper)}.quest-card.is-complete{background:#edf5e7;border-color:#97b5a1}.is-complete .quest-check{background:var(--q-green);border-color:var(--q-green);color:white}.is-complete .quest-check:disabled{opacity:.7}.is-complete .quest-xp{color:#00805f}.quest-footnote{font-size:10px;text-align:center;color:#818571;margin:23px 0}.archive-link{display:flex;align-items:center;gap:10px;width:100%;border-top:1px solid #dedfcd;padding:20px 0 0;font-size:12px;font-weight:600}.archive-link>span{margin-left:auto}.archive-link svg{width:18px}.quest-empty{text-align:center;padding:36px 10px}.quest-empty>svg{width:40px;height:40px;color:var(--q-green);margin-bottom:14px}.quest-empty h2{font-size:15px}.quest-empty p{font-size:12px;margin:10px 0}.quest-archive .archive-back{margin:15px 24px 0}
+/* Keep the existing animated world, framed as a generous home card. */
+.quest-home-heading{display:flex;justify-content:space-between;align-items:center;padding:22px 23px 20px}.quest-home-heading h1{font-size:28px;margin-top:6px;letter-spacing:-1px}.quest-scene-card{margin:0 20px;border:1.7px solid var(--q-ink);border-radius:26px;overflow:hidden;isolation:isolate}.quest-app .quest-scene-card .traveler-home,.quest-app .quest-scene-card .night-home{height:420px!important;min-height:420px!important;width:100%;margin:0;border-radius:0}.quest-app .quest-scene-card .traveler-hud{top:22px;left:20px;right:20px}.quest-app .quest-scene-card .traveler-hud h1{font-size:23px}.quest-app .quest-scene-card .traveler-hud>strong{font-size:17px}.quest-app .quest-scene-card .traveler-hud>small{font-size:11px}.quest-app .quest-scene-card .character-picker{bottom:16px;right:14px;transform:none}.quest-app .quest-scene-card .developer-level-button{bottom:16px;left:14px;transform:none}.home-quest-summary{margin:18px 20px 6px;padding:21px 20px;border:1.5px solid var(--q-ink);border-radius:24px;background:#f3f1d9}.home-quest-summary h2{font-size:18px;margin:9px 0 8px;letter-spacing:-.7px}.home-quest-summary p{font-size:12px;color:#6b715e}.home-quest-summary p span{float:right;font-weight:800;color:var(--q-green)}.home-quest-summary .q-primary{margin-top:17px;min-height:47px;font-size:13px}.quest-app .journey-pass,.quest-app .alarm-page{background:var(--q-paper)}.quest-app .journal-heading{background:none;border:none}.quest-app .journey-card,.quest-app .alarm-card{border:1.5px solid var(--q-ink);border-radius:20px;background:var(--q-paper);box-shadow:none}.quest-app .journey-card button,.quest-app .alarm-page .primary{background:var(--q-yellow);border:1.5px solid var(--q-ink);color:var(--q-ink);border-radius:24px}.quest-app .journal-corner{display:none}.toast{z-index:1000;background:#26291f;color:#fffdee;border-radius:18px;font-size:13px}
+.app.quest-app.is-traveler-home.is-night-home{background:var(--q-paper)!important;padding-bottom:100px!important}.app.quest-app.is-night-home .traveler-nav{background:var(--q-paper)!important;border-top:1.5px solid var(--q-ink)!important}.app.quest-app.is-night-home .traveler-nav button{color:#9b9e8c!important}.app.quest-app.is-night-home .traveler-nav button.active{color:var(--q-ink)!important}.quest-app .quest-scene-card .night-world{z-index:0}.quest-app .quest-scene-card .night-world,.quest-app .quest-scene-card .cafe-world{width:100%;top:50%;height:auto}
+@media(min-width:600px){.app.quest-app{margin:22px auto;border:1.5px solid #33392c;border-radius:30px;min-height:calc(100dvh - 44px)}.quest-app .nav{border-left:1.5px solid #33392c;border-right:1.5px solid #33392c}.quest-setup{min-height:calc(100dvh - 46px)}}
+@media(max-width:360px){.quest-page{padding:20px 15px}.quest-card{gap:9px;padding:15px 10px}.quest-symbol{width:36px;height:36px}.quest-card h2{font-size:13px}.setup-copy h1{font-size:31px}.quest-setup{padding:25px 20px}.quest-scene-card{margin:0 14px}.home-quest-summary{margin:16px 14px}}
+.app.quest-app .nav.traveler-nav{background:var(--q-paper)!important;border-top:1.5px solid var(--q-ink)!important;box-shadow:none}.app.quest-app .nav.traveler-nav button{color:#8e9380!important}.app.quest-app .nav.traveler-nav button.active{color:var(--q-ink)!important}.quest-check{width:44px;height:44px}.quest-page .quest-progress-card{padding:18px;gap:13px}.quest-page .quest-view-tabs{margin-top:16px}
+/* The sleeping sky-island character sits lower in the source art than other scenes. */
+.quest-app .quest-scene-card .night-world[data-night-scene="sky"]{top:32%}
+/* Lift the level-one sleeping pose away from the bottom controls as well. */
+.quest-app .quest-scene-card .night-world.clearing-night{top:32%}
+
+/* Zoom the level-one daytime scenery and both character variants together.
+   Keep the ground contact point fixed and leave the HUD outside the zoom. */
+.quest-app .quest-scene-card .white-home > .clearing-scene,
+.quest-app .quest-scene-card .white-home > .traveler-stage{
+ transform:scale(1.65);
+ transform-origin:50% 75%;
+}
+
+/* Warm, outlined surfaces; retain the existing page and scene layout. */
+body{background:#e9e3d4}
+.quest-app{--q-surface:#f7f0db;--q-line:#d9cfb9}
+.app.quest-app.is-journey-pass,.quest-app .journey-pass{background:var(--q-paper)!important}
+.quest-app :is(h1,h2,h3){word-break:keep-all;letter-spacing:-.045em}
+.quest-app .q-kicker{color:var(--q-muted);font-size:10px;letter-spacing:1.1px}
+.quest-app :is(.q-heading h1,.quest-home-heading h1){font-weight:800;line-height:1.35}
+.quest-app :is(.quest-scene-card,.quest-card,.quest-progress-card,.home-quest-summary,.journey-card,.alarm-card){border:1.5px solid var(--q-ink);box-shadow:0 3px 0 #493c300a}
+.quest-app :is(.quest-progress-card,.home-quest-summary){background:var(--q-surface)}
+.quest-app :is(.q-primary,.journey-card button,.alarm-page .primary){background:var(--q-yellow);color:var(--q-ink);border:1.5px solid var(--q-ink);box-shadow:0 2px 0 var(--q-ink)}
+.quest-app .q-primary:hover{background:#ffdb6c}
+.quest-app .q-primary:active{box-shadow:none}
+.quest-app :is(.q-round,.quest-check){background:var(--q-paper);border-color:var(--q-ink)}
+.quest-app .quest-card{border-radius:20px;background:#fffdf5}
+.quest-app .quest-card h2{font-size:15px;line-height:1.45}
+.quest-app .quest-card p{font-size:12px;color:var(--q-muted);line-height:1.55}
+.quest-app .quest-card-copy>small{font-size:10px;color:var(--q-muted)}
+.quest-app .quest-xp{font-size:11px;color:#806015}
+.quest-app .quest-symbol{border:1px solid #493c3026;background:#ffe49a}
+.quest-app .quest-symbol.category-1{background:#c4e1cf}
+.quest-app .quest-symbol.category-2{background:#f4d1b4}
+.quest-app .quest-symbol.category-3{background:#d4ddef}
+.quest-app .quest-symbol.category-4{background:#e7dac0}
+.quest-app .quest-check{border-radius:50%}
+.quest-app .quest-card.is-complete{background:#eef5e9;border-color:#66917a}
+.quest-app .is-complete .quest-check{background:var(--q-green);color:white;border-color:var(--q-green)}
+.quest-app .is-complete .quest-xp{color:#14674f}
+.quest-app .quest-filters button{border-color:var(--q-line);background:var(--q-paper);font-size:12px}
+.quest-app .quest-filters button[aria-pressed=true]{background:var(--q-yellow);color:var(--q-ink);border-color:var(--q-ink);font-weight:700}
+.quest-app .quest-view-tabs{border-color:var(--q-line)}
+.quest-app .quest-view-tabs button{font-size:14px;color:var(--q-muted)}
+.quest-app .quest-view-tabs button[aria-pressed=true]{color:var(--q-ink);border-color:var(--q-ink)}
+.quest-app .q-progress{background:#e4dcc7}
+.quest-app :is(.q-heading p,.home-quest-summary p,.quest-footnote,.quest-progress-card>p){font-size:12px;color:var(--q-muted);line-height:1.6}
+.quest-app .nav button{color:#827a6b!important}
+.quest-app .nav button.active svg{border-radius:50%}
+.quest-app .journey-card-copy h3{font-size:17px;color:var(--q-ink)}
+.quest-app .journey-card-copy p{font-size:12px;color:var(--q-muted)}
+.quest-app .journey-card button:disabled{background:var(--q-surface);border-color:var(--q-line);color:var(--q-muted);box-shadow:none}
+.quest-app .journey-card button.equipped{background:#e3efdf;border-color:#66917a;color:#14674f;box-shadow:none}
+.quest-app .journey-rail .reached>span{background:var(--q-yellow);border-color:var(--q-ink);color:var(--q-ink)}
+.quest-app .journey-rail .level-check{background:var(--q-green)}
+.quest-app .welcome-art:before{background:#ffe49a;border-color:var(--q-ink);box-shadow:8px 8px 0 #ebe1c7}
+.quest-app .setup-copy p{font-size:14px;line-height:1.7;color:var(--q-muted)}
+.quest-app .character-option{background:var(--q-surface)}
+.quest-app .character-option.chosen{background:var(--q-yellow)}
+@media(min-width:600px){.app.quest-app{border-color:var(--q-ink)}}
+@media(prefers-reduced-motion:reduce){.q-progress i{transition:none}.q-primary:active{transform:none}}
+.character-change-dialog{width:min(390px,calc(100% - 32px));max-height:90dvh;overflow:auto;padding:25px;border:1.5px solid var(--q-ink);border-radius:24px;background:var(--q-paper);color:var(--q-ink)}
+.character-change-dialog::backdrop{background:#241e185c}
+.character-change-dialog h2{font-size:23px;margin:0 0 10px}
+.character-change-dialog p{font-size:13px;line-height:1.7}
+.character-change-dialog .character-options{margin:20px 0}
+.character-change-dialog .character-option img{height:130px}
+.character-change-dialog .character-reset-notice{background:#fff0da;padding:14px;border-radius:12px;color:#794324}
+.character-change-dialog .q-primary{margin-top:18px;justify-content:center}
+.character-change-dialog .q-primary:disabled{opacity:.45;box-shadow:none;cursor:default}
+.character-change-dialog .q-text{display:block;width:100%;margin-top:8px}
+.quest-page>.quest-view-tabs{margin:0 0 20px}.quest-page>.quest-view-tabs button{font-weight:700}
+/* Compact quest cards with larger, readable copy. */
+.quest-app .quest-list{gap:10px}
+.quest-app .quest-card{min-height:100px;padding:12px;gap:10px;border-radius:16px}
+.quest-app .quest-symbol{width:32px;height:32px;border-radius:10px}
+.quest-app .quest-symbol svg{width:19px;height:19px}
+.quest-app .quest-card h2{font-size:17px;line-height:1.4;margin:0 0 4px;letter-spacing:-.035em}
+.quest-app .quest-card p{font-size:14px;line-height:1.45;letter-spacing:-.025em}
+.quest-app .quest-xp{font-size:13px;margin-top:6px;line-height:1.4}
+.quest-app .quest-check{width:36px;height:36px;font-size:20px;position:relative}
+.quest-app .quest-check:after{content:'';position:absolute;inset:-5px}
+.quest-app .quest-filters{gap:6px;padding:15px 0}
+.quest-app .quest-filters button{font-size:13px;padding:7px 11px}
+@media(max-width:360px){.quest-app .quest-card{gap:8px;padding:11px 10px}.quest-app .quest-symbol{width:28px;height:28px}.quest-app .quest-card h2{font-size:16px}}
+
+.quest-app .quest-card{min-height:78px;padding:12px}
+.quest-app .quest-card h2{margin:0;font-size:17px}
+.quest-app .quest-xp{margin-top:5px;font-size:14px}
+.weekly-count{display:block;font-size:13px;color:var(--q-muted);margin-top:5px}
+.weekly-progress{height:5px;background:#e4dcc7;border-radius:5px;margin-top:6px;overflow:hidden}
+.weekly-progress i{display:block;height:100%;background:var(--q-green)}
+.weekly-status{font-size:11px;color:var(--q-muted);white-space:nowrap}
+.is-complete .weekly-status{font-size:23px;color:var(--q-green)}
+
+.character-change-dialog .name-field input{width:100%;padding:12px;border:1.5px solid var(--q-ink);border-radius:12px;background:var(--q-paper);color:var(--q-ink);font-size:16px}
+.quest-app .quest-card .weekly-description{font-size:12px;line-height:1.5;color:var(--q-muted);margin-top:5px}
+.coffee-counter{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:12px}
+.coffee-counter button{width:32px;height:32px;border:1px solid var(--q-line);border-radius:8px;background:var(--q-paper);font-size:18px}
+.coffee-counter button:disabled{opacity:.4}
+.challenge-select{flex-shrink:0;padding:9px 10px;border:1px solid var(--q-ink);border-radius:12px;background:var(--q-yellow);font-size:12px;font-weight:700;color:var(--q-ink)}
+.challenge-select[aria-pressed=true]{background:#e3efdf;border-color:var(--q-green);color:var(--q-green)}
+.challenge-select:disabled{opacity:1}
+.quest-progress-card>p{flex-basis:100%;margin-top:0!important}
+.quest-progress-card + .quest-list{margin-top:18px}
+
+/* Growth rewards: one upcoming scene, then a compact collection. */
+.reward-readable .reward-section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px}
+.reward-readable .reward-section-title h2{font-size:19px;margin:0;color:#59432f}
+.reward-section-title>span{font-size:13px;color:#78634b}
+.reward-readable .journey-intro{margin-bottom:24px;font-size:14px}
+.reward-readable .journey-bundle.locked .journey-art{filter:none}
+.reward-readable .journey-card.locked .journey-art:after{display:none}
+.reward-readable .journey-card{overflow:hidden;margin:0}
+.reward-readable .journey-card-copy>small{font-size:12px;font-weight:700;color:#826341}
+.reward-readable .journey-card h3{font-size:19px;margin:4px 0;line-height:1.35}
+.reward-readable .bundle-motion{border:0;background:none;padding:0;margin:0;font-size:14px;color:#6f604e}
+.reward-readable .journey-card .reward-income{min-height:0;font-size:12px;margin:7px 0 10px;color:#78634b}
+.reward-readable .journey-card button{width:100%;min-height:36px;padding:6px 10px;font-size:13px}
+.reward-readable .journey-card button:disabled{opacity:1;background:#eee7d9;border-color:#d8cbb6;color:#817058}
+.reward-readable .journey-card .equipped:disabled{background:#e5ecdc;color:#50683e;border-color:#9bab8a}
+.reward-next .journey-card-copy{padding:16px!important}
+.reward-next .journey-art{height:185px}
+.reward-next-progress{padding:14px 4px 0}
+.reward-next-progress>div:first-child{display:flex;justify-content:space-between;gap:8px;font-size:13px;margin-bottom:8px}
+.reward-next-progress span{color:#78634b}
+.reward-collection{margin-top:28px}
+.reward-list{display:grid;gap:12px}
+.reward-list .journey-bundle{display:grid;grid-template-columns:112px minmax(0,1fr);align-items:stretch}
+.reward-list .journey-bundle .journey-art{height:100%;min-height:162px;border-radius:0}
+.reward-list .journey-card-copy{padding:12px!important;min-width:0}
+.reward-list .journey-card h3{font-size:17px}
+.reward-list .bundle-character{padding-bottom:24px}
+.reward-list .bundle-character>img,.reward-list .bundle-character>canvas,.reward-list .bundle-character>.female-motion{width:94px!important;height:94px!important;max-width:none}
+.reward-list .is-equipped{border-color:#7a9167;background:#f4f5e9}
+.reward-complete{padding:20px;border:1px solid #c9d2b9;border-radius:18px;background:#edf0e1}
+.reward-complete p{margin:5px 0 0;font-size:14px}
+@media(max-width:360px){.reward-list .journey-bundle{grid-template-columns:90px minmax(0,1fr)}.reward-readable .journey-intro{font-size:13px}}
+/* Frame the cafe reward around the character and laptop. */
+.reward-readable .art-academy .cafe-world>img{width:100%;height:100%;max-width:none;object-fit:cover;object-position:52% 55%}
+.reward-list .art-academy .cafe-world>img{transform:scale(2.3);transform-origin:52% 55%}
+/* Match the alarm editor to the warm paper and yellow controls of the app. */
+.quest-app .wheel-overlay{background:#30271e66;backdrop-filter:blur(3px);padding:20px}
+.quest-app .wheel-modal{width:100%;max-width:380px;background:var(--q-paper);color:var(--q-ink);border:1.5px solid var(--q-ink);border-radius:26px;box-shadow:0 8px 0 #493c301a,0 20px 60px #30271e26;padding:24px!important}
+.quest-app .wheel-modal .heading{align-items:center;margin-bottom:16px}
+.quest-app .wheel-modal .heading h2{color:var(--q-ink);font-size:24px;font-weight:800;letter-spacing:-.7px}
+.quest-app .wheel-modal .heading small{color:var(--q-green);font-size:13px;font-weight:700}
+.quest-app .wheel-modal .heading .icon{width:36px;height:36px;border:1px solid #493c3033;border-radius:50%;background:#f3efdf;color:var(--q-ink);font-size:24px}
+.quest-app .wheel-modal .wheel-guide{font-size:13px;line-height:1.6;color:var(--q-muted)}
+.quest-app .wheel-modal .wheel-label{color:var(--q-muted);font-size:13px;font-weight:600}
+.quest-app .wheel-modal .wheel-picker{margin-top:24px}
+.quest-app .wheel-modal .wheel-selection{background:#ffce4233;border:1px solid #d6b34e;border-radius:12px}
+.quest-app .wheel-modal .wheel-option{color:#a79c89;font-variant-numeric:tabular-nums}
+.quest-app .wheel-modal .wheel-option.chosen{color:var(--q-ink);font-size:27px;font-weight:800}
+.quest-app .wheel-modal .wheel-colon{color:var(--q-ink)}
+.quest-app .wheel-modal .wheel-readout{color:var(--q-green);font-size:17px;font-weight:700;margin:8px 0 24px}
+.quest-app .wheel-modal .primary{background:var(--q-yellow);color:var(--q-ink);border:1.5px solid var(--q-ink);border-radius:24px;box-shadow:0 2px 0 var(--q-ink);min-height:48px;font-size:16px;font-weight:800}
+.quest-app .wheel-modal :is(button,.time-wheel):focus-visible{outline:2px solid var(--q-green);outline-offset:3px!important}

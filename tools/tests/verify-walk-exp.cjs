@@ -17,11 +17,11 @@ ctx.travelerScheduledNight=()=>false;
 active=true;ctx.document.hidden=true;advance(80);assert.equal(data.walkExp,1);
 ctx.document.hidden=false;ok=false;advance(21);assert.equal(data.walkExp,1);assert.equal(popups,1);
 const p=fs.readFileSync('scripts/app-core.js','utf8').match(/function player\(\)\{[^\n]+/)[0];
-const model={LevelCurve:require(process.cwd()+'/scripts/experience-levels.js'),migratePlayerCurve(){},data:{walkExp:1,playerResetEarned:0},totals:()=>[299]};vm.createContext(model);vm.runInContext(p,model);assert.equal(model.player().lv,2);assert.equal(model.player().xp,0);
+const model={LevelCurve:require(process.cwd()+'/scripts/experience-levels.js'),migratePlayerCurve(){},data:{walkExp:1,playerResetEarned:0},totals:()=>[449]};vm.createContext(model);vm.runInContext(p,model);assert.equal(model.player().lv,2);assert.equal(model.player().xp,0);
 console.log('PASS: timed walking EXP, idle/hidden pause, failed-save rollback, and level carryover');
 
 ok=true;active=true;
-for(const [motion,gain] of [['run',5],['deepRun',7],['fly',10],['studyWork',30]]){
+for(const [motion,gain] of [['run',2],['deepRun',4],['fly',6],['studyWork',10]]){
  ctx.travelerState=()=>({motion});const before=data.walkExp;advance(20);assert.equal(data.walkExp-before,gain,motion);
 }
 console.log('PASS: all equipped motion reward rates');
@@ -29,12 +29,12 @@ const fields={h1:{},strong:{},small:{},'[role="progressbar"]':{setAttribute(k,v)
 let popupText='';art.appendChild=popup=>{popupText=popup.textContent};
 ctx.document.querySelector=s=>s==='[data-traveler-art]'?art:s==='.traveler-hud'?{querySelector:key=>fields[key]}:null;
 ctx.travelerTitle=()=> '탐험가';
-for(const [motion,gain] of [['walk',1],['run',5],['deepRun',7],['fly',10],['studyWork',30]]){
+for(const [motion,gain] of [['walk',1],['run',2],['deepRun',4],['fly',6],['studyWork',10]]){
  ctx.travelerState=()=>({motion});const before=data.walkExp;
  advance(19);assert.equal(data.walkExp,before);
  advance(1);assert.equal(data.walkExp,before+gain);
  assert.equal(popupText,`+ exp ${gain}`);
- assert.equal(fields.small.textContent,`${data.walkExp} / 300 EXP`);
+ assert.equal(fields.small.textContent,`${data.walkExp} / 450 EXP`);
  assert.equal(fields['[role="progressbar"]']['aria-valuenow'],String(data.walkExp));
 }
 ctx.travelerMotionEarnable=()=>false;const beforePreview=data.walkExp;

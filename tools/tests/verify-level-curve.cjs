@@ -13,5 +13,5 @@ for(const lv of [1,5,10,20,40,50]){
  assert.equal(ctx.player().lv,lv+1);assert.equal(ctx.player().xp,7);
  const copy=JSON.stringify(ctx.data);ctx.player();assert.equal(JSON.stringify(ctx.data),copy);
 }
-assert.equal(LevelCurve.total(50),616276);
+assert.equal(LevelCurve.total(50),1817065);
 console.log('PASS: levels 1–999, migration preserves level/ratio, record/passive XP carryover and migration idempotence');

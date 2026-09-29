@@ -5,7 +5,7 @@ const context=vm.createContext({LevelCurve:require(process.cwd()+'/scripts/exper
 const run=s=>vm.runInContext(s,context);run(fs.readFileSync('scripts/journey-and-bonus-experience.js','utf8'));
 const change=(action,id)=>run(`changeTravelerReward('${action}','${id}')`),state=()=>run('travelerState()');
 assert.equal(state().background,'white');assert.equal(state().motion,'still');assert.ok(run('pages.home()').includes('clearing-scene'));
-const html=run('pages.rewards()');assert.equal((html.match(/data-bundle=/g)||[]).length,6);assert.ok(html.includes('기본 제공'));
+const html=run('pages.rewards()');assert.equal((html.split('class="reward-list"')[1].match(/data-bundle=/g)||[]).length,6);assert.ok(html.includes('기본 보상'));assert.ok(html.includes('다음 성장 보상'));assert.ok(html.includes('Lv.5까지'));
 assert.equal(writes,0);assert.equal(context.data.travelerJourney,undefined);
 for(const [bg,motion] of bundles){
  const required=rewards.items[bg].level;if(required===1)continue;
@@ -41,7 +41,7 @@ for(const preview of ['forest','deepForest','sky','academy']){
 }
 context.location.search='';assert.equal(change('equip','academy'),true);
 const cafe=run('pages.home()');assert.ok(cafe.includes('characters/male/cafe-day.png'));assert.ok(cafe.includes('cafe-steam'));assert.ok(cafe.includes('cafe-eye-left'));
-assert.equal(run('travelerArt()'),'');assert.equal(rewards.items.studyWork.exp,30);
+assert.equal(run('travelerArt()'),'');assert.equal(rewards.items.studyWork.exp,10);
 const card=run("travelerBundleCard('academy')");assert.ok(card.includes('햇살 드는 카페'));assert.ok(card.includes('컴퓨터 작업'));assert.ok(card.includes('✓ 장착 중'));
 for(const [level,title] of [[5,'사막으로'],[10,'숲속으로'],[20,'고대숲으로'],[30,'하늘섬으로'],[40,'21세기로'],[50,'프리랜서']])assert.equal(run(`travelerRewardTitle(${level})`),title);
 for(const [level,threshold] of [[1,1],[4,1],[5,5],[9,5],[10,10],[19,10],[20,20],[29,20],[30,30],[39,30],[40,40],[49,40],[50,40]])assert.ok(run(`travelerJourneyBanner(${level})`).includes(`Lv.${threshold} ·`));

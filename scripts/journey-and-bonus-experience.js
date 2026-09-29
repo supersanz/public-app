@@ -4,7 +4,7 @@ function travelerTitle(lv){return lv>=40?'프리랜서':lv>=30?'마법사':lv>=2
 const travelerStanding='assets/characters/male/idle-standing.png';
 const travelerForest='assets/backgrounds/forest-day-panorama.png';
 const travelerDesert='assets/backgrounds/desert-day-panorama.png';
-function travelerPreviewScene(){const id=typeof location!=='undefined'?new URLSearchParams(location.search).get('preview'):null;return ['forest','deepForest','sky','academy'].includes(id)?id:null}
+function travelerPreviewScene(){if(data.disableScenePreview)return null;const id=typeof location!=='undefined'?new URLSearchParams(location.search).get('preview'):null;return ['forest','deepForest','sky','academy'].includes(id)?id:null}
 function travelerForestPreview(){return !!travelerPreviewScene()}
 function travelerPanorama(id){return ({desert:travelerDesert,forest:travelerForest,deepForest:'assets/backgrounds/ancient-forest-day-panorama.png',sky:'assets/backgrounds/sky-island-day-panorama.png'})[id]}
 // Preview supplies an initial bundle; choosing a reward replaces both slots.
@@ -23,7 +23,7 @@ function travelerArt(){
  const motion=travelerState().motion;
  if(motion==='studyWork')return '';
  if(travelerWalking())return '<canvas class="traveler-slow" width="256" height="256" role="img" aria-label="이동하는 캐릭터"></canvas>';
- const image=`<img src="${travelerStanding}" alt="${travelerTitle(player().lv)}" draggable="false">`;
+ const image=`<img src="${travelerStanding}" alt="서 있는 캐릭터" draggable="false">`;
  if(travelerVisualNight()||motion==='still')return image;
  if(motion==='fly')return '<div class="motion-fly"><canvas class="traveler-flight" width="256" height="256" role="img" aria-label="빗자루를 타고 나는 마법사"></canvas></div>';
  return `<div class="motion-${motion}">${image}${motion==='fly'?'<span class="flight-trail">✦</span>':motion.endsWith('Work')?'<span class="work-desk"><i class="work-monitor">'+(motion==='officeWork'?'AI':'⌨')+'</i></span>':''}</div>`;
@@ -40,7 +40,7 @@ function travelerScene(id){
 }
 pages.home=()=>{
  const p=player(),s=travelerState();
- return `<section class="traveler-home desert-home ${s.background==='academy'?'cafe-home':''} ${s.background==='white'?'white-home':''} ${travelerWalking()?'is-traveling':''}">${travelerMovingScene(s.background)}${travelerPanorama(s.background)?`<div class="desert-pan-track ${s.background!=='desert'?'forest-pan-track':''}" aria-hidden="true">${Array(4).fill(`<img src="${travelerPanorama(s.background)}" alt="" draggable="false">`).join('')}</div>`:''}<header class="traveler-hud"><h1>${travelerTitle(p.lv)}</h1><strong>Lv.${p.lv}</strong><small>${p.xp} / ${LevelCurve.required(p.lv).toLocaleString()} EXP</small><div class="traveler-hud-bar" role="progressbar" aria-label="레벨 경험치" aria-valuemin="0" aria-valuemax="${LevelCurve.required(p.lv)}" aria-valuenow="${p.xp}">${bar(p.xp/LevelCurve.required(p.lv)*100)}</div></header><div class="traveler-stage"><div class="traveler-art" data-traveler-art data-walking="${travelerWalking()}">${travelerArt()}</div></div></section>`;
+ return `<section class="traveler-home desert-home ${s.background==='academy'?'cafe-home':''} ${s.background==='white'?'white-home':''} ${travelerWalking()?'is-traveling':''}">${travelerMovingScene(s.background)}${travelerPanorama(s.background)?`<div class="desert-pan-track ${s.background!=='desert'?'forest-pan-track':''}" aria-hidden="true">${Array(4).fill(`<img src="${travelerPanorama(s.background)}" alt="" draggable="false">`).join('')}</div>`:''}<header class="traveler-hud"><strong>Lv.${p.lv}</strong><small>${p.xp} / ${LevelCurve.required(p.lv).toLocaleString()} EXP</small><div class="traveler-hud-bar" role="progressbar" aria-label="레벨 경험치" aria-valuemin="0" aria-valuemax="${LevelCurve.required(p.lv)}" aria-valuenow="${p.xp}">${bar(p.xp/LevelCurve.required(p.lv)*100)}</div></header><div class="traveler-stage"><div class="traveler-art" data-traveler-art data-walking="${travelerWalking()}">${travelerArt()}</div></div></section>`;
 };
 function travelerCafeScene(night=false){
  return `<div class="cafe-world ${night?'cafe-at-night':''}" role="img" aria-label="현대적인 카페에서 노트북으로 작업하는 여행자"><img src="assets/characters/male/cafe-day.png" alt=""><div class="cafe-steam" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><i class="cafe-eye cafe-eye-left" aria-hidden="true"></i><i class="cafe-eye cafe-eye-right" aria-hidden="true"></i></div>`;
@@ -49,13 +49,12 @@ function travelerBundleCard(bg){
  const s=travelerState(),motion=TravelerRewards.bundles[bg],level=TravelerRewards.items[bg].level;
  const owned=level===1||s.claimed.includes(bg),locked=!owned&&player().lv<level,equipped=s.background===bg&&s.motion===motion;
  const labels={white:['황무지','가만히 서 있기'],desert:['끝없는 사막','걷기'],forest:['햇살 머무는 숲','달리기'],deepForest:['잊혀진 고대숲','달리기 +'],sky:['하늘섬','마법 빗자루 타기'],academy:['햇살 드는 카페','컴퓨터 작업'],office:['회사 배경','AI와 함께 일하기']};
- const descriptions={white:'아직은 조용한 시작점이에요.',desert:'끝없는 모래언덕을 천천히 걸어요.',forest:'햇살이 스미는 초록빛 숲길을 달려요.',deepForest:'안개 속 고대숲을 지나 더 깊이 달려요.',sky:'구름 너머로 하늘을 날아요.',academy:'따뜻한 커피를 곁에 두고 노트북으로 작업해요.',office:'회사에서 새로운 하루를 시작해요.'};
  const panorama=travelerPanorama(bg);
  const scene=panorama?`<div class="reward-panorama" style="background-image:url('${panorama}')"></div>`:travelerScene(bg);
  const character=bg==='academy'?'':motion==='fly'?'<canvas class="traveler-flight flight-preview" width="256" height="256" aria-label="마법 빗자루 타기 미리보기"></canvas>':['walk','run','deepRun'].includes(motion)?`<canvas class="reward-ground-motion" data-motion="${motion}" width="256" height="256" aria-label="${labels[bg][1]} 미리보기"></canvas>`:`<img class="bundle-standing" src="${travelerStanding}" alt="">`;
- const action=locked?`<button disabled>Lv.${level}에 해금</button>`:!owned?`<button data-journey-action="claim" data-journey-item="${bg}">세트 받기</button>`:equipped?'<button class="equipped" disabled>✓ 장착 중</button>':`<button data-journey-action="equip" data-journey-item="${bg}">착용</button>`;
+ const action=locked?`<button disabled>Lv.${level}에 해금</button>`:!owned?`<button data-journey-action="claim" data-journey-item="${bg}">보상 받기</button>`:equipped?'<button class="equipped" disabled>✓ 장착 중</button>':`<button data-journey-action="equip" data-journey-item="${bg}">장착하기</button>`;
  const exp=TravelerRewards.items[motion].exp;
- return `<article class="journey-card journey-bundle ${locked?'locked':''}" data-bundle="${bg}"><div class="journey-art art-${bg}">${scene}<div class="bundle-character">${character}</div>${locked?'<span class="journey-lock" aria-label="잠김">🔒</span>':''}</div><div class="journey-card-copy"><small>${level===1?'기본 제공':'배경 + 동작 세트'}</small><h3>${labels[bg][0]}</h3><span class="bundle-motion">${labels[bg][1]}</span><p>${descriptions[bg]}${exp?`<br><strong class="reward-exp">낮에 추가 경험치를 획득합니다.</strong>`:''}</p>${action}</div></article>`;
+ return `<article class="journey-card journey-bundle ${locked?'locked':''} ${equipped?'is-equipped':''}" data-bundle="${bg}"><div class="journey-art art-${bg}">${scene}<div class="bundle-character">${character}</div></div><div class="journey-card-copy"><small>Lv.${level} · ${locked?'잠긴 보상':equipped?'장착 중':owned?'보유 중':'받을 수 있어요'}</small><h3>${labels[bg][0]}</h3><span class="bundle-motion">${labels[bg][1]}</span><p class="reward-income">${exp?`낮에 5초마다 +${exp} EXP`:'기본 보상'}</p>${action}</div></article>`;
 }
 function travelerJourneyBanner(lv){
  const stages=[
@@ -72,9 +71,18 @@ function travelerJourneyBanner(lv){
  return `<header class="journey-banner banner-${bg}"${panorama?` style="background-image:linear-gradient(90deg,#25302ce6,#25302c50),url('${panorama}')"`:''}><small>${label}</small><h2>${title}</h2><p>Lv.${level} · ${description}</p><span>나의 레벨 <b>Lv.${lv}</b></span></header>`;
 }
 pages.rewards=()=>{
- const p=player(),start=Math.floor(Math.max(1,p.lv)/5)*5,target=start+5,steps=Array.from({length:5},(_,i)=>start+1+i),progress=Math.max(0,Math.min(100,(LevelCurve.total(p.lv)-LevelCurve.total(Math.max(1,start))+p.xp)/Math.max(1,LevelCurve.total(target)-LevelCurve.total(Math.max(1,start)))*100)),remaining=Math.max(0,LevelCurve.total(target)-LevelCurve.total(p.lv)-p.xp);
- return `<section class="page journey-pass">${heading('성장 보상')}<p class="journey-intro">배경과 동작을 한 세트로 받아요. 받은 세트는 언제든 자유롭게 교체할 수 있어요.</p>${travelerJourneyBanner(p.lv)}<div class="journey-progress"><div class="date"><strong>${p.lv>=target?'목표 레벨 달성':'다음 목표까지'}</strong><span>${remaining?remaining.toLocaleString()+' EXP':'Lv.'+target+' 달성'}</span></div><div role="progressbar" aria-label="${target}레벨 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(progress)}">${bar(progress)}</div></div><ol class="journey-rail">${steps.map(lv=>`<li aria-label="${lv}레벨" class="${p.lv>=lv?'reached':''} ${p.lv===lv?'current':''}"><span>${lv}${p.lv>=lv?'<i class="level-check" aria-hidden="true">✓</i>':''}</span>${[5,10,20,30,40].includes(lv)?'<b>보상</b>':''}</li>`).join('')}</ol><section class="journey-tier"><div class="journey-tier-title"><span>Lv.1</span><h2>첫 만남</h2><small>기본 제공</small></div><div class="journey-grid">${travelerBundleCard('white')}</div></section><section class="journey-tier"><div class="journey-tier-title"><span>Lv.5</span><h2>사막으로</h2><small>${p.lv>=5?'해금 완료':'잠긴 보상'}</small></div><div class="journey-grid">${travelerBundleCard('desert')}</div></section>${[[10,'forest','run'],[20,'deepForest','deepRun'],[30,'sky','fly'],[40,'academy','studyWork']].map(([lv,bg,motion])=>`<section class="journey-tier"><div class="journey-tier-title"><span>Lv.${lv}</span><h2>${travelerRewardTitle(lv)}</h2><small>${p.lv>=lv?'해금 완료':'잠긴 보상'}</small></div><div class="journey-grid">${travelerBundleCard(bg)}</div></section>`).join('')}</section>`;
+ const p=player(),bundles=['white','desert','forest','deepForest','sky','academy'];
+ const next=bundles.find(bg=>TravelerRewards.items[bg].level>p.lv);
+ let featured='';
+ if(next){
+  const target=TravelerRewards.items[next].level,previous=Math.max(1,...bundles.map(bg=>TravelerRewards.items[bg].level).filter(lv=>lv<target));
+  const remaining=Math.max(0,LevelCurve.total(target)-LevelCurve.total(p.lv)-p.xp);
+  const progress=Math.max(0,Math.min(100,(LevelCurve.total(p.lv)+p.xp-LevelCurve.total(previous))/(LevelCurve.total(target)-LevelCurve.total(previous))*100));
+  featured=`<section class="reward-next"><div class="reward-section-title"><h2>다음 성장 보상</h2><span>현재 Lv.${p.lv}</span></div>${travelerBundleCard(next)}<div class="reward-next-progress"><div><strong>Lv.${target}까지</strong><span>${remaining.toLocaleString()} EXP 남음</span></div><div role="progressbar" aria-label="다음 보상 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(progress)}">${bar(progress)}</div></div></section>`;
+ }else featured='<div class="reward-complete"><strong>모든 성장 보상을 해금했어요!</strong><p>마음에 드는 보상으로 오늘을 보내세요.</p></div>';
+ return `<section class="page journey-pass reward-readable">${heading('성장 보상')}<p class="journey-intro">배경과 동작을 한 세트로 받아요.<br>받은 보상은 언제든 자유롭게 교체할 수 있어요.</p>${featured}<section class="reward-collection"><div class="reward-section-title"><h2>전체 보상</h2><span>6가지 여정</span></div><div class="reward-list">${bundles.map(bg=>travelerBundleCard(bg)).join('')}</div></section></section>`;
 };
+
 pages.style=()=>`<section class="page">${heading('꾸미기','',true)}</section>`;
 function changeTravelerReward(action,id){
  const item=TravelerRewards.items[id],current=travelerState();
@@ -123,7 +131,6 @@ window.addEventListener('focus',refreshTraveler);render();
   elapsed-=interval;
   const p=player(),hud=document.querySelector('.traveler-hud');
   if(hud){
-   hud.querySelector('h1').textContent=travelerTitle(p.lv);
    hud.querySelector('strong').textContent=`Lv.${p.lv}`;
    hud.querySelector('small').textContent=`${p.xp} / ${LevelCurve.required(p.lv).toLocaleString()} EXP`;
    const progress=hud.querySelector('[role="progressbar"]');

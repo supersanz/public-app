@@ -1,0 +1,12 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),q=require('../../scripts/daily-quests.js');
+const src=fs.readFileSync('scripts/quest-interface.js','utf8');const start=src.indexOf(' const dailyBase='),end=src.indexOf(' const summary=');
+const data={logs:[]};const rules={32:{activities:[2],target:3,xp:60},34:{activities:[7],target:3,xp:50}};
+const c=vm.createContext({data,DailyQuests:q,today:()=> '2026-09-30',player:()=>({lv:1}),WeeklyQuestRules:rules,removedQuestIds:new Set([34]),ids:()=>[32,33,36,37]});vm.runInContext(src.slice(start,end)+'\nthis.rules=balancedWeeklyRules;',c);
+assert.equal(Object.keys(c.rules()).length,0);
+for(const date of ['2026-09-28','2026-09-29','2026-09-30'])q.saveWithWeekly(data,date,2,true,35,()=>true,c.rules());
+assert.equal(q.weeklyStatus(data,'2026-09-30',32).done,false);
+data.weeklyChallenges={'2026-09-28':[32]};q.syncWeekly(data,'2026-09-30',c.rules(),()=>true);
+assert.equal(q.weeklyStatus(data,'2026-09-30',32).xp,120);
+assert.equal(Object.keys(c.rules()).length,1);
+c.today=()=> '2026-10-05';assert.equal(Object.keys(c.rules()).length,0);assert.equal(q.weeklyStatus(data,'2026-09-30',32).xp,120);
+console.log('PASS optional weekly challenges: no unselected award, retroactive weekly progress, weekly selection reset');

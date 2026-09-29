@@ -1,6 +1,59 @@
 'use strict';
 const KEY='daily-quest-430-v2', cats=['자기계발','건강','생활력','휴식','카페인'];
 const acts=[['학원',0,'academy'],['공부',0,'study'],['독서',0,'book'],['코딩',0,'computer'],['러닝',1,'running'],['근력운동',1,'dumbbell'],['요리',2,'food'],['청소',2,'home'],['산책',3,'leaf'],['게임',3,'game'],['영화',3,'film'],['커피',4,'coffee'],['에너지드링크',4,'energyCan'],['박카스',4,'tonicBottle'],['음악 감상',3,'headphones'],['노래 부르기',3,'mic'],['필라테스',1,'pilates']];
+// Stable activity IDs: append new quests without changing historical records.
+const QuestCatalog={};
+[
+ ['스트레칭',1,'heart','몸을 부드럽게 풀기','스트레칭 5분 하기',15,'daily'],
+ ['외국어 공부',0,'book','새로운 표현 배우기','외국어 단어나 표현 5개 익히기',25,'daily'],
+ ['하루 계획',2,'history','하루의 방향 정하기','오늘 할 일 3가지 적기',15,'daily'],
+ ['감사 일기',3,'leaf','좋았던 순간 남기기','감사했던 일 한 가지 적기',15,'daily'],
+ ['물 마시기',4,'coffee','물 한 잔의 여유','물 한 잔 마시기',10,'daily'],
+ ['디지털 휴식',3,'moon','잠깐 화면 내려놓기','화면 없이 15분 쉬기',20,'daily'],
+ ['생활비 기록',2,'history','오늘의 지출 살피기','지출을 기록하고 확인하기',20,'daily'],
+ ['주간 독서',0,'book','한 주의 독서','이번 주 책 50쪽 읽기',100,'weekly'],
+ ['주간 운동',1,'dumbbell','세 번의 움직임','이번 주 운동 3회 마치기',120,'weekly'],
+ ['주간 정리',2,'home','한 공간 새로 정리하기','방이나 책상 한 곳을 꼼꼼히 정리하기',80,'weekly'],
+ ['주간 회고',0,'history','이번 주 돌아보기','배운 점과 다음 주 목표 적기',80,'weekly'],
+ ['주간 요리',2,'food','직접 차린 세 끼','이번 주 직접 요리 3회 하기',100,'weekly'],
+ ['주간 취미',3,'headphones','취미에 몰입하기','좋아하는 취미를 한 주 합계 1시간 즐기기',80,'weekly'],
+ ['주간 산책',1,'leaf','세 번의 바깥 공기','이번 주 산책 3회 다녀오기',90,'weekly'],
+ ['주간 안부',3,'heart','소중한 사람에게 안부','가족이나 친구에게 안부 전하기',60,'weekly']
+].forEach(([name,category,icon,title,detail,xp,period])=>{const id=acts.length;acts.push([name,category,icon]);QuestCatalog[id]={title,detail,xp,period};});
+const WeeklyQuestRules={};
+[
+ ['지식은 힘이야',0,'book',[2],3,100],
+ ['어제보다 강하게',1,'dumbbell',[4,5,16,17],5,150],
+ ['청소왕',2,'home',[7],3,80],
+ ['지식을 쌓자',0,'book',[0,1,3,18],5,120],
+ ['우리 집 요리사',2,'food',[6],3,100],
+ ['음악에 미치는 내가',3,'headphones',[9,10,14,15],5,80],
+ ['좀 더 빠르게',3,'leaf',[8],3,90],
+ ['사람이 물을 마셔야지',2,'coffee',[21],5,60]
+].forEach(([title,category,icon,activities,target,xp])=>{const id=acts.length;acts.push([title,category,icon]);QuestCatalog[id]={title,xp,period:'weekly'};WeeklyQuestRules[id]={activities,target,xp};});
+// Append to preserve all existing saved activity IDs.
+QuestCatalog[acts.length]={title:'수면 8시간',xp:30,period:'daily'};
+acts.push(['수면 8시간',3,'moon']);
+// Append specialized study quests without shifting existing saved IDs.
+[
+ ['자격증 공부','book',50],
+ ['프로젝트 개발','computer',60],
+ ['외국어 문법·독해','book',35],
+ ['외국어 회화 연습','mic',35]
+].forEach(([title,icon,xp])=>{QuestCatalog[acts.length]={title,xp,period:'daily'};acts.push([title,0,icon]);});
+
+const coffeeWeeklyId=acts.length;
+acts.push(['카페인 누적',2,'coffee']);
+QuestCatalog[coffeeWeeklyId]={title:'카페인 누적',xp:30,period:'weekly'};
+WeeklyQuestRules[coffeeWeeklyId]={activities:[11,12,13],target:10,xp:30,countUnits:true,unit:'회'};
+WeeklyQuestRules[32].description='이번 주 독서 활동을 3회 기록해 보세요.';
+WeeklyQuestRules[33].description='러닝·근력 운동·필라테스·스트레칭을 합쳐 5회 기록해 보세요.';
+WeeklyQuestRules[coffeeWeeklyId].description='커피·에너지 드링크·박카스 기록을 합쳐 10회.';
+WeeklyQuestRules[36].description='이번 주 요리 활동을 3회 기록해 보세요.';
+WeeklyQuestRules[37].activities=[14,15];
+WeeklyQuestRules[37].description='음악 감상·노래 부르기를 합쳐 5회 기록해 보세요.';
+WeeklyQuestRules[38].description='이번 주 산책 활동을 3회 기록해 보세요.';
+WeeklyQuestRules[39].description='이번 주 물 마시기를 5회 기록해 보세요.';
 const paths={home:'M3 11 12 3l9 8v10h-6v-7H9v7H3Z',book:'M12 5v16M12 5C8 2 3 3 2 4v15c4-2 7-1 10 2 3-3 6-4 10-2V4c-4-2-7-1-10 1',heart:'M20 4c-4-3-8 2-8 2S8 1 4 4c-7 6 8 17 8 17S27 10 20 4ZM3 12h5l2-4 4 8 2-4h5',leaf:'M3 21C0 6 8 3 21 3c0 14-7 19-18 18ZM3 21 17 7',coffee:'M3 7h14v8c0 8-14 8-14 0ZM17 8h3c5 0 3 7-3 7M6 2v2m5-2v2',laptop:'M4 3h16v14H4ZM1 21h22',game:'M7 7h10c5 0 8 15 3 13l-5-4H9l-5 4C-1 22 2 7 7 7ZM7 10v5m-2-3h4m7 0h1m2 2h1',film:'M3 8h18v13H3ZM3 8 2 3l18-2 1 5M7 3l3 4m5-5 3 4',bolt:'m14 2-9 12h6l-1 8 9-12h-6Z',bell:'M4 17h16l-3-4V8a5 5 0 0 0-10 0v5ZM10 21h4',shirt:'m7 3-5 4 3 5 3-2v12h8V10l3 2 3-5-5-4c-2 4-8 4-10 0',trophy:'M7 2h10v9c0 7-10 7-10 0ZM7 5H2v4c0 4 5 4 5 4m10-8h5v4c0 4-5 4-5 4M12 16v6m-5 0h10',history:'M5 2h14v20H5ZM8 7h8M8 12h8M8 17h5',mic:'M9 4a3 3 0 0 1 6 0v9a3 3 0 0 1-6 0ZM5 10v3a7 7 0 0 0 14 0v-3M12 20v3m-4 0h8',touch:'M10 13V4a2 2 0 0 1 4 0v7c9-2 8 7 4 11h-7L4 14c-2-4 3-4 6-1',moon:'M20 15A9 9 0 0 1 9 3a9 9 0 1 0 11 12'};
 paths.food='M4 12h16a8 8 0 0 1-16 0ZM7 21h10M8 3c-2 2 2 3 0 5m4-6c-2 2 2 4 0 6m4-5c-2 2 2 3 0 5';
 paths.computer='M3 3h18v12H3ZM12 15v4m-4 0h8M2 22h20';
@@ -29,12 +82,12 @@ function totals(){const t=[0,0,0,0,0],seen=new Set();data.logs.filter(l=>l.date<
 function categoryExp(i){return Math.max(0,totals()[i]-(data.levelBaseline?.[i]||0))}
 function level(i){return (i<4?5:15)+Math.floor(categoryExp(i)/100)}
 function migratePlayerCurve(){
- if(data.levelCurveVersion===2)return;
+ if(data.levelCurveVersion===3)return;
  const earned=totals().reduce((a,b)=>a+b,0)+Math.max(0,Number(data.walkExp)||0);
  const old=Math.max(0,earned-(data.playerResetEarned||0));
- const previous=data.levelCurveVersion===1?LevelCurve.previousProgress(old):{lv:1+Math.floor(old/1000),xp:old%1000,required:1000};
+ const previous=data.levelCurveVersion===2?LevelCurve.v2Progress(old):data.levelCurveVersion===1?LevelCurve.previousProgress(old):{lv:1+Math.floor(old/1000),xp:old%1000,required:1000};
  data.playerResetEarned=earned-LevelCurve.total(previous.lv)-Math.floor(previous.xp/previous.required*LevelCurve.required(previous.lv));
- data.levelCurveVersion=2;persist();
+ data.levelCurveVersion=3;persist();
 }
 function player(){migratePlayerCurve();const earned=totals().reduce((a,b)=>a+b,0)+Math.max(0,Number(data.walkExp)||0),growth=Math.max(0,earned-(data.playerResetEarned||0));return {...LevelCurve.progress(growth),earned,total:earned}}
 // Requested one-time level restart. Historical activity and EXP remain intact.

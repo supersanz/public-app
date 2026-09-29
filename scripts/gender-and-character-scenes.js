@@ -1,6 +1,15 @@
 'use strict';
 // Equipment belongs to the player; character selection changes presentation only.
 function travelerFemale(){return data.travelerCharacter==='female'}
+function resetForTravelerCharacter(value,name=''){
+ if(!['male','female'].includes(value)||value===(data.travelerCharacter||'male'))return false;
+ const previous=data;
+ data={disableScenePreview:true,logs:[],worn:0,skin:2,friends:[],alarms:[['07:00','23:30',true,true],['09:00','00:30',true,true]],travelerCharacter:value,travelerJourney:TravelerRewards.state({}),walkExp:0,playerResetEarned:0,levelBaseline:[0,0,0,0,0],levelCurveVersion:3,petProgressVersion:2,questProfile:{version:1,onboardingCompleted:true,name:String(name).trim().slice(0,16),goals:[0,1,2,3]}};
+ if(!persist()){data=previous;return false;}
+ Object.assign(travelerPreviewEquipment,{background:'white',motion:'still'});
+ selected.clear();recordDate='';modal='';travelerNightOverride=null;
+ page='home';render();return true;
+}
 function setTravelerCharacter(value){
  if(!['male','female'].includes(value))return false;
  const previous=data.travelerCharacter;data.travelerCharacter=value;

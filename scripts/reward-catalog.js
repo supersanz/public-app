@@ -1,6 +1,6 @@
 (function(root){
  'use strict';
- const items={white:{slot:'background',level:1},still:{slot:'motion',level:1},desert:{slot:'background',level:5},walk:{slot:'motion',level:5,exp:1},forest:{slot:'background',level:10},run:{slot:'motion',level:10,exp:5},deepForest:{slot:'background',level:20},deepRun:{slot:'motion',level:20,exp:7},sky:{slot:'background',level:30},fly:{slot:'motion',level:30,exp:10},academy:{slot:'background',level:40},studyWork:{slot:'motion',level:40,exp:30}};
+ const items={white:{slot:'background',level:1},still:{slot:'motion',level:1},desert:{slot:'background',level:5},walk:{slot:'motion',level:5,exp:1},forest:{slot:'background',level:10},run:{slot:'motion',level:10,exp:2},deepForest:{slot:'background',level:20},deepRun:{slot:'motion',level:20,exp:4},sky:{slot:'background',level:30},fly:{slot:'motion',level:30,exp:6},academy:{slot:'background',level:40},studyWork:{slot:'motion',level:40,exp:10}};
  const bundles={white:'still',desert:'walk',forest:'run',deepForest:'deepRun',sky:'fly',academy:'studyWork'};
  const bundleFor=id=>Object.keys(bundles).find(bg=>bg===id||bundles[bg]===id);
  function state(saved={},level=1){

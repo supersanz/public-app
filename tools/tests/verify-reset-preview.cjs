@@ -1,0 +1,11 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const journey=fs.readFileSync('scripts/journey-and-bonus-experience.js','utf8').split('function travelerAlarmTimesReady')[0];
+const reset=fs.readFileSync('scripts/developer-controls.js','utf8').split('(()=>{')[0];
+const ctx=vm.createContext({data:{logs:[],travelerJourney:{}},location:{search:'?preview=sky'},URLSearchParams,TravelerRewards:require('../../scripts/reward-catalog.js'),player:()=>({lv:1}),persist:()=>true,selected:new Set(),render(){}});
+vm.runInContext(journey+reset,ctx);
+assert.equal(ctx.travelerState().background,'sky');assert(ctx.resetDeveloperRewards());
+assert.equal(ctx.travelerState().background,'white');assert.equal(ctx.travelerState().motion,'still');
+const saved=JSON.parse(JSON.stringify(ctx.data));
+const reload=vm.createContext({data:saved,location:{search:'?preview=sky'},URLSearchParams,TravelerRewards:ctx.TravelerRewards,player:ctx.player});vm.runInContext(journey,reload);
+assert.equal(reload.travelerState().background,'white');assert.equal(reload.travelerState().motion,'still');
+console.log('PASS reset and reload retain level-one equipment despite sky preview URL');
