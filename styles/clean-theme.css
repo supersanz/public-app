@@ -33,9 +33,9 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .quest-app .academy-done-label{font-size:14px;color:#27674e}
 .quest-app .academy-celebrate::before{background:#e7f4eb}
 @keyframes academy-card-fill{0%,75%{background:#fff}100%{background:#e7f4eb}}
-.quest-app .weekly-battery{background:#f4f7f5;border-color:#b8cdbf}
-.quest-app .weekly-battery>i{background:#e0e9e3}
-.quest-app .weekly-battery>i.is-filled{background:var(--q-green)}
+.quest-app .weekly-battery{background:#f7f9fc;border-color:#a9c5f2}
+.quest-app .weekly-battery>i{background:#d0dbeb}
+.quest-app .weekly-battery>i.is-filled{background:#a8c3ed}
 .quest-app :is(.archive-link,.alarm-entry){border-color:var(--q-line);border-width:1px}
 .quest-app .archive-link{font-size:14px;color:var(--q-muted)}
 .app.quest-app .nav,.app.quest-app .nav.traveler-nav,.app.quest-app.is-night-home .traveler-nav{background:#fff!important;border-color:var(--q-line)!important;border-width:1px!important;box-shadow:none}
