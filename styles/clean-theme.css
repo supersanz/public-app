@@ -66,6 +66,8 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .quest-app .home-quest-summary{background:#f5f8fd}
 .quest-app .home-quest-summary p{font-size:14px;color:var(--q-muted)}
 .quest-app .home-quest-summary p span{color:#4775c5}
+.quest-app .setup-progress i{background:#e3e9f2}
+.quest-app .setup-progress i.filled{background:#6b99ed}
 .quest-app :is(.reward-complete,.alarm-page>.note){background:#f5f8fd!important;border:1px solid var(--q-line);color:var(--q-muted)}
 .app.quest-app .reward-readable .reward-next{background:transparent!important;border:0!important;outline:none!important;box-shadow:none!important}
 .app.quest-app .reward-next .journey-card{border:1px solid #d3dae4!important;border-radius:18px;overflow:hidden;box-shadow:none!important}
