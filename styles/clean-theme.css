@@ -31,6 +31,17 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .quest-app .academy-card:not(.is-complete):hover{background:#f5f8fd;border-color:#9fb9e8}
 .quest-app :is(.academy-card.is-complete,.quest-card.is-complete,.reward-list .is-equipped){background:#e7f4eb;border:1px solid #a7cbb5;box-shadow:none}
 .quest-app .academy-done-label{font-size:14px;color:#27674e}
+/* Preview category completion colors on only the first activity in each tab. */
+.quest-app .academy-card:first-child[data-quest-category="0"]{--done-bg:#f0eafa;--done-border:#cbb9e4;--done-ink:#7753a6}
+.quest-app .academy-card:first-child[data-quest-category="1"]{--done-bg:#e8f0fc;--done-border:#aec7eb;--done-ink:#4775b8}
+.quest-app .academy-card:first-child[data-quest-category="2"]{--done-bg:#fff0e5;--done-border:#e8c5a9;--done-ink:#a56535}
+.quest-app .academy-card:first-child[data-quest-category="3"]{--done-bg:#e5f5ef;--done-border:#add5c7;--done-ink:#287c66}
+.quest-app .academy-card:first-child.is-complete[data-quest-category]{background:var(--done-bg);border-color:var(--done-border)}
+.quest-app .academy-card:first-child[data-quest-category] .academy-done-mark{background:var(--done-ink)}
+.quest-app .academy-card:first-child[data-quest-category] .academy-done-label{color:var(--done-ink)}
+.quest-app .academy-card:first-child[data-quest-category].academy-celebrate{animation-name:category-card-fill}
+.quest-app .academy-card:first-child[data-quest-category].academy-celebrate::before{background:var(--done-bg)}
+@keyframes category-card-fill{0%,75%{background:#fff}100%{background:var(--done-bg)}}
 .quest-app .academy-celebrate::before{background:#e7f4eb}
 @keyframes academy-card-fill{0%,75%{background:#fff}100%{background:#e7f4eb}}
 .quest-app .weekly-battery{background:#f7f9fc;border-color:#a9c5f2}
