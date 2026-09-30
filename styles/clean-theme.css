@@ -106,7 +106,8 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .quest-app .reward-list .journey-card .reward-income{font-size:12px;line-height:1.5;color:var(--q-muted);margin:0 0 6px;min-height:0;word-break:keep-all}
 .quest-app .reward-list .journey-card button{width:100%;min-width:0;min-height:36px;margin-top:auto;padding:8px 6px;font-size:13px;font-weight:500;line-height:1.4;letter-spacing:-.015em;border-radius:10px;white-space:normal;word-break:keep-all}
 .quest-app .reward-list .journey-card button:disabled{background:#f0f3f7!important;color:#687587!important;border-color:#d3dae4!important}
-.quest-app .reward-list .journey-card button.equipped{background:#d9eee2!important;color:#246b4c!important;border-color:#a7cbb5!important}
+.quest-app .reward-list .journey-card.is-equipped{background:#edf3ff;border-color:#b7ccef;box-shadow:none}
+.quest-app .reward-list .journey-card button.equipped{background:#dce8fc!important;color:#4775c5!important;border-color:#b7ccef!important}
 .app.quest-app .journey-card button:is([data-journey-action="claim"],[data-journey-action="equip"]){color:#fff!important}
 .quest-app .wheel-modal .primary[data-save-wheel]{color:#fff!important}
 .quest-app .alarm-page .alarm-switch{background:#d3dae4}
