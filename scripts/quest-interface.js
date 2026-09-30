@@ -7,7 +7,7 @@ let questOnboardingActive=false;
  const categoryIcons=['book','dumbbell','home','headphones','coffee'];
  const introPreview=new URLSearchParams(location.search).get('intro')==='1';
  let filter='0',view='daily',lastDate=today(),step=0,editing=introPreview;
- let draft={name:data.questProfile?.name||'',gender:data.travelerCharacter||'male',goals:data.questProfile?.goals?.slice()||[0,1,2,3]};
+ let draft={name:data.questProfile?.name||'',gender:data.travelerCharacter||'male',goals:[]};
  // Only completing all four introduction steps dismisses first-launch setup.
  const needsSetup=()=>data.questProfile?.version!==1||data.questProfile?.onboardingCompleted!==true;
  const profileName=()=>data.questProfile?.name||'나';
