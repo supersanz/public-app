@@ -47,6 +47,11 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .character-change-dialog .q-primary{background:#6b99ed;color:#fff;border:1px solid #5788e0;border-radius:16px;box-shadow:none;font-weight:700}
 .character-change-dialog .q-primary:not(:disabled):hover{background:#608cdd}
 .character-change-dialog .q-primary:disabled:hover{background:#6b99ed}
+.character-change-dialog .character-option{background:#f3f6fa;border:1px solid #d3dce8;box-shadow:none}
+.character-change-dialog .character-option:hover{background:#eaf0fa;border-color:#9bb8e8}
+.character-change-dialog .character-option.chosen{background:#e5eeff;border-color:#6b99ed;box-shadow:none}
+.character-change-dialog .character-reset-notice{background:#eef3fc;border:1px solid #dce6f5;color:#52647c}
+.character-change-dialog .character-reset-notice strong{color:#334d70}
 .quest-app .home-quest-summary{background:#f5f8fd}
 .quest-app .home-quest-summary p{font-size:14px;color:var(--q-muted)}
 .quest-app :is(.reward-complete,.alarm-page>.note){background:#f5f8fd!important;border:1px solid var(--q-line);color:var(--q-muted)}
