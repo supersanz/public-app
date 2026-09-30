@@ -94,6 +94,7 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .quest-app .reward-list .journey-card button:disabled{background:#f0f3f7!important;color:#687587!important;border-color:#d3dae4!important}
 .quest-app .reward-list .journey-card button.equipped{background:#d9eee2!important;color:#246b4c!important;border-color:#a7cbb5!important}
 .app.quest-app .journey-card button[data-journey-action="claim"]{color:#fff!important}
+.quest-app .wheel-modal .primary[data-save-wheel]{color:#fff!important}
 .quest-app .reward-list .bundle-character{padding-bottom:18px}
 .quest-app .reward-list .bundle-character>img,.quest-app .reward-list .bundle-character>canvas,.quest-app .reward-list .bundle-character>.female-motion{width:118px!important;height:118px!important}
 @media(max-width:360px){.quest-app .reward-list .journey-card-copy{padding:12px 10px!important}.quest-app .reward-list .journey-card-copy h3{font-size:16px}.quest-app .reward-list .bundle-motion{font-size:13px}.quest-app .reward-list .bundle-character>img,.quest-app .reward-list .bundle-character>canvas,.quest-app .reward-list .bundle-character>.female-motion{width:100px!important;height:100px!important}}
