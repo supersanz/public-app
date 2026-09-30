@@ -44,6 +44,9 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .quest-app .nav button.active svg{background:#e9f0ff;outline-color:#e9f0ff}
 .quest-app :is(.q-primary,.primary,.journey-card button),.quest-app .wheel-modal .primary{background:#6b99ed!important;color:#17212f!important;border:1px solid #5788e0!important;box-shadow:none!important;font-size:16px;font-weight:500;border-radius:16px}
 .quest-app :is(.q-primary,.primary):hover{background:#608cdd!important}
+.character-change-dialog .q-primary{background:#6b99ed;color:#fff;border:1px solid #5788e0;border-radius:16px;box-shadow:none;font-weight:700}
+.character-change-dialog .q-primary:not(:disabled):hover{background:#608cdd}
+.character-change-dialog .q-primary:disabled:hover{background:#6b99ed}
 .quest-app .home-quest-summary{background:#f5f8fd}
 .quest-app .home-quest-summary p{font-size:14px;color:var(--q-muted)}
 .quest-app :is(.reward-complete,.alarm-page>.note){background:#f5f8fd!important;border:1px solid var(--q-line);color:var(--q-muted)}
