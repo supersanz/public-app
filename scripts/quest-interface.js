@@ -91,15 +91,10 @@ let questOnboardingActive=false;
  };
  function finishSetup(){
   if(draft.goals.length!==1||!Number.isInteger(draft.goals[0])||draft.goals[0]<0||draft.goals[0]>3)return;
-  if(introPreview){
-   const previous=data.questProfile;
-   data.questProfile={...previous,name:draft.name.trim().slice(0,16),goals:draft.goals.slice(),focusCategory:draft.goals[0]};
-   if(!persist()){data.questProfile=previous;return;}
-   location.href=location.pathname;return;
-  }
   const backup=JSON.stringify(data);
   data.questProfile={version:1,onboardingCompleted:true,name:draft.name.trim().slice(0,16),goals:draft.goals.slice(),focusCategory:draft.goals[0]};data.travelerCharacter=draft.gender;
   if(!persist()){data=JSON.parse(backup);return;}
+  if(introPreview){const url=new URL(location.href);url.searchParams.delete('intro');location.replace(url.pathname+url.search+url.hash);return;}
   editing=false;page='home';render();window.scrollTo(0,0);
  }
  document.addEventListener('input',event=>{if(event.target.id==='quest-name')draft.name=event.target.value;});

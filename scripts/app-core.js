@@ -1,6 +1,6 @@
 'use strict';
 // Start the public release independently of earlier developer/test progress.
-const KEY='daily-quest-vercel-20261002014848487', cats=['자기계발','건강','생활력','휴식','카페인'];
+const KEY='daily-quest-vercel-20261002024549627', cats=['자기계발','건강','생활력','휴식','카페인'];
 const acts=[['학원',0,'academy'],['공부',0,'study'],['독서',0,'book'],['코딩',0,'computer'],['러닝',1,'running'],['근력운동',1,'dumbbell'],['요리',2,'food'],['청소',2,'home'],['산책',3,'leaf'],['게임',3,'game'],['영화',3,'film'],['커피',4,'coffee'],['에너지드링크',4,'energyCan'],['박카스',4,'tonicBottle'],['음악 감상',3,'headphones'],['노래 부르기',3,'mic'],['필라테스',1,'pilates']];
 // Stable activity IDs: append new quests without changing historical records.
 const QuestCatalog={};
