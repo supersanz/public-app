@@ -7,7 +7,7 @@
  const duration=frameTimes.reduce((sum,ms)=>sum+ms,0);
  // Contact sole centers span ~194 source pixels at 238/643 render scale.
  // Two steps per cycle: 194 * (238/643) * 2 ~= 144 canvas pixels.
- const walkPixelsPerCycle=92.16;
+ const walkPixelsPerCycle=90;
  function groundDistance(ms){return ms/duration*walkPixelsPerCycle}
  function loadFrames(sheet,cols,rows,offset){
   const probe=document.createElement('canvas');probe.width=sheet.width;probe.height=sheet.height;
@@ -35,16 +35,16 @@
   const renderScale=offset===10?Math.min(238/referenceHeight,120/halfWidth):238/referenceHeight;
   group.forEach((f,i)=>{f.referenceHeight=referenceHeight;f.renderScale=renderScale;frames[offset+i]=f});
  }
- runSheet.onload=()=>loadFrames(runSheet,4,2,10);
- runSheet.src='assets/characters/male/run-12345678.png';
+ runSheet.onload=()=>loadFrames(runSheet,3,2,10);
+ runSheet.src='assets/characters/male/run-six-6fps.png';
  sheet.onload=()=>loadFrames(sheet,4,2,0);
  rearSheet.onload=()=>loadFrames(rearSheet,2,1,8);
  rearSheet.src='assets/characters/male/walk-contact-helper.png';
  sheet.src='assets/characters/male/walk-12345678.png';
- // Hold contact slightly longer, pass the legs briskly; two balanced 500ms strides.
- const runFrameTimes=[135,135,105,125,135,135,105,125];
- const runCycleMs=runFrameTimes.reduce((sum,ms)=>sum+ms,0),runPixelsPerCycle=152;
- let time=0,distance=0,last=0,previousCanvas=null,previewTime=0;
+ // Six equally timed poses at 6 FPS: one complete cycle per second.
+ const runFrameTimes=Array(6).fill(1000/6);
+ const runCycleMs=runFrameTimes.reduce((sum,ms)=>sum+ms,0),runPixelsPerCycle=100;
+ let time=0,distance=0,last=0,previousCanvas=null,previewTime=0,activeMotion="";
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const poseCanvas=document.createElement('canvas');poseCanvas.width=poseCanvas.height=256;
  const poseContext=poseCanvas.getContext('2d');poseContext.imageSmoothingEnabled=false;
@@ -71,7 +71,7 @@
    // Reward cards deliberately keep one representative pose.
    previewTime=0;
    for(const preview of previews){
-    const running=preview.dataset.motion!=='walk',order=running?[10,11,12,13,14,15,16,17]:sequence;
+    const running=preview.dataset.motion!=='walk',order=running?[10,11,12,13,14,15]:sequence;
     if(!order.every(i=>frames[i]))continue;
     const timings=running?runFrameTimes:frameTimes;
     let index=0,phase=reduced.matches?0:previewTime%(running?runCycleMs:duration);
@@ -85,8 +85,10 @@
    }
   }
   const canvas=document.querySelector('canvas.traveler-slow');
-  const running=['run','deepRun'].includes(typeof travelerState==='function'?travelerState().motion:'');
-  const order=running?[10,11,12,13,14,15,16,17]:sequence;
+  const motion=typeof travelerState==='function'?travelerState().motion:'';
+  if(motion!==activeMotion){activeMotion=motion;time=0;}
+  const running=['run','deepRun'].includes(motion);
+  const order=running?[10,11,12,13,14,15]:sequence;
   const timings=running?runFrameTimes:frameTimes;
   const loop=running?runCycleMs:duration;
   if(canvas&&order.every(i=>frames[i])&&!document.hidden){
@@ -100,12 +102,14 @@
    const ctx=canvas.getContext('2d'),scale=f.renderScale;
    ctx.clearRect(0,0,256,256);ctx.imageSmoothingEnabled=false;
    poseContext.clearRect(0,0,256,256);
-   poseContext.drawImage(f.source,f.x,f.y,f.w,f.h,Math.round(128-f.anchor*scale),Math.round(running?248-f.referenceHeight*scale:248-f.h*scale),Math.round(f.w*scale),Math.round(f.h*scale));
+   // Match the female cycle's gentle contact/recovery rise, twice per stride.
+   const runBob=running&&!reduced.matches?[0,2,-2,0,2,-2][index]:0;
+   poseContext.drawImage(f.source,f.x,f.y,f.w,f.h,Math.round(128-f.anchor*scale),Math.round(running?248-f.referenceHeight*scale:248-f.h*scale)+runBob,Math.round(f.w*scale),Math.round(f.h*scale));
    ctx.drawImage(poseCanvas,0,0);
    softenContour(ctx,'main-'+order[index],running);
    canvas.dataset.frame=String(order[index]);
    const track=document.querySelector('.desert-pan-track');
-   if(track){const tile=track.firstElementChild,overlap=parseFloat(getComputedStyle(track).getPropertyValue('--pan-seam'))||0;const repeat=tile.getBoundingClientRect().width-overlap;if(repeat>0){const offset=distance*canvas.getBoundingClientRect().height/256+repeat*.45;track.style.transform=`translateX(${-2*repeat+(offset%repeat)}px)`;}}
+   if(track){const repeat=travelerTrackRepeat(track);if(repeat>0){const offset=distance*canvas.getBoundingClientRect().height/256+repeat*.45;track.style.transform=`translateX(${-2*repeat+(offset%repeat)}px)`;}}
   }
   previousCanvas=canvas;last=now;requestAnimationFrame(tick);
  }

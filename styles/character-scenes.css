@@ -37,7 +37,7 @@
 /* Overall-level journey rewards, retaining the warm traveler palette. */
 .traveler-nav{grid-template-columns:repeat(4,1fr)!important}
 .desert-home.white-home{background:#c8a275!important}
-.clearing-scene{position:absolute;inset:0;background:#c8a275 url('../assets/backgrounds/clearing-day.png') center/cover no-repeat;pointer-events:none}
+.clearing-scene{position:absolute;inset:0;background:#c8a275 url('../assets/backgrounds/clearing-day-panorama.png') center/cover no-repeat;pointer-events:none}
 .art-white .clearing-scene{background-position:center 65%}
 .night-world>.clearing-rest-character{position:absolute;left:50%;bottom:25%;transform:translateX(-50%);width:39%;height:18%;object-fit:contain;filter:brightness(.7);image-rendering:pixelated}
 .white-home:before{display:none}
@@ -239,7 +239,7 @@
 @media(prefers-reduced-motion:reduce){.motion-fly{animation:none}}
 
 .art-deepForest>img,.art-sky>img{width:100%;height:100%;object-fit:cover;object-position:center}
-.journey-run-preview{display:block;width:106px;height:106px;background:url('../assets/characters/male/run-preview-sheet.png') 0 0/400% 200% no-repeat;image-rendering:pixelated}.journey-card.locked .journey-run-preview{filter:brightness(.4) saturate(.45)}
+.journey-run-preview{display:block;width:106px;height:106px;background:url('../assets/characters/male/run-six-6fps.png') 0 0/300% 200% no-repeat;image-rendering:pixelated}.journey-card.locked .journey-run-preview{filter:brightness(.4) saturate(.45)}
 
 .traveler-idle{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;image-rendering:pixelated;pointer-events:none}
 .cafe-world{position:absolute;left:50%;top:50%;width:max(100%,46.1539dvh);aspect-ratio:852/1846;transform:translate(-50%,-50%);pointer-events:none;overflow:hidden}
@@ -336,3 +336,221 @@
 .record-page .activity.selected>svg{color:#795892}
 .record-page .activity .check{position:absolute;top:6px;right:6px;width:17px;height:17px;border-radius:50%;display:grid;place-items:center;background:#87669e;color:#fff;font-size:11px}
 .record-page .activity-save{position:static;flex-shrink:0;width:100%;min-height:52px;margin-top:10px;border-radius:13px;background:#806594;color:#fff;font-size:16px;font-weight:600;box-shadow:none}
+/* Skyway paving lies lower than the older forest path; anchor both genders to it. */
+.desert-home[data-background="runFrontier"] .traveler-art{bottom:19%}
+
+/* Modern journeys: walking pavement and gently swaying carriage. */
+.desert-home[data-background="city"] .traveler-art{bottom:19%}
+.desert-home[data-background="subway"] .desert-pan-track{transform:translateX(calc(-150vh + 50%))!important;left:50%;animation:none!important}
+.desert-home[data-background="subway"] .traveler-art{bottom:12%;height:28%}
+.motion-ride{height:100%;animation:none;transform-origin:50% 100%}
+.motion-ride img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+@keyframes subway-sway{50%{margin-top:2px}}
+@keyframes passenger-sway{50%{transform:rotate(1deg) translateY(1px)}}
+.modern-night{filter:brightness(.5)}
+.modern-night .modern-rest-avatar{position:absolute;height:28%;width:auto;left:50%;bottom:12%;transform:translateX(-50%);object-fit:contain}
+@media(prefers-reduced-motion:reduce){.motion-ride,.desert-home[data-background="subway"] .desert-pan-track{animation:none!important}}
+
+.subway-carriage{position:absolute;inset:-3px;background-position:center;background-size:auto 100%;animation:none;image-rendering:pixelated}
+@media(prefers-reduced-motion:reduce){.subway-carriage{animation:none}}
+
+/* Keep feet on paving; wider carriage framing and a separate moving exterior. */
+.desert-home[data-background="city"] .traveler-art{bottom:16.5%}
+
+.subway-carriage{inset:0;left:50%;width:auto;height:100%;aspect-ratio:2169/725;transform:translateX(-50%);background-size:100% 100%}
+.subway-window-mask{position:absolute;inset:0;mask:url('../assets/backgrounds/subway-window-mask.svg') 0 0/100% 100%;-webkit-mask:url('../assets/backgrounds/subway-window-mask.svg') 0 0/100% 100%;pointer-events:none}
+.subway-river-flow{position:absolute;top:25%;height:28%;left:0;width:200%;background:url('../assets/backgrounds/han-river-transit-panorama.png') 0 0/50% 100% repeat-x;animation:river-transit 64s linear infinite reverse;image-rendering:pixelated}
+@keyframes river-transit{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.subway-river-flow{animation:none}}
+
+/* Level 70: quiet coffee flight above the Han River railway. */
+.river-flight-scene{position:absolute;inset:0;overflow:hidden}
+.river-flight-track{display:flex;width:max-content;height:100%;animation:han-flight-drift 110s linear infinite}
+.river-flight-track img{height:100%;width:auto;max-width:none;flex:none;image-rendering:pixelated}
+@keyframes han-flight-drift{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.desert-home[data-background="subway"] .traveler-art{bottom:31%;height:34%;width:auto;aspect-ratio:1}
+.coffee-flight{height:100%;width:100%;aspect-ratio:1;background:url('../assets/characters/coffee-carpet-pair.png') left center/200% 100% no-repeat;image-rendering:pixelated}
+.female-coffee-flight{background-position:right center}
+.art-subway .bundle-character{height:45%;bottom:30%;aspect-ratio:1}
+@media(prefers-reduced-motion:reduce){.river-flight-track{animation:none;transform:translateX(-25%)}}
+
+/* A small rider floats gently while the train passes the distant riverside. */
+.desert-home[data-background="subway"] .traveler-art{height:26%;bottom:34%}
+.river-flight-track{animation-duration:140s}
+.river-train-layer{position:absolute;inset:0;clip-path:inset(68.5% 0 20% 0);pointer-events:none}
+.river-train-track{animation-duration:75s}
+.desert-home .coffee-flight{animation:coffee-flight-hover 4.8s ease-in-out infinite;transform-origin:50% 55%;will-change:transform}
+@keyframes coffee-flight-hover{0%,100%{transform:translateY(2px) rotate(-1deg)}50%{transform:translateY(-2px) rotate(1deg)}}
+@media(prefers-reduced-motion:reduce){.desert-home .coffee-flight,.river-flight-track{animation:none;will-change:auto}.river-flight-track{transform:translateX(-25%)}}
+
+/* Faster flight, with local wind rather than camera shake. */
+.river-flight-track{animation-duration:65s}
+.river-train-track{animation-duration:38s}
+.desert-home .coffee-flight{position:relative;animation:coffee-flight-hover 2.4s ease-in-out infinite}
+.desert-home .coffee-flight::before{content:"";position:absolute;left:76%;top:49%;width:45%;height:28%;pointer-events:none;background:linear-gradient(#fff8,#fff8) 0 15%/75% 1px no-repeat,linear-gradient(#fff5,#fff5) 18% 55%/65% 1px no-repeat,linear-gradient(#fff7,#fff7) 5% 90%/45% 1px no-repeat;animation:coffee-wind 900ms linear infinite}
+.desert-home .coffee-flight::after{content:"";position:absolute;inset:0;background:inherit;clip-path:polygon(45% 66%,64% 66%,64% 80%,45% 80%);transform-origin:50% 66%;animation:coffee-cloth 650ms ease-in-out infinite alternate;pointer-events:none}
+.desert-home .female-coffee-flight::after{clip-path:polygon(59% 44%,81% 44%,81% 64%,59% 64%);transform-origin:59% 49%;animation:coffee-hair 700ms ease-in-out infinite alternate}
+@keyframes coffee-wind{0%{transform:translateX(-3px);opacity:0}25%{opacity:.65}100%{transform:translateX(15px);opacity:0}}
+@keyframes coffee-cloth{from{transform:skewX(-2deg) translateY(-.5px)}to{transform:skewX(2deg) translateY(.5px)}}
+@keyframes coffee-hair{from{transform:rotate(-2deg) translateY(-.7px)}to{transform:rotate(2deg) translateY(.7px)}}
+@media(prefers-reduced-motion:reduce){.desert-home .coffee-flight,.desert-home .coffee-flight::after,.river-flight-track{animation:none}.desert-home .coffee-flight::before{display:none}}
+
+/* City facades and trees must stay opaque at tile joins: blending doubles silhouettes. */
+.desert-home[data-background="city"] .desert-pan-track{--pan-seam:0px}
+.desert-home[data-background="city"] .desert-pan-track img{mask-image:none;-webkit-mask-image:none}
+
+.desert-home[data-background="city"] .traveler-art{bottom:16.5%}
+
+/* Trim duplicate edge masonry without alpha blending; unify sunset lighting. */
+.desert-home[data-background="city"] .desert-pan-track{filter:saturate(.84) contrast(.97) sepia(.06)}
+.city-pan-tile{height:100%;aspect-ratio:2.9;flex:none;position:relative;overflow:hidden}
+.desert-home[data-background="city"] .city-pan-tile img{position:relative;left:-1.6%;height:100%;width:auto;max-width:none;margin:0;display:block}
+.art-city .reward-panorama,.banner-city{filter:saturate(.84) contrast(.97) sepia(.06)}
+
+/* Carpet rides keep the cup steady and let the whole carpet float softly. */
+.desert-home .coffee-flight{animation-duration:3.6s}
+.desert-home .coffee-flight::after{clip-path:polygon(4% 70%,96% 70%,96% 95%,4% 95%);transform-origin:50% 75%;animation:carpet-fringe 1.4s ease-in-out infinite alternate}
+@keyframes carpet-fringe{from{transform:translateY(-.35px)}to{transform:translateY(.35px)}}
+@media(prefers-reduced-motion:reduce){.desert-home .coffee-flight::after{animation:none}}
+
+/* Level-70 reward thumbnail matches the equipped carpet scene. */
+.journey-bundle .art-subway .bundle-character{inset:auto auto 31% 50%;height:32%;width:auto;aspect-ratio:1;transform:translateX(-50%);padding:0;display:block}
+.art-subway .reward-panorama{background-position:center center;animation-duration:65s}
+.art-subway .coffee-flight{display:block;width:100%;height:100%;animation:coffee-flight-hover 3.6s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.art-subway .coffee-flight,.art-subway .reward-panorama{animation:none}}
+
+/* Share scene-relative scale and ground anchors between equipment and reward cards. */
+:is([data-background="white"],.art-white){--scene-person:25%;--scene-foot:17%}
+:is([data-background="desert"],.art-desert){--scene-person:23%;--scene-foot:23%}
+:is([data-background="forest"],.art-forest){--scene-person:23%;--scene-foot:21%}
+:is([data-background="deepForest"],.art-deepForest){--scene-person:22%;--scene-foot:21%}
+:is([data-background="runFrontier"],.art-runFrontier){--scene-person:22%;--scene-foot:18%}
+:is([data-background="sky"],.art-sky){--scene-person:24%;--scene-foot:38%}
+:is([data-background="flightFrontier"],.art-flightFrontier){--scene-person:23%;--scene-foot:38%}
+:is([data-background="city"],.art-city){--scene-person:20%;--scene-foot:16%}
+:is([data-background="subway"],.art-subway){--scene-person:24%;--scene-foot:34%}
+.desert-home:not(.night-home):not(.cafe-home) .traveler-art{
+ height:var(--scene-person,22%);bottom:var(--scene-foot,21%);width:auto;
+ aspect-ratio:1;max-height:none;max-width:none;
+}
+.journey-bundle .journey-art:not(.art-academy) .bundle-character{
+ inset:auto auto var(--scene-foot,21%) 50%;height:var(--scene-person,22%);
+ width:auto;aspect-ratio:1;transform:translateX(-50%);padding:0;display:block;
+}
+.journey-bundle .journey-art .bundle-character>:is(canvas,img,.female-motion,.coffee-flight){
+ width:100%;height:100%;max-width:none;object-fit:contain;display:block;
+}
+.quest-app .journey-bundle .journey-art .bundle-character{padding:0}
+.quest-app .journey-bundle .journey-art .bundle-character>:is(canvas,img,.female-motion,.coffee-flight){width:100%!important;height:100%!important;max-width:none}
+
+/* Paper-plane flight: a stable folded airframe with separately moving hair. */
+.coffee-flight{--plane-position:left center;background:none;position:relative}
+.female-coffee-flight{--plane-position:right center}
+.coffee-flight>span{position:absolute;inset:0;background:url('../assets/characters/coffee-paper-plane-pair.png') var(--plane-position)/200% 100% no-repeat;image-rendering:pixelated;pointer-events:none}
+.coffee-flight .plane-rider-body{clip-path:polygon(0 0,100% 0,100% 40%,61% 40%,61% 48%,100% 48%,100% 100%,0 100%)}
+.coffee-flight .plane-rider-hair{clip-path:inset(40% 0 52% 61%);transform-origin:61% 44%;animation:plane-hair .65s ease-in-out infinite alternate}
+.female-coffee-flight .plane-rider-body{clip-path:polygon(0 0,100% 0,100% 44%,72% 44%,72% 65%,100% 65%,100% 100%,0 100%)}
+.female-coffee-flight .plane-rider-hair{clip-path:inset(44% 0 35% 72%);transform-origin:72% 50%;animation-duration:.8s}
+.desert-home .coffee-flight,.art-subway .coffee-flight{animation:paper-plane-glide 3.2s ease-in-out infinite;transform-origin:48% 72%}
+.desert-home .coffee-flight::after{display:none}
+@keyframes paper-plane-glide{0%,100%{transform:translateY(1px) rotate(-2deg)}35%{transform:translateY(-3px) rotate(1deg)}70%{transform:translateY(0) rotate(-.5deg)}}
+@keyframes plane-hair{from{transform:skewY(-2deg) translateY(-.4px)}to{transform:skewY(2deg) translateY(.5px)}}
+@media(prefers-reduced-motion:reduce){.desert-home .coffee-flight,.art-subway .coffee-flight,.coffee-flight .plane-rider-hair{animation:none}}
+
+/* Air slips past the nose and leaves short, fading trails behind the wings. */
+.desert-home .coffee-flight::before,.art-subway .coffee-flight::before{
+ content:"";position:absolute;left:78%;top:61%;width:85%;height:28%;pointer-events:none;
+ background:linear-gradient(90deg,#e6faffb3,transparent) 0 8%/82% 1px no-repeat,
+ linear-gradient(90deg,#fff9,transparent) 12% 48%/64% 1px no-repeat,
+ linear-gradient(90deg,#d8eeff8c,transparent) 0 91%/90% 1px no-repeat;
+ animation:paper-slipstream 1.15s linear infinite;transform-origin:left center;
+}
+.desert-home .coffee-flight::after,.art-subway .coffee-flight::after{
+ content:"";display:block;position:absolute;inset:auto;left:-28%;top:64%;width:148%;height:30%;
+ background:linear-gradient(90deg,transparent,#eefaffb3,transparent) 0 0/32% 1px no-repeat,
+ linear-gradient(90deg,transparent,#fff9,transparent) 55% 100%/43% 1px no-repeat;
+ clip-path:none;pointer-events:none;animation:paper-wing-air 1.5s linear infinite;
+}
+@keyframes paper-slipstream{0%{opacity:0;transform:translateX(-3px) scaleX(.65)}20%{opacity:.75}100%{opacity:0;transform:translateX(20px) scaleX(1.2)}}
+@keyframes paper-wing-air{0%{opacity:0;transform:translateX(-8px)}25%{opacity:.65}85%,100%{opacity:0;transform:translateX(15px)}}
+@media(prefers-reduced-motion:reduce){.desert-home .coffee-flight::before,.desert-home .coffee-flight::after,.art-subway .coffee-flight::before,.art-subway .coffee-flight::after{display:none;animation:none}}
+
+/* Complete illustrated night scenes retain their seated character in the card crop. */
+.quest-app .quest-scene-card .night-world.milestone-night{width:100%;height:100%;inset:0;transform:none;aspect-ratio:auto;filter:none}
+.night-world.milestone-night>img{width:100%;height:100%;object-fit:cover;object-position:center 85%}
+
+/* One fixed home viewport for every reward and both time-of-day modes. */
+.app.quest-app .quest-scene-card{height:420px;min-height:420px;max-height:420px;box-sizing:content-box}
+.app.quest-app .quest-scene-card :is(.traveler-home,.night-home){height:420px!important;min-height:420px!important;max-height:420px!important;width:100%;box-sizing:border-box;margin:0}
+
+/* Frame the complete illustration and its effects together; never stretch the bitmap. */
+.app.quest-app .quest-scene-card .night-world{
+ --night-focus:66%;position:absolute;inset:auto;left:50%;top:50%;
+ width:100%;height:auto;aspect-ratio:852/1846;
+ transform:translate(-50%,calc(-1 * var(--night-focus)));filter:none;
+}
+.app.quest-app .quest-scene-card .night-world>img{width:100%;height:auto;object-fit:fill;display:block}
+.app.quest-app .quest-scene-card .clearing-night{--night-focus:67%}
+.app.quest-app .quest-scene-card [data-night-scene="desert"]{--night-focus:64%}
+.app.quest-app .quest-scene-card [data-night-scene="forest"]{--night-focus:66%}
+.app.quest-app .quest-scene-card [data-night-scene="deepForest"]{--night-focus:67%}
+.app.quest-app .quest-scene-card [data-night-scene="sky"]{--night-focus:68%}
+.app.quest-app .quest-scene-card [data-rest-scene="academy"]{--night-focus:56%}
+.app.quest-app .quest-scene-card .milestone-night{aspect-ratio:1/2}
+.app.quest-app .quest-scene-card [data-milestone-night="flightFrontier"]{--night-focus:69%}
+.app.quest-app .quest-scene-card [data-milestone-night="city"]{--night-focus:72%}
+.app.quest-app .quest-scene-card [data-milestone-night="subway"]{--night-focus:77%}
+
+/* Keep desert home actors modest in scale, with their ground anchor unchanged. */
+.desert-home[data-background="desert"]:not(.night-home){--scene-person:18%}
+
+/* Level-one wasteland uses the white scene key, shared by both characters. */
+.app.quest-app .quest-scene-card .desert-home[data-background="white"]:not(.night-home) .traveler-art{height:17%;width:auto;max-width:none;max-height:none;bottom:17%;aspect-ratio:1}
+
+/* Clearing artwork: center the sleeping bag while keeping the image past the bottom edge. */
+.app.quest-app .quest-scene-card .night-world.clearing-night{top:68%;--night-focus:67%}
+
+/* Anchor the sky-island resting scene below the HUD and cover the lower edge. */
+.app.quest-app .quest-scene-card .night-world[data-night-scene="sky"]{top:68%;--night-focus:68%}
+/* The artwork and light effects share one square coordinate system. */
+.app.quest-app .quest-scene-card .night-world.rooftop-night{width:max(100%,560px);height:auto;aspect-ratio:1;left:50%;top:52%;transform:translate(-60%,-63%);filter:none}
+.rooftop-window-glow{position:absolute;inset:0;pointer-events:none;background:#ffd385;clip-path:polygon(52.7% 80%,54.5% 76.9%,56.3% 80%,56.3% 88.7%,52.7% 88.7%,52.7% 80%,66% 86%,68.4% 81.5%,71% 86%,71% 96%,66% 96%,66% 86%);mix-blend-mode:screen;animation:rooftop-light 8s ease-in-out infinite}
+@keyframes rooftop-light{0%,100%{opacity:.02}50%{opacity:.28}}
+.rooftop-meteors{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.rooftop-meteors i{position:absolute;left:48%;top:29%;width:65px;height:1px;background:linear-gradient(90deg,#fff4dc,transparent);transform:rotate(-35deg);opacity:0;animation:rooftop-meteor 14s linear infinite}
+.rooftop-meteors i:nth-child(2){left:70%;top:20%;animation-delay:5s;animation-duration:19s;width:48px}
+.rooftop-meteors i:nth-child(3){left:35%;top:35%;animation-delay:10s;animation-duration:23s;width:40px}
+@keyframes rooftop-meteor{0%,15%{opacity:0;transform:translate(0,0) rotate(-35deg)}22%{opacity:.65}45%{opacity:0;transform:translate(-100px,70px) rotate(-35deg)}100%{opacity:0;transform:translate(-100px,70px) rotate(-35deg)}}
+@media(prefers-reduced-motion:reduce){.rooftop-window-glow{animation:none;opacity:.1}.rooftop-meteors{display:none}}
+/* Slow staggered meteor shower, positioned inside the visible sky crop. */
+.rooftop-meteors i{left:68%;top:29%;width:76px;height:2px;transform-origin:left center;background:linear-gradient(90deg,#fff9e6,rgba(206,228,255,.55) 20%,transparent);animation:rooftop-meteor 12s linear infinite;animation-delay:-2s;filter:drop-shadow(0 0 2px #d9eaff)}
+.rooftop-meteors i::before{content:"";position:absolute;left:0;top:-1px;width:3px;height:3px;background:#fffbea;border-radius:50%}
+.rooftop-meteors i:nth-child(2){left:83%;top:33%;width:58px;animation-duration:16s;animation-delay:-8s}
+.rooftop-meteors i:nth-child(3){left:48%;top:27%;width:46px;animation-duration:19s;animation-delay:-12s}
+.rooftop-meteors i:nth-child(4){left:73%;top:40%;width:52px;animation-duration:21s;animation-delay:-4s}
+.rooftop-meteors i:nth-child(5){left:55%;top:36%;width:40px;animation-duration:17s;animation-delay:-14s}
+@keyframes rooftop-meteor{0%{opacity:0;transform:translate(0,0) rotate(-35deg)}8%{opacity:.8}32%{opacity:.65}40%{opacity:0;transform:translate(-115px,80px) rotate(-35deg)}100%{opacity:0;transform:translate(-115px,80px) rotate(-35deg)}}
+/* Square ridge illustration keeps the sleeper and paper plane in view. */
+.app.quest-app .quest-scene-card .night-world.ridge-night{width:max(100%,420px);height:auto;aspect-ratio:1;left:50%;top:50%;transform:translate(-50%,-50%);filter:none}
+.ridge-sleep{position:absolute;left:55%;top:57%;width:13%;height:12%;pointer-events:none;color:#e2efff;font-family:monospace;font-weight:700;text-shadow:1px 1px #324c75}
+.ridge-sleep span{position:absolute;left:0;top:0;font-size:13px;opacity:0;animation:ridge-snore 4.8s ease-out infinite}
+.ridge-sleep span:nth-child(2){animation-delay:-1.6s}
+.ridge-sleep span:nth-child(3){animation-delay:-3.2s}
+@keyframes ridge-snore{0%{opacity:0;transform:translate(0,0) scale(.7)}20%{opacity:.85}80%{opacity:.65}100%{opacity:0;transform:translate(22px,-29px) scale(1.15)}}
+@media(prefers-reduced-motion:reduce){.ridge-sleep span{animation:none;opacity:.7}.ridge-sleep span:nth-child(2){transform:translate(9px,-12px)}.ridge-sleep span:nth-child(3){transform:translate(18px,-24px)}}
+
+/* City rooftop: preserve square framing and keep the sleeper below the HUD. */
+.app.quest-app .quest-scene-card .night-world.city-rooftop-night{width:max(100%,420px);height:auto;aspect-ratio:1;left:50%;top:50%;transform:translate(-50%,-50%);filter:none}
+.city-rooftop-night>img{width:100%;height:auto;display:block;image-rendering:pixelated}
+.city-sleep{position:absolute;left:49%;top:66%;width:12%;height:12%;pointer-events:none;color:#fff0b8;font-family:monospace;font-weight:700;text-shadow:1px 1px #303c61}
+.city-sleep span{position:absolute;left:0;top:0;font-size:13px;opacity:0;animation:city-snore 4.8s ease-out infinite}
+.city-sleep span:nth-child(2){animation-delay:-1.6s}
+.city-sleep span:nth-child(3){animation-delay:-3.2s}
+@keyframes city-snore{0%{opacity:0;transform:translate(0,0) scale(.7)}20%{opacity:.9}75%{opacity:.65}100%{opacity:0;transform:translate(25px,-32px) scale(1.1)}}
+@media(prefers-reduced-motion:reduce){.city-sleep span{animation:none;opacity:.7}.city-sleep span:nth-child(2){transform:translate(9px,-12px)}.city-sleep span:nth-child(3){transform:translate(18px,-24px)}}
+
+
+/* Female flight: gentle vertical drift without added roll. */
+.motion-fly:has(canvas.female-motion){animation: female-flight-hover 4.4s ease-in-out infinite}
+@keyframes female-flight-hover{0%,100%{transform:translateY(1px)}50%{transform:translateY(-2px)}}
+@media(prefers-reduced-motion:reduce){.motion-fly:has(canvas.female-motion){animation:none}}

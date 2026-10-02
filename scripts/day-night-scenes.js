@@ -15,6 +15,9 @@ function travelerNightScene(background){
  return ({desert:['assets/characters/male/desert-night.png','별빛 사막에서 마시멜로 굽기'],forest:['assets/characters/male/forest-night.png','달빛 숲의 해먹에서 쉬기'],deepForest:['assets/characters/male/ancient-forest-night.png','고대숲의 텐트에서 책 읽기'],sky:['assets/characters/male/sky-night.png','하늘 섬에서 베개를 베고 잠자기']})[background];
 }
 function travelerNightWorld(background){
+ if(background==='city'||background==='subway')return `<div class="night-world modern-night"><img src="${travelerPanorama(background)}" alt="도시의 밤"></div>`;
+ if(background==='runFrontier')background='deepForest';
+ if(background==='flightFrontier')background='sky';
  if(background==='academy')return travelerCafeScene(true);
  if(background==='white')return '<div class="night-world clearing-night" aria-hidden="true"><img src="assets/characters/male/clearing-night.png" alt=""><div class="sleep-letters"><span>z</span><span>z</span><span>z</span></div></div>';
  const scene=travelerNightScene(background);
