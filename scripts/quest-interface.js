@@ -20,7 +20,7 @@ let questOnboardingActive=false;
  const questXp=id=>{const base=dailyBase[id]??weeklyBase[id]??20;return hasFocusBonus(id)?Math.round(base*1.1):base;};
  const balancedWeeklyRules=()=>Object.fromEntries(Object.entries(WeeklyQuestRules).filter(([id])=>ids('weekly').includes(Number(id))).map(([id,rule])=>[id,{...rule,xp:questXp(Number(id))}]));
  const summary=(period='daily')=>{const list=ids(period),completed=list.filter(id=>state(id).done);return {done:completed.length,total:list.length,xp:completed.reduce((sum,id)=>sum+state(id).xp,0)};};
- const portrait=gender=>`assets/characters/${gender}/idle-standing.png`;
+ const portrait=gender=>gender==='male'?'assets/characters/male/idle-standing-navy-v2.png':'assets/characters/female/idle-standing.png';
  const arrow='<span aria-hidden="true">↗</span>';
  function openCharacterChange(){
   if(document.querySelector('.character-change-dialog'))return;

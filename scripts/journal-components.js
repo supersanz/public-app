@@ -39,7 +39,7 @@
   const title=root.querySelector('.heading'),intro=root.querySelector('.journey-intro');
   const headingEl=doc.createElement('header');headingEl.className='journal-heading journal-heading-rewards';
   const copy=doc.createElement('div'),h=doc.createElement('h1'),p=doc.createElement('p');
-  h.textContent='성장 보상';p.textContent=intro?.textContent||'';copy.append(h,p);headingEl.append(copy);
+  h.textContent='성장 보상';if(intro)p.append(...Array.from(intro.childNodes,node=>node.cloneNode(true)));copy.append(h,p);headingEl.append(copy);
   title?.remove();intro?.remove();root.prepend(headingEl);return root.outerHTML;
  };
  const touchPage=pages.touch;
