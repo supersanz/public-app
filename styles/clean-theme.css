@@ -17,7 +17,7 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .quest-app .quest-symbol.category-1{background:#e9f5ef;color:#337c60}
 .quest-app .quest-symbol.category-2{background:#fff3e5;color:#956326}
 .quest-app .quest-symbol.category-3{background:#f0edfa;color:#7860a2}
-.app.quest-app .quest-page .quest-progress-card{background:#6b99ed;border-color:#5788e0;color:#fff;border-radius:22px}
+.app.quest-app .quest-page .quest-progress-card{background:#6b99ed;border:0;color:#fff;border-radius:22px}
 .app.quest-app .quest-page .quest-progress-card :is(span,strong,small,p,.earned-pill){color:#fff!important}
 .quest-app .quest-progress-card>div>span{font-size:13px}
 .quest-app .quest-progress-card strong{font-size:28px;font-weight:700}
@@ -31,16 +31,16 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .quest-app .academy-card:not(.is-complete):hover{background:#f5f8fd;border-color:#9fb9e8}
 .quest-app :is(.academy-card.is-complete,.quest-card.is-complete,.reward-list .is-equipped){background:#e7f4eb;border:1px solid #a7cbb5;box-shadow:none}
 .quest-app .academy-done-label{font-size:14px;color:#27674e}
-/* Preview category completion colors on only the first activity in each tab. */
-.quest-app .academy-card:first-child[data-quest-category="0"]{--done-bg:#e8f0fc;--done-border:#aec7eb;--done-ink:#4775b8}
-.quest-app .academy-card:first-child[data-quest-category="1"]{--done-bg:#e9f5ef;--done-border:#add5c7;--done-ink:#337c60}
-.quest-app .academy-card:first-child[data-quest-category="2"]{--done-bg:#fff0e5;--done-border:#e8c5a9;--done-ink:#a56535}
-.quest-app .academy-card:first-child[data-quest-category="3"]{--done-bg:#f0edfa;--done-border:#cbb9e4;--done-ink:#7860a2}
-.quest-app .academy-card:first-child.is-complete[data-quest-category]{background:var(--done-bg);border-color:var(--done-border)}
-.quest-app .academy-card:first-child[data-quest-category] .academy-done-mark{background:var(--done-ink)}
-.quest-app .academy-card:first-child[data-quest-category] .academy-done-label{color:var(--done-ink)}
-.quest-app .academy-card:first-child[data-quest-category].academy-celebrate{animation-name:category-card-fill}
-.quest-app .academy-card:first-child[data-quest-category].academy-celebrate::before{background:var(--done-bg)}
+/* Category completion colors apply to every activity. */
+.quest-app .academy-card[data-quest-category="0"]{--done-bg:#9dbaf4;--done-border:#9dbaf4;--done-ink:#506eaa}
+.quest-app .academy-card[data-quest-category="1"]{--done-bg:#9cd1b5;--done-border:#9cd1b5;--done-ink:#487d62}
+.quest-app .academy-card[data-quest-category="2"]{--done-bg:#f5a580;--done-border:#f5a580;--done-ink:#b66035}
+.quest-app .academy-card[data-quest-category="3"]{--done-bg:#ad97ef;--done-border:#ad97ef;--done-ink:#7961a5}
+.quest-app .academy-card.is-complete[data-quest-category]{background:var(--done-bg);border-color:var(--done-border)}
+.quest-app .academy-card[data-quest-category] .academy-done-mark{background:var(--done-ink);color:#fff}
+.quest-app .academy-card[data-quest-category] .academy-done-label{color:var(--done-ink)}
+.quest-app .academy-card[data-quest-category].academy-celebrate{animation-name:category-card-fill}
+.quest-app .academy-card[data-quest-category].academy-celebrate::before{background:var(--done-bg)}
 @keyframes category-card-fill{0%,75%{background:#fff}100%{background:var(--done-bg)}}
 .quest-app .academy-celebrate::before{background:#e7f4eb}
 @keyframes academy-card-fill{0%,75%{background:#fff}100%{background:#e7f4eb}}
@@ -150,3 +150,84 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 @media(max-width:360px){.quest-app .quest-progress-card strong{font-size:25px}.quest-app .quest-progress-card strong small{font-size:16px}.quest-app .earned-pill{font-size:12px}}
 .growth-stage-plan{margin:24px 0;border:1px solid #d0dcee;border-radius:20px;padding:18px}.growth-stage-plan h2{font-size:18px;margin:0 0 14px}.growth-stage-tabs{display:flex;gap:7px;overflow-x:auto;padding:2px 0 10px}.growth-stage-tabs button{flex:0 0 auto;padding:10px 13px;border:1px solid #d0dcee;border-radius:12px;background:#fff;color:#536782;font-weight:500}.growth-stage-tabs button[aria-selected=true]{background:#6b99ed;border-color:#6b99ed;color:#fff}.growth-stage-tabs button:focus-visible{outline:2px solid #355faf;outline-offset:2px}#growth-stage-panel{padding:18px;background:#edf3ff;border-radius:14px;min-height:130px}#growth-stage-panel small{color:#4775c5;font-weight:600}#growth-stage-panel h3{font-size:20px;margin:8px 0}#growth-stage-panel p{margin:0;color:#33445c}#growth-stage-panel span{display:block;margin-top:10px;color:#6b7b92;font-size:12px}
 .reward-pending-scene{position:absolute;inset:0;background:#edf3ff;color:#577394;display:flex;justify-content:center;align-items:flex-start;padding:18px;font-size:12px}
+
+/* Larger, consistent activity illustrations, matching the 60px reference tile. */
+.quest-app .quest-card .quest-symbol{width:60px;height:60px;flex:0 0 60px;border:0;border-radius:15px;background:#edf3ff;color:#416cb4;--activity-fill:#cbdcf9}
+.quest-app .quest-card .quest-symbol svg{width:38px;height:38px;overflow:visible}
+.quest-app .quest-card .quest-symbol.category-1{background:#eaf5f0;color:#368168;--activity-fill:#c2e4d5}
+.quest-app .quest-card .quest-symbol.category-2{background:#fff2e7;color:#a56e37;--activity-fill:#f5d9b7}
+.quest-app .quest-card .quest-symbol.category-3{background:#f2eefb;color:#8064ab;--activity-fill:#ddd0f0}
+.quest-app .quest-card{gap:14px;min-height:84px;padding:11px 12px}
+@media(max-width:360px){.quest-app .quest-card{gap:10px;padding:10px}.quest-app .quest-card .quest-symbol{width:56px;height:56px;flex-basis:56px}.quest-app .quest-card .quest-symbol svg{width:36px;height:36px}}
+
+/* Shared text tracking: -2% of each element's own font size. */
+.app.quest-app,.app.quest-app *{letter-spacing:-.02em!important}
+.app.quest-app .quest-xp,.app.quest-app .quest-page .quest-progress-card .earned-pill,.app.quest-app .home-quest-summary p>span{font-size:12px!important;font-weight:400!important}
+
+/* Onboarding system: 4px spacing rhythm, stable text hierarchy and action placement. */
+.app.quest-app .quest-setup{--setup-blue:#5089ff;--setup-muted:#64748b;min-height:100svh;padding:32px 26px 24px;position:relative}
+.quest-app .setup-top{line-height:24px;font-size:12px;font-variant-numeric:tabular-nums}
+.quest-app .setup-top .brand{font-size:17px;font-weight:600!important}
+.quest-app .setup-progress{margin-top:20px;gap:8px}
+.quest-app .setup-progress i{height:4px}
+.quest-app .setup-progress i.filled{background:var(--setup-blue)}
+.quest-app .setup-copy{margin-top:40px}
+.quest-app .setup-copy .q-kicker{font-size:11px;line-height:16px;color:var(--setup-muted)}
+.quest-app .setup-copy h1{font-size:32px;line-height:1.32;margin:16px 0;font-weight:700!important;word-break:keep-all;text-wrap:initial}
+.quest-app .setup-copy h1 em{display:inline-block;vertical-align:baseline;background:#eaf0ff;padding:0 9px;margin-left:10px;border-radius:8px;line-height:1.2}
+.quest-app .setup-copy p{margin:0;font-size:14px!important;line-height:22px;color:var(--setup-muted)}
+.quest-app .welcome-art:not(.ready-art){height:260px;flex-shrink:0;margin:24px 0 12px}
+.quest-app .welcome-art:not(.ready-art)::before{display:none}
+.quest-app .welcome-art:not(.ready-art) img{width:210px;height:210px;margin-top:20px;object-fit:contain}
+.quest-app .welcome-art .welcome-speech{position:absolute;left:8%;top:2px;bottom:auto;width:110px;height:80px;padding:0;border:0;background:transparent;transform:none;font-size:11px;font-weight:400!important;line-height:16px;text-align:center}
+.quest-app .welcome-speech>svg{position:absolute;inset:0;width:110px;height:80px;fill:white;stroke:var(--setup-blue);stroke-width:1;overflow:visible}
+.quest-app .welcome-speech>span{position:relative;display:block;padding-top:12px}
+.quest-app .orbit-one{right:6%;top:12px;color:#ffce42;font-size:38px;line-height:1}
+.quest-app .orbit-two{left:auto;right:18%;top:60px;bottom:auto;color:#ffce42;font-size:24px;line-height:1}
+.quest-app .welcome-features{margin:16px 4px 24px;gap:12px;font-size:14px;line-height:22px;font-weight:400!important}
+.quest-app .welcome-features span{color:var(--setup-muted)}
+.quest-app .quest-setup footer{margin-top:auto;gap:8px;padding-top:24px}
+.app.quest-app .quest-setup footer .q-primary{min-height:60px;padding:16px;justify-content:center;border:0;border-radius:16px;background:var(--setup-blue);color:#fff;box-shadow:none;font-size:18px;line-height:24px;font-weight:600!important;transform:none}
+.app.quest-app .quest-setup footer .q-primary:hover{background:#447cec}
+.app.quest-app .quest-setup footer .q-primary:disabled{opacity:.45}
+.quest-app .quest-setup footer .q-text{text-align:center;font-size:14px;line-height:20px;min-height:44px;padding:12px}
+.quest-app .quest-setup [data-setup-close]{position:absolute;right:26px;top:96px;font-size:12px;min-height:36px;padding:8px;color:var(--setup-muted)}
+.quest-app .character-options{margin:28px 0;gap:14px}
+.quest-app .quest-setup .character-option{padding:16px 14px;border:1px solid #d8e1ed;background:#fff;border-radius:20px;box-shadow:none;min-width:0}
+.quest-app .quest-setup .character-option.chosen{background:#e8effc;border-color:var(--setup-blue)}
+.quest-app .quest-setup .character-option img{height:160px;display:block}
+.quest-app .quest-setup .character-option>span{font-size:14px;line-height:20px;margin-top:12px;font-weight:600!important}
+.quest-app .name-field{font-size:15px;line-height:22px;gap:8px}
+.quest-app .name-field input{font-size:16px;line-height:24px;min-height:56px;padding:15px 16px;border:1px solid #d8e1ed;border-radius:14px;font-weight:400!important}
+.quest-app .name-field input::placeholder{color:#8894a5}
+.quest-app .name-field small{font-size:12px;line-height:20px;color:var(--setup-muted)}
+.quest-app .quest-setup :is(button,input):focus-visible{outline:3px solid #a8c5ff;outline-offset:3px}
+.quest-app .goal-options{gap:12px;margin:28px 0 20px}
+.quest-app .goal-options button{min-height:64px;padding:16px;border-radius:16px}
+@media(min-width:600px){.app.quest-app .quest-setup{min-height:calc(100svh - 46px)}}
+@media(max-height:760px){.quest-app .setup-copy{margin-top:28px}.quest-app .welcome-art:not(.ready-art){height:220px;margin-top:16px}.quest-app .welcome-art:not(.ready-art) img{width:190px;height:190px}.quest-app .welcome-features{margin-top:8px;margin-bottom:16px}.quest-app .quest-setup .character-option img{height:132px}.quest-app .character-options{margin:24px 0}.quest-app .quest-setup [data-setup-close]{top:86px}}
+@media(max-width:360px){.app.quest-app .quest-setup{padding:24px 20px}.quest-app .setup-copy h1{font-size:29px}.quest-app .welcome-art .welcome-speech{left:0}.quest-app .quest-setup .character-option{padding:12px}.quest-app .quest-setup .character-option img{height:130px}.quest-app .character-options{gap:12px}}
+
+/* Category labels stay in place in both selection states. */
+.quest-app .quest-filters{gap:8px}
+.quest-app .quest-filters button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:9px 12px;font-size:14px;line-height:20px;font-weight:500!important;flex-shrink:0}
+.quest-app .quest-filters button svg{width:16px;height:16px;flex:0 0 16px;stroke-width:1.7}
+.quest-app .quest-filters button[aria-pressed=true]{background:#eaf1ff;border-color:#7fa5ed;color:#315fac;font-weight:500!important}
+@media(max-width:360px){.quest-app .quest-filters{gap:6px}.quest-app .quest-filters button{padding:9px 10px;font-size:13px}}
+
+/* Compact EXP badge within the activity summary only. */
+.app.quest-app .quest-page .quest-progress-card .earned-pill{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-width:76px;min-height:30px;height:auto;padding:5px 12px;border-radius:999px;line-height:18px;white-space:nowrap}
+
+/* Give the activity summary the reference's generous vertical spacing. */
+.app.quest-app .quest-page .quest-progress-card{padding:28px 20px;row-gap:24px;column-gap:16px;min-height:190px}
+.app.quest-app .quest-page .quest-progress-card>p{margin:0;flex-basis:100%;line-height:24px}
+.quest-app .academy-card.is-complete[data-quest-category]{min-height:84px}
+.quest-app .academy-card[data-quest-category] .academy-done-label{font-size:14px;font-weight:500!important;color:var(--done-ink)}
+
+/* Final onboarding illustration follows the welcome screen. */
+.quest-app .ready-art{height:260px;flex-shrink:0;margin:28px 0 12px}
+.quest-app .ready-art::before{display:none}
+.quest-app .ready-art img{width:210px;height:210px;margin-top:20px;object-fit:contain}
+.quest-app .setup-tags{margin:12px 0 24px;gap:8px}
+.quest-app .setup-tags span{font-size:13px;line-height:20px;padding:7px 14px;border:0;border-radius:12px;background:#edf3ff;color:#4168a6;transform:none}
+@media(max-height:760px){.quest-app .ready-art{height:220px;margin-top:20px}.quest-app .ready-art img{width:190px;height:190px}}

@@ -1,9 +1,15 @@
 /* Original full-body poses. */
 (()=>{
  const sheet=new Image(),rearSheet=new Image(),runSheet=new Image(),frames=[];
- // Eight poses, two balanced 1000ms steps; ease contact without a long pause.
- const sequence=[0,1,2,3,4,5,6,7];
- const frameTimes=[250,275,250,225,250,275,250,225];
+ const outfit=new Image();
+ const outfitReady=new Promise(resolve=>{outfit.onload=()=>resolve();outfit.onerror=()=>resolve();});
+ outfit.src='assets/characters/male/walk-navy-alternating-v6.png';
+ const runOutfit=new Image();
+ const runOutfitReady=new Promise(resolve=>{runOutfit.onload=()=>resolve();runOutfit.onerror=()=>resolve();});
+ runOutfit.src='assets/characters/male/run-navy-six-v2.png';
+ // Skip the eighth pose; keep the existing duration of each remaining pose.
+ const sequence=[0,1,2,3,4,5,6];
+ const frameTimes=[250,275,250,225,250,275,250];
  const duration=frameTimes.reduce((sum,ms)=>sum+ms,0);
  // Contact sole centers span ~194 source pixels at 238/643 render scale.
  // Two steps per cycle: 194 * (238/643) * 2 ~= 144 canvas pixels.
@@ -33,11 +39,20 @@
   const referenceHeight=Math.max(...group.map(f=>f.h));
   const halfWidth=Math.max(...group.map(f=>Math.max(f.anchor,f.w-f.anchor)));
   const renderScale=offset===10?Math.min(238/referenceHeight,120/halfWidth):238/referenceHeight;
+  const costume=offset===0?outfit:offset===10?runOutfit:null;
+  if(costume&&costume.naturalWidth){
+   // One complete painting, registered to the original sheet. All frame
+   // anchors, scale and gait timing above still come from the original art.
+   const painted=document.createElement('canvas');painted.width=sheet.width;painted.height=sheet.height;
+   const paint=painted.getContext('2d');paint.imageSmoothingEnabled=false;
+   paint.drawImage(costume,0,0,painted.width,painted.height);
+   group.forEach((f,i)=>{f.outfit={source:painted,x:i%cols*sheet.width/cols,y:Math.floor(i/cols)*sheet.height/rows,w:sheet.width/cols,h:sheet.height/rows};});
+  }
   group.forEach((f,i)=>{f.referenceHeight=referenceHeight;f.renderScale=renderScale;frames[offset+i]=f});
  }
- runSheet.onload=()=>loadFrames(runSheet,3,2,10);
+ runSheet.onload=()=>runOutfitReady.then(()=>loadFrames(runSheet,3,2,10));
  runSheet.src='assets/characters/male/run-six-6fps.png';
- sheet.onload=()=>loadFrames(sheet,4,2,0);
+ sheet.onload=()=>outfitReady.then(()=>loadFrames(sheet,4,2,0));
  rearSheet.onload=()=>loadFrames(rearSheet,2,1,8);
  rearSheet.src='assets/characters/male/walk-contact-helper.png';
  sheet.src='assets/characters/male/walk-12345678.png';
@@ -48,6 +63,13 @@
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const poseCanvas=document.createElement('canvas');poseCanvas.width=poseCanvas.height=256;
  const poseContext=poseCanvas.getContext('2d');poseContext.imageSmoothingEnabled=false;
+ function drawFrame(ctx,f,scale,running,bob=0){
+  const dx=128-f.anchor*scale,dy=(running?248-f.referenceHeight*scale:248-f.h*scale)+bob;
+  if(f.outfit){
+   const q=f.outfit;
+   ctx.drawImage(q.source,q.x,q.y,q.w,q.h,Math.round(dx+(q.x-f.x)*scale),Math.round(dy+(q.y-f.y)*scale),Math.round(q.w*scale),Math.round(q.h*scale));
+  }else ctx.drawImage(f.source,f.x,f.y,f.w,f.h,Math.round(dx),Math.round(dy),Math.round(f.w*scale),Math.round(f.h*scale));
+ }
  // Soften only the outermost dark contour by a fraction of a pixel.
  // Keep opaque interiors (eyes, seams), proportions and all pose timing intact.
  const contourCache=new Map();
@@ -79,7 +101,7 @@
     if(preview.dataset.pose!==undefined)index=Math.max(0,Math.min(order.length-1,Number(preview.dataset.pose)||0));
     const f=frames[order[index]],ctx=preview.getContext('2d'),scale=f.renderScale;
     ctx.clearRect(0,0,256,256);ctx.imageSmoothingEnabled=false;
-    ctx.drawImage(f.source,f.x,f.y,f.w,f.h,Math.round(128-f.anchor*scale),Math.round(running?248-f.referenceHeight*scale:248-f.h*scale),Math.round(f.w*scale),Math.round(f.h*scale));
+    drawFrame(ctx,f,scale,running);
     softenContour(ctx,'preview-'+order[index],running);
     preview.dataset.frame=String(index+1);
    }
@@ -104,7 +126,7 @@
    poseContext.clearRect(0,0,256,256);
    // Match the female cycle's gentle contact/recovery rise, twice per stride.
    const runBob=running&&!reduced.matches?[0,2,-2,0,2,-2][index]:0;
-   poseContext.drawImage(f.source,f.x,f.y,f.w,f.h,Math.round(128-f.anchor*scale),Math.round(running?248-f.referenceHeight*scale:248-f.h*scale)+runBob,Math.round(f.w*scale),Math.round(f.h*scale));
+   drawFrame(poseContext,f,scale,running,runBob);
    ctx.drawImage(poseCanvas,0,0);
    softenContour(ctx,'main-'+order[index],running);
    canvas.dataset.frame=String(order[index]);

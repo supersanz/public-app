@@ -39,9 +39,9 @@ function setTravelerCharacter(value){
  };
  travelerNightWorld=function(bg){
   if(bg==='city')return `<div class="night-world city-rooftop-night"><img src="assets/characters/${travelerFemale()?'female':'male'}/city-rooftop-sleep-v3.png" alt="서울 야경이 보이는 옥상에서 침낭에 들어가 잠든 마법사"><div class="city-sleep" aria-hidden="true"><span>z</span><span>z</span><span>z</span></div></div>`;
-  if(bg==='subway')return '<div class="night-world ridge-night"><img src="assets/characters/'+(travelerFemale()?'female/subway-ridge-night-plain-v3.png':'male/subway-ridge-night-no-straps-v2.png')+'" alt="한강이 내려다보이는 산등성이에서 종이비행기 옆에 누워 자는 마법사"><div class="ridge-sleep" aria-hidden="true"><span>z</span><span>z</span><span>z</span></div></div>';
+  if(bg==='subway')return '<div class="night-world ridge-night"><img src="assets/characters/'+(travelerFemale()?'female/subway-ridge-night-plain-v3.png':'male/subway-ridge-night-navy-v3.png')+'" alt="한강이 내려다보이는 산등성이에서 종이비행기 옆에 누워 자는 마법사"><div class="ridge-sleep" aria-hidden="true"><span>z</span><span>z</span><span>z</span></div></div>';
 
-  if(bg==='flightFrontier')return '<div class="night-world rooftop-night"><img src="assets/characters/'+(travelerFemale()?'female/flightFrontier-rooftop-night-matched-v11.png':'male/flightFrontier-rooftop-night-v4.png')+'" alt="천공섬 건물 옥상에 누워 별을 바라보는 마법사"><div class="rooftop-window-glow" aria-hidden="true"></div><div class="rooftop-meteors" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>';
+  if(bg==='flightFrontier')return '<div class="night-world rooftop-night"><img src="assets/characters/'+(travelerFemale()?'female/flightFrontier-rooftop-night-matched-v11.png':'male/flightFrontier-rooftop-night-navy-v5.png')+'" alt="천공섬 건물 옥상에 누워 별을 바라보는 마법사"><div class="rooftop-window-glow" aria-hidden="true"></div><div class="rooftop-meteors" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>';
 
   if(['flightFrontier','city','subway'].includes(bg)){
    const label={flightFrontier:'천공섬 테라스에서 담요를 덮고 별 구경',city:'수업 뒤 도심 벤치에서 이어폰을 끼고 쉬기',subway:'한강공원에서 종이비행기에 기대 야경 보기'}[bg];
@@ -54,7 +54,7 @@ function setTravelerCharacter(value){
    const gender=travelerFemale()?'female':'male';
    return `<div class="night-world" data-rest-scene="${bg}"><img src="assets/characters/${gender}/${bg}-night.png" alt="${gender==='female'?'여자':'남자'} 캐릭터가 쉬는 밤"><div class="sleep-letters"><span>z</span><span>z</span><span>z</span></div></div>`;
   }
-  if(!travelerFemale())return bg==='white'?nightWorld(bg).replace('characters/male/clearing-night.png','characters/male/clearing-night-pixel-v2.png'):nightWorld(bg);
+  if(!travelerFemale())return nightWorld(bg).replace('characters/male/clearing-night.png','characters/male/clearing-night-navy-v4.png').replace('characters/male/sky-night.png','characters/male/sky-night-navy-v2.png');
   let markup=nightWorld(bg);
   const originals={white:'characters/male/clearing-night.png',desert:'characters/male/desert-night.png',forest:'characters/male/forest-night.png',deepForest:'characters/male/ancient-forest-night.png',sky:'characters/male/sky-night.png'};
   markup=markup.replace(originals[bg],bg==='sky'?'characters/female/sky-night.png':`characters/female/${({white:'clearing',deepForest:'ancient-forest'})[bg]||bg}-night.png`).replace('class="night-world','class="night-world female-night');

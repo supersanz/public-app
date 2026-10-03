@@ -1,7 +1,7 @@
 'use strict';
 function travelerRewardTitle(lv){return ({5:'사막으로',10:'숲속으로',20:'고대숲으로',30:'새로운 길로',40:'하늘섬으로',50:'구름 너머로',60:'21세기로',70:'한강을 건너',80:'일하는 하루'})[lv]||travelerTitle(lv)}
 function travelerTitle(lv){return lv>=80?'프리랜서':lv>=40?'마법사':lv>=20?'탐험가 +':lv>=10?'탐험가':'여행자'}
-const travelerStanding='assets/characters/male/idle-standing.png';
+const travelerStanding='assets/characters/male/idle-standing-navy-v2.png';
 const travelerForest='assets/backgrounds/forest-day-panorama.png';
 const travelerDesert='assets/backgrounds/desert-day-panorama.png';
 function travelerPreviewScene(){if(data.disableScenePreview&&(typeof location==='undefined'||new URLSearchParams(location.search).get('scenePreview')!=='1'))return null;const id=typeof location!=='undefined'?new URLSearchParams(location.search).get('preview'):null;return ['forest','deepForest','runFrontier','sky','flightFrontier','city','subway','academy'].includes(id)?id:null}

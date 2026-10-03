@@ -17,7 +17,7 @@
    frames.push({sheet,x,y:y+top,w,h:bottom-top+1,anchorX:(headLeft+headRight)/2});
   }
  };
- image.src='assets/characters/male/fly-123456.png';
+ image.src='assets/characters/male/fly-navy-v2.png';
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');let time=0,last=0;
  function tick(now){
   const canvases=document.querySelectorAll('canvas.traveler-flight');
