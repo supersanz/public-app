@@ -341,7 +341,7 @@
 
 /* Modern journeys: walking pavement and gently swaying carriage. */
 .desert-home[data-background="city"] .traveler-art{bottom:19%}
-.desert-home[data-background="subway"] .desert-pan-track{transform:translateX(calc(-150vh + 50%))!important;left:50%;animation:none!important}
+.desert-home[data-background="subway"] .desert-pan-track{left:0;animation:none!important}
 .desert-home[data-background="subway"] .traveler-art{bottom:12%;height:28%}
 .motion-ride{height:100%;animation:none;transform-origin:50% 100%}
 .motion-ride img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}

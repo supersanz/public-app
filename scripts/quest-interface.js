@@ -16,12 +16,40 @@ let questOnboardingActive=false;
  const state=(id)=>QuestCatalog[id]?.period==='weekly'?({...DailyQuests.weeklyStatus(data,today(),id),...DailyQuests.weeklyProgress(data,today(),WeeklyQuestRules[id])}):DailyQuests.status(data,today(),id);
  const dailyBase={0:30,1:30,2:20,3:30,4:30,5:30,6:25,7:20,8:15,9:10,10:15,11:10,12:10,13:10,14:10,15:15,16:30,17:10,18:20,19:10,21:10,23:15,40:25,41:30,42:30,43:20,44:20,46:30,47:30,48:30};
  const weeklyBase={32:120,33:150,34:100,36:130,37:100,38:110,39:100,45:100};
- const hasFocusBonus=id=>!WeeklyQuestRules[id]&&Number.isInteger(data.questProfile?.focusCategory)&&questCategory(id)===data.questProfile.focusCategory;
+ const activeFocus=()=>{const p=data.questProfile;return Number.isInteger(p?.pendingFocusCategory)&&p.pendingFocusFrom<=today()?p.pendingFocusCategory:p?.focusCategory;};
+ const goalChangeLocked=()=>data.questProfile?.goalChangedWeek===DailyQuests.weekStart(today());
+ const tomorrow=()=>{const d=new Date(today()+'T12:00:00');d.setDate(d.getDate()+1);return d.toLocaleDateString('sv-SE');};
+ const goalNotice=()=>{const p=data.questProfile;return Number.isInteger(p?.pendingFocusCategory)&&p.pendingFocusFrom>today()?categoryNames[p.pendingFocusCategory]+' 보너스 · '+p.pendingFocusFrom+'부터 적용': '주 1회 변경 · 다음 날부터 적용';};
+ const hasFocusBonus=id=>!WeeklyQuestRules[id]&&Number.isInteger(activeFocus())&&questCategory(id)===activeFocus();
  const questXp=id=>{const base=dailyBase[id]??weeklyBase[id]??20;return hasFocusBonus(id)?Math.round(base*1.1):base;};
  const balancedWeeklyRules=()=>Object.fromEntries(Object.entries(WeeklyQuestRules).filter(([id])=>ids('weekly').includes(Number(id))).map(([id,rule])=>[id,{...rule,xp:questXp(Number(id))}]));
  const summary=(period='daily')=>{const list=ids(period),completed=list.filter(id=>state(id).done);return {done:completed.length,total:list.length,xp:completed.reduce((sum,id)=>sum+state(id).xp,0)};};
- const portrait=gender=>gender==='male'?'assets/characters/male/idle-standing-navy-v2.png':'assets/characters/female/idle-standing.png';
+ const portrait=gender=>`assets/characters/large-bag-v2/${gender}-standing.png`;
  const arrow='<span aria-hidden="true">↗</span>';
+ function openGoalChange(){
+  if(document.querySelector('.goal-change-dialog'))return;
+  const current=activeFocus();let choice=current;
+  const dialog=document.createElement('dialog');dialog.className='goal-change-dialog';
+  dialog.setAttribute('aria-labelledby','goal-change-title');
+  dialog.innerHTML='<h2 id="goal-change-title">목표 변경</h2><p>지금 집중하고 싶은 분야를 하나 골라주세요.</p><div class="goal-change-options">'+categoryNames.map((name,i)=>'<button type="button" data-goal-choice="'+i+'" class="'+(i===current?'chosen':'')+'" aria-pressed="'+(i===current)+'">'+icon(categoryIcons[i])+'<span>'+name+'</span><small>EXP +10%</small></button>').join('')+'</div><p class="goal-change-note">주 1회마다 한번씩 목표를 변경할 수 있어요.<br>변경한 목표는 다음날부터 적용됩니다.</p><p role="alert"></p><button type="button" class="goal-save" disabled>목표 저장</button><button type="button" class="goal-cancel">취소</button>';
+  document.body.appendChild(dialog);
+  if(goalChangeLocked()){dialog.querySelectorAll('[data-goal-choice]').forEach(b=>b.disabled=true);}
+  dialog.addEventListener('close',()=>{dialog.remove();document.querySelector('[data-edit-goal]')?.focus({preventScroll:true});});
+  dialog.querySelector('.goal-cancel').onclick=()=>dialog.close();
+  dialog.querySelectorAll('[data-goal-choice]').forEach(button=>button.onclick=()=>{
+   if(goalChangeLocked())return;
+   choice=Number(button.dataset.goalChoice);
+   dialog.querySelectorAll('[data-goal-choice]').forEach(item=>{const selected=Number(item.dataset.goalChoice)===choice;item.classList.toggle('chosen',selected);item.setAttribute('aria-pressed',String(selected));});
+   dialog.querySelector('.goal-save').disabled=choice===current;
+  });
+  dialog.querySelector('.goal-save').onclick=()=>{
+   if(goalChangeLocked()||!Number.isInteger(choice)||choice<0||choice>3||choice===activeFocus())return;
+   const previous=data.questProfile;data.questProfile={...previous,goals:[activeFocus()],focusCategory:activeFocus(),pendingFocusCategory:choice,pendingFocusFrom:tomorrow(),goalChangedWeek:DailyQuests.weekStart(today())};
+   if(!persist()){data.questProfile=previous;dialog.querySelector('[role="alert"]').textContent='저장하지 못했어요. 다시 시도해 주세요.';return;}
+   render();dialog.close();toast(categoryNames[choice]+' 목표가 내일부터 적용돼요.');
+  };
+  dialog.showModal();
+ }
  function openCharacterChange(){
   if(document.querySelector('.character-change-dialog'))return;
   const current=data.travelerCharacter||'male';let choice=current;
@@ -70,12 +98,12 @@ let questOnboardingActive=false;
  pages.archive=()=>`<div class="quest-archive"><button class="q-text archive-back" data-page="history">← 활동으로 돌아가기</button>${oldHistory().replace(/<button[^>]*data-page="touch"[^>]*>[\s\S]*?<\/button>/g,'')}</div>`;
  pages.history=()=>{
   const weekly=view==='weekly',s=summary(view),list=ids(view).filter(id=>weekly||questCategory(id)===Number(filter)).sort((a,b)=>questCategory(a)-questCategory(b)||a-b);
-  return `<section class="quest-page"><header class="q-heading"><div><span class="q-kicker">ONE DAY, ONE STEP</span><h1>${weekly?'주간 도전':'오늘의 활동'}</h1><p>${weekly?DailyQuests.weekStart(today())+'부터 · 월요일 시작':new Date().toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'long'})} · 나만의 속도로, 하나씩.</p></div></header><div class="quest-view-tabs" role="group" aria-label="활동과 도전"><button data-quest-view="daily" aria-pressed="${!weekly}">오늘의 활동</button><button data-quest-view="weekly" aria-pressed="${weekly}">주간 도전</button></div><div class="quest-progress-card"><div><span>${weekly?'이번 주 도전 달성':'오늘 남긴 활동'}</span><strong>${s.done}<small>${weekly?' / '+s.total+' 달성':'개 기록'}</small></strong></div><span class="earned-pill">+${s.xp} EXP</span><p>${weekly?'매주 월요일 새로운 도전 4개가 열려요.<br>활동을 기록하면 자동으로 반영돼요.':'오늘의 활동을 기록해 보세요.<br>쌓인 경험치는 자정에 자동으로 지급돼요.'}</p></div>${weekly?'':`<div class="quest-filters" role="group" aria-label="활동 분류">${categoryNames.map((n,i)=>[String(i),n]).map(([id,name])=>`<button data-quest-filter="${id}" aria-pressed="${filter===id}">${icon(['book','dumbbell','home','moon'][Number(id)])}<span>${name}</span></button>`).join('')}</div>`}<div class="quest-list">${list.length?list.map(id=>{const a=acts[id],done=state(id);if(!weekly)return `<button type="button" class="quest-card academy-card ${done.done?'is-complete':''}" data-quest-category="${questCategory(id)}" data-quest-id="${id}" data-quest-date="${today()}" data-quest-complete="${!done.done}" aria-pressed="${done.done}" aria-label="${esc(titles[id]||a[0])} ${done.done?'완료 취소':'활동 기록'}" ${done.legacy?'disabled':''}>${done.done?'<span class="academy-done-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M8 16.5 13.5 22 24 10" pathLength="1" /></svg></span><span class="academy-done-label">'+esc(titles[id]||a[0])+' 완료</span>':`<span class="quest-symbol category-${questCategory(id)}">${activityIcon(a[2],id)}</span><span class="quest-card-copy"><span class="academy-title">${esc(titles[id]||a[0])}</span><span class="quest-xp">+${questXp(id)} EXP${hasFocusBonus(id)?' · 보너스 10% 포함':''}</span></span>`}</button>`;return `<article class="quest-card ${done.done?'is-complete':''}"><span class="quest-symbol category-${questCategory(id)}">${activityIcon(a[2],id)}</span><div class="quest-card-copy"><h2>${titles[id]||esc(a[0])}${weekly&&done.done?' 완료!':''}</h2>${weekly?`<p class="weekly-description">${esc(WeeklyQuestRules[id].description||'')}</p><div class="weekly-progress weekly-battery" role="progressbar" aria-label="${esc(a[0])}" aria-valuenow="${Math.min(done.count,done.target)}" aria-valuemin="0" aria-valuemax="${done.target}">${Array.from({length:done.target},(_,index)=>`<i class="${index<done.count?'is-filled':''}" aria-hidden="true"></i>`).join('')}</div>`:''}<span class="quest-xp">${done.done?(weekly?'✓ 달성 · ':'✓ 기록 · '):''}+${done.done?done.xp:questXp(id)} EXP${done.legacy?' · 기존 기록':''}</span></div>${weekly?`<span class="challenge-status ${done.done?'is-done':''}">${done.done?'✓ 달성':'진행 중'}</span>`:`<button class="quest-check" data-quest-category="${questCategory(id)}" data-quest-id="${id}" data-quest-date="${today()}" data-quest-complete="${!done.done}" role="checkbox" aria-checked="${done.done}" aria-label="${esc(titles[id]||a[0])} ${done.done?'기록 취소':'활동 기록'}" ${done.legacy?'disabled':''}>${done.done?'✓':'＋'}</button>`}</article>`;}).join(''):'<div class="quest-empty"><h2>이 항목에는 아직 등록된 항목이 없어요.</h2></div>'}</div><button class="archive-link" data-page="archive">${icon('history')} 지난 활동 내역 보기 <span>→</span></button></section>`;
+  return `<section class="quest-page"><header class="q-heading"><div><span class="q-kicker">ONE DAY, ONE STEP</span><h1>${weekly?'주간 도전':'오늘의 활동'}</h1><p>${weekly?DailyQuests.weekStart(today())+'부터 · 월요일 시작':new Date().toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'long'})} · 나만의 속도로, 하나씩.</p></div></header><div class="quest-view-tabs" role="group" aria-label="활동과 도전"><button data-quest-view="daily" aria-pressed="${!weekly}">오늘의 활동</button><button data-quest-view="weekly" aria-pressed="${weekly}">주간 도전</button></div><div class="quest-progress-card"><div><span>${weekly?'이번 주 도전 달성':'오늘 남긴 활동'}</span><strong>${s.done}<small>${weekly?' / '+s.total+' 달성':'개 기록'}</small></strong></div><span class="earned-pill">+${s.xp} EXP</span><p>${weekly?'매주 월요일 새로운 도전 4개가 열려요.<br>활동을 기록하면 자동으로 반영돼요.':'오늘의 활동을 기록해 보세요.<br>쌓인 경험치는 자정에 자동으로 지급돼요.'}</p></div>${weekly?'':`<div class="quest-filters" role="group" aria-label="활동 분류">${categoryNames.map((n,i)=>[String(i),n]).map(([id,name])=>`<button data-quest-filter="${id}" aria-pressed="${filter===id}">${icon(['book','dumbbell','home','moon'][Number(id)])}<span>${name}</span></button>`).join('')}</div>`}<div class="quest-list">${list.length?list.map(id=>{const a=acts[id],done=state(id);if(!weekly)return `<article class="quest-card academy-card activity-toggle-card ${done.done?'is-complete':''}" data-quest-category="${questCategory(id)}"><span class="quest-symbol category-${questCategory(id)}">${activityIcon(a[2],id)}</span><span class="quest-card-copy"><span class="academy-title">${esc(titles[id]||a[0])}</span><span class="quest-xp">+${done.done?done.xp:questXp(id)} EXP${hasFocusBonus(id)?' · 보너스 10% 포함':''}</span></span><button type="button" class="activity-toggle" data-quest-id="${id}" data-quest-date="${today()}" data-quest-complete="${!done.done}" aria-pressed="${done.done}" aria-label="${esc(titles[id]||a[0])} ${done.done?'완료 취소':'완료하기'}" ${done.legacy?'disabled':''}><span class="activity-toggle-circle" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M8 16.5 13.5 22 24 10"/></svg></span><span>${done.done?'완료':'완료하기'}</span></button></article>`;return `<article class="quest-card ${done.done?'is-complete':''}"><span class="quest-symbol category-${questCategory(id)}">${activityIcon(a[2],id)}</span><div class="quest-card-copy"><h2>${titles[id]||esc(a[0])}${weekly&&done.done?' 완료!':''}</h2>${weekly?`<p class="weekly-description">${esc(WeeklyQuestRules[id].description||'')}</p><span class="weekly-progress-count">${Math.min(done.count,done.target)} / ${done.target}회</span><div class="weekly-progress weekly-battery" role="progressbar" aria-label="${esc(a[0])}" aria-valuenow="${Math.min(done.count,done.target)}" aria-valuemin="0" aria-valuemax="${done.target}">${Array.from({length:done.target},(_,index)=>`<i class="${index<done.count?'is-filled':''}" aria-hidden="true"></i>`).join('')}</div>`:''}<span class="quest-xp">${done.done?(weekly?'✓ 달성 · ':'✓ 기록 · '):''}+${done.done?done.xp:questXp(id)} EXP${done.legacy?' · 기존 기록':''}</span></div>${weekly?`<span class="challenge-status ${done.done?'is-done':''}">${done.done?'✓ 달성':'진행 중'}</span>`:`<button class="quest-check" data-quest-category="${questCategory(id)}" data-quest-id="${id}" data-quest-date="${today()}" data-quest-complete="${!done.done}" role="checkbox" aria-checked="${done.done}" aria-label="${esc(titles[id]||a[0])} ${done.done?'기록 취소':'활동 기록'}" ${done.legacy?'disabled':''}>${done.done?'✓':'＋'}</button>`}</article>`;}).join(''):'<div class="quest-empty"><h2>이 항목에는 아직 등록된 항목이 없어요.</h2></div>'}</div><button class="archive-link" data-page="archive">${icon('history')} 지난 활동 내역 보기 <span>→</span></button></section>`;
  };
  const home=pages.home;
  pages.home=()=>{
   const s=summary();
-  return `<header class="quest-home-heading"><div><span class="q-kicker">MY DAILY ADVENTURE</span><h1>${esc(profileName())}의 하루</h1></div><button class="q-round" data-edit-profile aria-label="캐릭터 변경">${icon('user')}</button></header><div class="quest-scene-card">${home().replace(/<div class="character-picker"[\s\S]*?<\/div>/, '')}</div><section class="home-quest-summary"><div><span class="q-kicker">TODAY'S ACTIVITY</span><h2>오늘의 하루를 남겨요.</h2><p>오늘 활동 <b>${s.done}개</b> <span>획득 예정 · +${s.xp} EXP</span></p></div><button class="q-primary" data-page="history">활동 기록하기 ${arrow}</button></section>`;
+  return `<header class="quest-home-heading"><div><span class="q-kicker">MY DAILY ADVENTURE</span><h1>${esc(profileName())}의 하루</h1></div><button class="q-round" data-edit-profile aria-label="캐릭터 변경">${icon('user')}</button></header><div class="quest-scene-card">${home().replace(/<div class="character-picker"[\s\S]*?<\/div>/, '')}</div><section class="home-focus-goal" aria-label="현재 목표"><div><span>현재 목표</span><strong>${categoryNames[activeFocus()]||'목표 선택'} <small>EXP +10%</small></strong><span>${goalNotice()}</span></div><button type="button" data-edit-goal>목표 변경</button></section><section class="home-quest-summary"><div><span class="q-kicker">TODAY'S ACTIVITY</span><h2>오늘의 하루를 남겨요.</h2><p>오늘 활동 <b>${s.done}개</b> <span>획득 예정 · +${s.xp} EXP</span></p></div><button class="q-primary" data-page="history">활동 기록하기 ${arrow}</button></section>`;
  };
  const baseRender=render;
  render=function(){
@@ -100,7 +128,7 @@ let questOnboardingActive=false;
  document.addEventListener('input',event=>{if(event.target.id==='quest-name')draft.name=event.target.value;});
  document.addEventListener('click',event=>{
   const button=event.target.closest('button');if(!button)return;const d=button.dataset;
-  if(!Object.keys(d).some(key=>key.startsWith('quest')||key.startsWith('setup')||key==='editProfile'))return;
+  if(!Object.keys(d).some(key=>key.startsWith('quest')||key.startsWith('setup')||key==='editProfile'||key==='editGoal'))return;
   event.preventDefault();event.stopImmediatePropagation();
   if('questId'in d){
    if(d.questDate!==today()){render();toast('새로운 하루가 시작됐어요. 오늘의 퀘스트를 확인해 주세요.');return;}
@@ -109,12 +137,17 @@ let questOnboardingActive=false;
    const saveQuest=(...args)=>DailyQuests.saveWithWeekly(...args,balancedWeeklyRules());
    if(saveQuest(data,today(),id,complete,award,persist)){
     const scroll=window.scrollY;render();window.scrollTo(0,scroll);
-    if(complete)document.querySelector(`[data-quest-id="${id}"]`)?.classList.add('academy-celebrate');
-    document.querySelector(`[data-quest-id="${id}"]`)?.focus({preventScroll:true});
+    const toggle=document.querySelector(`[data-quest-id="${id}"]`);
+    if(complete){
+     const card=toggle?.closest('.activity-toggle-card');
+     if(card){card.classList.add('activity-recorded');const feedback=document.createElement('span');feedback.className='activity-recorded-feedback';feedback.setAttribute('role','status');feedback.textContent='기록 완료!';card.appendChild(feedback);window.setTimeout(()=>{card.classList.remove('activity-recorded');feedback.remove();},800);}
+    }
+    toggle?.focus({preventScroll:true});
    }return;
   }
   if('questFilter'in d)filter=d.questFilter;
   if('questView'in d){view=d.questView;filter='0';}
+  if('editGoal'in d){openGoalChange();return;}
   if('editProfile'in d){if(page==='home')openCharacterChange();return;}
   if('setupClose'in d)editing=false;
   if('setupIntro'in d)step=0;
@@ -128,3 +161,5 @@ let questOnboardingActive=false;
  setInterval(rollover,1000);window.addEventListener('focus',rollover);
  render();if(needsSetup())window.scrollTo(0,0);
 })();
+
+

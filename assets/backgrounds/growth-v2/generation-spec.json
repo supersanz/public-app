@@ -1,0 +1,108 @@
+{
+  "generator": "Built-in image_gen",
+  "spec": "Extra-wide 3:1 panoramic background for a Korean wizard life-growth game. Refined 16-bit pixel art, layered side-scrolling landscape, continuous ground or open flight space. No characters, text, UI, borders or watermarks. Characters rendered separately.",
+  "assets": [
+    {
+      "file": "01-wasteland.png",
+      "rewardId": "white",
+      "scene": "barren wasteland"
+    },
+    {
+      "file": "02-meadow.png",
+      "rewardId": "desert",
+      "scene": "fresh green meadow"
+    },
+    {
+      "file": "03-forest.png",
+      "rewardId": "forest",
+      "scene": "lush emerald forest"
+    },
+    {
+      "file": "04-ruins.png",
+      "rewardId": "deepForest",
+      "scene": "ancient ruined civilization"
+    },
+    {
+      "file": "05-alpine.png",
+      "rewardId": "runFrontier",
+      "scene": "snowy alpine mountains"
+    },
+    {
+      "file": "06-clouds.png",
+      "rewardId": "sky",
+      "scene": "ocean of clouds"
+    },
+    {
+      "file": "07-sky-castle.png",
+      "rewardId": "flightFrontier",
+      "scene": "floating sky castle"
+    },
+    {
+      "file": "08-future-city.png",
+      "rewardId": "city",
+      "scene": "optimistic futuristic city"
+    },
+    {
+      "file": "09-space-station.png",
+      "rewardId": "subway",
+      "scene": "orbital space station observation deck"
+    },
+    {
+      "file": "10-cosmos.png",
+      "rewardId": "academy",
+      "scene": "deep outer space and Earth horizon"
+    }
+  ],
+  "night": {
+    "tool": "Built-in image_gen",
+    "prompt": "Create the NIGHT version of this exact pixel-art game background. Preserve the exact extra-wide 3:1 panoramic composition, geometry, terrain, architecture, ground height, foreground walking surface, camera, pixel scale and all scene identity. Change ONLY lighting and sky to a restful moonlit night: deep desaturated navy and indigo, readable soft blue moonlight on path and scenery, delicate stars where sky is visible, subtle warm lights in inhabited buildings/windows. For the space station keep Earth and stars visible and lower interior lighting softly. NOT pitch black: foreground should remain clearly legible behind a character. No people, no characters, no creatures, no vehicles, no text, no UI or border. Full bleed panoramic background, same dimensions/aspect as reference.",
+    "assets": [
+      "01-wasteland-night.png",
+      "02-meadow-night.png",
+      "03-forest-night.png",
+      "04-ruins-night.png",
+      "05-alpine-night.png",
+      "06-clouds-night.png",
+      "07-sky-castle-night.png",
+      "08-future-city-night.png",
+      "09-space-station-night.png"
+    ]
+  },
+  "characters": {
+    "tool": "Built-in image_gen",
+    "modern": "Same identity, face, hair and pixel style; remove hat/staff, modern navy/teal jacket for male, plum/coral jacket for female, trousers and sneakers, crossbody bag, small jewel pendant. Transparent single-character sprite.",
+    "rest": "Same wizard identity and costume; eyes closed, seated resting on small travel blanket, transparent single-character sprite.",
+    "files": [
+      "../../characters/male/modern-city-v1.png",
+      "../../characters/female/modern-city-v1.png",
+      "../../characters/male/growth-rest-v1.png",
+      "../../characters/female/growth-rest-v1.png"
+    ]
+  },
+  "wastelandTent": {
+    "tool": "Built-in image_gen",
+    "prompt": "Transparent pixel-art beige camping tent in three-quarter view, sleeping wizard on cream pillow under blanket, warm lantern, cool moonlight edges. Same tent composition for both genders; male navy blanket and black hair, female plum blanket and purple hair/coral hat.",
+    "files": [
+      "../../characters/male/wasteland-tent-v1.png",
+      "../../characters/female/wasteland-tent-v1.png"
+    ],
+    "cleanup": "Built-in image_gen exterior-haze cleanup, followed by CSS silhouette clipping; simple hand resting on blanket; female bare head with one hat beside pillow. Night subjects brightness .72 and saturation .78; localized warm lantern glow."
+  },
+  "meadowSleep": {
+    "tool": "Built-in image_gen",
+    "description": "Male and female lying on backs on meadow, hands on belly, original adventurer outfits and boots from idle-standing references, single enlarged hat beside head, transparent pixel-art sprites.",
+    "files": [
+      "../../characters/male/meadow-field-v1.png",
+      "../../characters/female/meadow-field-v1.png"
+    ]
+  },
+  "forestSleep": {
+    "tool": "Built-in image_gen",
+    "description": "Moonlit forest interior, male/female in original outfits sleeping seated against mossy tree base, hat and bag beside roots, blue/purple gem staff leaning alongside.",
+    "files": [
+      "03-forest-night.png",
+      "../../characters/male/forest-sleep-v1.png",
+      "../../characters/female/forest-sleep-v1.png"
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+Built-in image_gen local edit of female-wasteland-head-v12 plus standing character reference. Match actual standing head/body ratio rather than repeated percentage shrinking. Moderate head size, same face/hair/bow identity, fixed sleeping span/pose and equipment. Rejected smaller v13 was not applied.

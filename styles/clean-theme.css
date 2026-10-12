@@ -46,9 +46,9 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 @keyframes academy-card-fill{0%,75%{background:#fff}100%{background:#e7f4eb}}
 .quest-app .weekly-battery{background:#f7f9fc;border-color:#a9c5f2}
 .quest-app .weekly-battery>i{background:#d0dbeb}
-.quest-app .weekly-battery>i.is-filled{background:#a8c3ed}
+.quest-app .weekly-battery>i.is-filled{background:#6b99ed}
 .quest-app :is(.archive-link,.alarm-entry){border-color:var(--q-line);border-width:1px}
-.quest-app .archive-link{font-size:14px;color:var(--q-muted)}
+.quest-app .archive-link{font-size:14px;color:var(--q-muted);border:0;box-shadow:none}
 .app.quest-app .nav,.app.quest-app .nav.traveler-nav,.app.quest-app.is-night-home .traveler-nav{background:#fff!important;border-color:var(--q-line)!important;border-width:1px!important;box-shadow:none}
 .app.quest-app .nav button,.app.quest-app .nav.traveler-nav button,.app.quest-app.is-night-home .traveler-nav button{color:#738095!important;font-size:12px}
 .app.quest-app .nav button.active,.app.quest-app .nav.traveler-nav button.active,.app.quest-app.is-night-home .traveler-nav button.active{color:#315fac!important}
@@ -72,6 +72,7 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .app.quest-app .reward-readable .reward-next{background:transparent!important;border:0!important;outline:none!important;box-shadow:none!important}
 .app.quest-app .reward-next .journey-card{border:1px solid #d3dae4!important;border-radius:18px;overflow:hidden;box-shadow:none!important}
 .app.quest-app .reward-next .journey-card button,.app.quest-app .home-quest-summary .q-primary{color:#fff!important;font-size:14px!important;font-weight:700!important}
+.app.quest-app .reward-next .journey-card button{border-radius:10px}
 .app.quest-app .quest-setup .q-primary{color:#fff!important;font-weight:700!important}
 .quest-app .alarm-page>.note{font-size:14px}
 .quest-app .alarm-card-heading h2{font-size:22px!important}
@@ -129,6 +130,7 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .quest-app :is(.q-heading h1,.quest-home-heading h1,.journal-heading h1){font-size:28px!important}
 .quest-app :is(.home-quest-summary h2,.reward-section-title h2){font-size:20px}
 .quest-app :is(.academy-title,.quest-card h2){font-size:18px!important;line-height:1.4}
+.quest-app .academy-card .academy-title{font-weight:500!important}
 .quest-app :is(.quest-xp,.earned-pill,.challenge-status){font-size:13px;line-height:1.5;letter-spacing:0}
 .quest-app :is(.quest-view-tabs button,.quest-filters button){font-size:14px;line-height:1.45}
 .quest-app .quest-view-tabs button[aria-pressed=true],.quest-app .quest-filters button[aria-pressed=true]{font-weight:700!important}
@@ -231,3 +233,855 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .quest-app .setup-tags{margin:12px 0 24px;gap:8px}
 .quest-app .setup-tags span{font-size:13px;line-height:20px;padding:7px 14px;border:0;border-radius:12px;background:#edf3ff;color:#4168a6;transform:none}
 @media(max-height:760px){.quest-app .ready-art{height:220px;margin-top:20px}.quest-app .ready-art img{width:190px;height:190px}}
+
+/* Past records share the activity screen's typography, cards and category colors. */
+.app.quest-app:has(.record-history){height:auto;min-height:100dvh;overflow:visible;background:#fff;color:var(--q-ink)}
+.quest-app .quest-archive{width:100%;min-width:0}
+.quest-app .archive-back{margin:16px 20px 0;color:#52647c;font-size:13px}
+.app.quest-app .record-history{display:block;padding:20px;background:none;color:var(--q-ink);overflow:visible}
+.app.quest-app .record-history>.journal-heading{min-height:0;height:auto;padding:0;margin:0 0 24px}
+.app.quest-app .record-history>.journal-heading>div{max-width:none}
+.app.quest-app .record-history>.journal-heading h1{font-size:28px;font-weight:700;color:var(--q-ink);letter-spacing:-.025em}
+.quest-app .record-history .journal-art,.quest-app .record-history .journal-corner{display:none}
+.quest-app .record-history .journal-calendar{padding:16px;border:1px solid var(--q-line);border-radius:18px;background:#fff;box-shadow:none;margin-bottom:24px}
+.quest-app .record-history .calendar-heading strong{font-size:18px;color:var(--q-ink);font-weight:700}
+.quest-app .record-history .calendar-heading button{color:var(--q-muted)}
+.quest-app .record-history .calendar-heading .journal-all{border:1px solid var(--q-line);border-radius:9px;background:#fff;color:var(--q-muted)}
+.quest-app .record-history .calendar-heading .journal-all.active{background:#eaf1ff;border-color:#9fb9e8;color:#315fac}
+.quest-app .record-history .journal-weekdays{color:var(--q-muted);font-size:12px}
+.quest-app .record-history .calendar button{font-size:14px;font-weight:500;color:var(--q-ink);height:36px;min-height:36px;border-radius:10px}
+.quest-app .record-history .calendar button.active{background:#6b99ed;color:#fff}
+.quest-app .record-history .calendar button i{color:#6b99ed}.quest-app .record-history .calendar button.active i{color:#fff}
+.quest-app .record-history .calendar button:disabled{color:#b5bfcc}
+.quest-app .record-history .journal-records{max-height:none;height:auto;overflow:visible;padding:0;outline-offset:3px}
+.quest-app .record-history .journal-records>.panel{padding:0;margin:0 0 26px;background:none;border:0;box-shadow:none}
+.quest-app .record-history .date h3{font-size:16px;font-weight:700;color:var(--q-ink)}
+.quest-app .record-history .journal-xp-pill{background:#edf3ff;color:#396bca;font-size:12px;font-weight:500;border-radius:10px;padding:6px 9px}
+.quest-app .record-history .record-category{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:12px 14px;min-height:0;margin:8px 0;border:1px solid var(--q-line);border-radius:14px;background:#fff;box-shadow:none}
+.quest-app .record-history .record-category>b{grid-column:auto;align-self:center;color:#396bca;font-size:13px;font-weight:500}
+.quest-app .record-history .record-category strong{font-size:16px;font-weight:700;color:var(--q-ink)}
+.quest-app .record-history .record-activity-icons{display:flex;flex-wrap:wrap;gap:4px 8px;margin-top:4px}
+.quest-app .record-history .record-activity-icon{background:#edf3ff;color:#4168a6;border:0;border-radius:10px;padding:0 2px;box-shadow:none;max-width:100%;height:auto}
+.quest-app .record-history .category-1 .record-activity-icon{background:#e9f5ef;color:#337c60}
+.quest-app .record-history .category-2 .record-activity-icon,.quest-app .record-history .category-4 .record-activity-icon{background:#fff3e5;color:#956326}
+.quest-app .record-history .category-3 .record-activity-icon{background:#f0edfa;color:#7860a2}
+.quest-app .record-history .journal-activity-name{font-size:13px;font-weight:500;white-space:normal;word-break:keep-all}
+.quest-app .record-history .summary{background:#f5f8fd;border:1px solid var(--q-line);border-radius:14px;color:var(--q-muted);font-size:13px}
+.quest-app .record-history .summary b{color:#396bca;font-size:15px;font-weight:600}
+.quest-app .record-history .journal-record-button{display:none}
+@media(max-width:360px){.app.quest-app .record-history{padding:20px 15px}.quest-app .record-history .record-category{padding:10px 12px;gap:8px}.quest-app .record-history .journal-calendar{padding:12px}}
+.quest-app .record-history .calendar{max-height:none;height:auto;overflow:visible}
+.quest-app .record-history>.journal-heading p{color:var(--q-muted)}
+
+
+/* Display-only alternate reward card, independent of reward state. */
+.quest-app .reward-design-preview{margin-top:32px;padding-top:24px;border-top:1px solid var(--q-line)}
+.quest-app .reward-test-card{overflow:hidden;border:1px solid var(--q-line);border-radius:20px;background:#fff}
+.reward-test-art{height:180px;position:relative;display:grid;place-items:center;background:linear-gradient(145deg,#edf3ff,#e6eef5 60%,#e8f2ee);border-bottom:1px solid #e1e8f1}
+.reward-test-badge{position:absolute;top:14px;left:14px;padding:5px 9px;border:1px solid #fff;border-radius:8px;background:#ffffffb3;color:#637ba0;font-size:10px;font-weight:600;letter-spacing:.08em}
+.reward-test-background-label{font-size:15px;color:#7b8da6;letter-spacing:.02em}
+.reward-test-copy{padding:20px}
+.reward-test-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.quest-app .reward-test-heading small{font-size:12px;color:var(--q-muted)}
+.quest-app .reward-test-heading h3{font-size:20px;font-weight:700;margin:5px 0 0}
+.reward-test-tag{border-radius:8px;padding:6px 9px;background:#edf3ff;color:#4775c5;font-size:11px;white-space:nowrap}
+.quest-app .reward-test-copy>p{font-size:13px;color:var(--q-muted);margin:10px 0 18px}
+.reward-test-footer{border-top:1px solid #edf0f5;padding-top:16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.reward-test-footer>span{font-size:12px;color:#4775c5;font-weight:500}
+.quest-app .reward-test-footer button:disabled{border:0;border-radius:10px;background:#eaf1ff;color:#7892bd;padding:10px 22px;font-size:13px;cursor:default;opacity:1}
+.quest-app .reward-test-note{font-size:12px;color:var(--q-muted);margin:10px 0 0;text-align:center}
+
+/* Alternate preview uses the same compact footprint as collection rewards. */
+.quest-app .reward-test-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:stretch;border-radius:18px}
+.quest-app .reward-test-art{height:100%;min-height:190px;border-bottom:0;border-right:1px solid #e1e8f1}
+.quest-app .reward-test-background-label{font-size:13px}
+.quest-app .reward-test-copy{display:flex;flex-direction:column;gap:6px;min-width:0;padding:14px 12px}
+.quest-app .reward-test-heading{display:block}
+.quest-app .reward-test-heading h3{font-size:18px;line-height:1.35;margin:6px 0 0}
+.quest-app .reward-test-tag{display:none}
+.quest-app .reward-test-copy>p{font-size:13px;line-height:1.45;margin:0;word-break:keep-all}
+.quest-app .reward-test-footer{display:flex;flex-direction:column;align-items:stretch;gap:8px;margin-top:auto;padding-top:6px;border:0}
+.quest-app .reward-test-footer>span{font-size:12px}
+.quest-app .reward-test-footer button:disabled{width:100%;min-height:36px;padding:8px 6px;line-height:1.4}
+@media(max-width:360px){.quest-app .reward-test-copy{padding:12px 10px}.quest-app .reward-test-heading h3{font-size:16px}}
+
+/* Five compact, display-only collection alternatives. */
+.reward-design-options{display:grid;gap:24px}
+.quest-app .reward-option-label{font-size:12px;color:#738095;margin:0 0 8px;font-weight:500}
+.quest-app .reward-demo{position:relative;display:grid;grid-template-columns:46% minmax(0,1fr);height:194px;border:1px solid #d3dae4;border-radius:18px;overflow:hidden;background:#fff}
+.reward-demo-image{position:relative;background-size:cover;background-position:center;min-width:0}
+.reward-demo-badge{position:absolute;left:10px;top:10px;padding:4px 8px;border-radius:7px;background:#ffffffdc;color:#52647c;font-size:10px}
+.reward-demo-info{position:relative;display:flex;flex-direction:column;min-width:0;padding:17px 14px}
+.quest-app .reward-demo-info>small{font-size:11px;color:#738095}
+.quest-app .reward-demo-info h3{font-size:17px;font-weight:700;line-height:1.4;margin:7px 0 4px;word-break:keep-all}
+.quest-app .reward-demo-info>p{font-size:12px;color:#738095;margin:0}
+.reward-demo-bottom{display:flex;flex-direction:column;gap:9px;margin-top:auto}
+.reward-demo-bottom>span{font-size:11px;color:#4775c5}
+.quest-app .reward-demo button:disabled{width:100%;padding:8px 10px;min-height:34px;border:0;border-radius:9px;background:#eaf1ff;color:#4775c5;opacity:1;font-size:12px;cursor:default}
+.quest-app .reward-demo-overlay{display:block;background:#263a50}
+.reward-demo-overlay .reward-demo-image{position:absolute;inset:0}
+.reward-demo-overlay .reward-demo-image:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#152b49eb,#152b4930)}
+.reward-demo-overlay .reward-demo-badge{left:auto;right:12px;z-index:1}
+.reward-demo-overlay .reward-demo-info{height:100%;width:68%;padding:21px}
+.quest-app .reward-demo-overlay .reward-demo-info :is(h3,p,small),.reward-demo-overlay .reward-demo-bottom>span{color:white}
+.quest-app .reward-demo-overlay button:disabled{background:#ffffffde;color:#34547d;width:110px}
+.quest-app .reward-demo-inset{grid-template-columns:44% minmax(0,1fr);padding:10px;background:#f5f8fd;gap:4px}
+.reward-demo-inset .reward-demo-image{border-radius:12px}
+.reward-demo-inset .reward-demo-info{padding:9px 9px 5px}
+.quest-app .reward-demo-inset button:disabled{background:#6b99ed;color:#fff;border-radius:18px}
+.quest-app .reward-demo-ticket{grid-template-columns:40% minmax(0,1fr);border-radius:12px;background:#fbfcfe}
+.reward-demo-ticket .reward-demo-info{border-left:1px dashed #b9c8dd;padding-left:18px}
+.reward-demo-ticket:before,.reward-demo-ticket:after{content:'';position:absolute;left:calc(40% - 8px);width:16px;height:16px;border:1px solid #d3dae4;border-radius:50%;background:white;z-index:2}
+.reward-demo-ticket:before{top:-9px}.reward-demo-ticket:after{bottom:-9px}
+.quest-app .reward-demo-ticket button:disabled{border:1px solid #b8ceef;background:transparent;color:#4775c5}
+.quest-app .reward-demo-strip{display:grid;grid-template-columns:1fr;grid-template-rows:83px 1fr}
+.reward-demo-strip .reward-demo-info{padding:10px 15px;display:grid;grid-template-columns:minmax(0,1fr) 108px;column-gap:12px;align-content:center}
+.reward-demo-strip .reward-demo-info>small{grid-column:1}
+.quest-app .reward-demo-strip .reward-demo-info h3{grid-column:1;margin:2px 0;font-size:16px}
+.reward-demo-strip .reward-demo-info>p{grid-column:1}
+.reward-demo-strip .reward-demo-bottom{grid-column:2;grid-row:1/4;align-self:center;margin:0;gap:7px}
+@media(max-width:360px){.reward-demo-info{padding:15px 10px}.quest-app .reward-demo-info h3{font-size:15px}.reward-demo-overlay .reward-demo-info{padding:18px}.reward-demo-strip .reward-demo-info{grid-template-columns:minmax(0,1fr) 94px;padding:10px}}
+
+/* Character scale is kept inside each comparison card's artwork. */
+.reward-demo-image{overflow:hidden}
+.reward-demo-image .reward-demo-character{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:118px;height:138px;object-fit:contain;image-rendering:pixelated;z-index:1;pointer-events:none}
+.reward-demo-image .reward-demo-badge{z-index:2}
+.reward-demo-overlay .reward-demo-image .reward-demo-character{left:auto;right:5px;transform:none;bottom:12px;width:115px;height:145px}
+.reward-demo-overlay .reward-demo-info{z-index:2}
+.reward-demo-inset .reward-demo-character{width:108px;height:130px;bottom:5px}
+.reward-demo-ticket .reward-demo-character{width:106px;height:132px}
+.reward-demo-strip .reward-demo-character{height:79px;width:76px;bottom:0;left:65%}
+@media(max-width:360px){.reward-demo-overlay .reward-demo-image .reward-demo-character{right:0;width:94px}.reward-demo-image .reward-demo-character{max-width:95%}}
+
+/* All activity art uses a square canvas, proportional scaling and equal safe margins. */
+.quest-app .quest-card .quest-symbol{width:58px;height:58px;flex:0 0 58px;display:grid;place-items:center;border:0;border-radius:14px;background:#f4f7fc;--activity-fill:transparent}
+.quest-app .quest-symbol .activity-image{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.quest-app .record-activity-icon .activity-image{display:block;width:36px;height:36px;flex:0 0 36px;object-fit:contain;pointer-events:none}
+.quest-app .record-history .record-activity-icon{align-items:center;gap:6px}
+.quest-app .quest-card .quest-symbol svg{width:32px;height:32px}
+@media(max-width:360px){.quest-app .quest-card .quest-symbol{width:52px;height:52px;flex-basis:52px}}
+.quest-app .quest-card .quest-symbol[class],.quest-app .record-history .record-category .record-activity-icon{background:transparent}
+.quest-app .academy-card .quest-symbol{position:relative}
+.quest-app .weekly-progress-count{display:block;margin-top:10px;font-size:12px;font-weight:600;color:#526b8f;font-variant-numeric:tabular-nums}
+.quest-app .weekly-progress-count+.weekly-battery{margin-top:5px}
+.weekly-summary-card{margin:0 0 24px;padding:20px;border:1px solid #dce6f6;border-radius:20px;background:#f5f8ff}
+.weekly-summary-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.quest-app .weekly-summary-heading h2{margin:0;font-size:17px}
+.weekly-summary-heading>span{font-size:11px;color:#70829b;white-space:nowrap}
+.weekly-summary-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0 14px}
+.weekly-summary-stats>div{display:flex;flex-direction:column;gap:7px}
+.weekly-summary-stats>div+div{border-left:1px solid #dce6f6;padding-left:20px}
+.weekly-summary-stats span{font-size:12px;color:#6b7b91}
+.weekly-summary-stats strong{font-size:30px;line-height:1.1;color:#416fb9}
+.weekly-summary-stats strong small{font-size:13px;margin-left:5px;font-weight:500}
+.weekly-summary-comparison,.weekly-summary-note{font-size:12px;line-height:1.6;color:#526780;word-break:keep-all}
+.weekly-summary-categories{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 9px}
+.weekly-summary-categories>span{display:flex;gap:6px;padding:6px 8px;border-radius:8px;background:#fff;font-size:11px;color:#687991}
+.weekly-summary-categories b{color:#416fb9}
+.weekly-summary-footnote{display:block;margin-top:12px;font-size:10px;line-height:1.5;color:#8490a0}
+.quest-app .record-history .record-category{display:block;border:0;border-radius:0;padding:10px 0;margin:6px 0 14px;min-height:0;background:transparent}
+.record-category-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.quest-app .record-category-heading>b{font-size:13px;color:#396bca;white-space:nowrap;font-weight:500}
+.quest-app .record-history .record-activity-icons{margin-top:7px;gap:5px 14px}
+.quest-app .record-history .record-activity-icon{padding:0;min-height:36px}
+.home-focus-goal{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 22px;padding:14px 16px;border:1px solid #dce6f5;border-radius:16px;background:#fff}
+.home-focus-goal>div{display:grid;gap:5px}.home-focus-goal>div>span{font-size:12px;color:#738095}.home-focus-goal strong{font-size:16px;color:#293545}.home-focus-goal small{font-size:12px;font-weight:500;color:#4775c5;margin-left:6px}.home-focus-goal button{flex-shrink:0;padding:9px 12px;border:1px solid #5788e0;border-radius:10px;background:#6b99ed;color:#fff;font-size:13px}
+.goal-change-dialog{box-sizing:border-box;width:min(390px,calc(100% - 32px));max-height:90dvh;overflow:auto;padding:24px;border:1px solid #d3dce8;border-radius:24px;background:#fff;color:#293545;font-family:inherit}.goal-change-dialog::backdrop{background:#172b465c}.goal-change-dialog h2{font-size:23px;margin:0 0 10px}.goal-change-dialog p{margin:0;font-size:13px;line-height:1.7;color:#687991}.goal-change-options{display:grid;gap:10px;margin:20px 0 12px}.goal-change-options button{display:flex;align-items:center;gap:12px;padding:16px;border:1px solid #d3dce8;border-radius:14px;background:#fff;color:#293545;font:inherit}.goal-change-options button.chosen{background:#edf3ff;border-color:#6b99ed;color:#396bca}.goal-change-options svg{width:23px;height:23px}.goal-change-options small{margin-left:auto;font-size:12px;color:#4775c5}.goal-change-dialog .goal-change-note{margin:0 0 12px;padding:12px;border-radius:12px;background:#f5f8fd}.goal-save,.goal-cancel{display:block;box-sizing:border-box;width:100%;min-height:46px;margin:0;padding:12px;border-radius:12px;font:inherit}.goal-save{background:#6b99ed;color:#fff;border:1px solid #5788e0}.goal-save:disabled{opacity:.45;cursor:default}.goal-cancel{margin-top:12px;background:#fff;border:1px solid #d3dce8;color:#687991}.goal-change-dialog button:focus-visible,.home-focus-goal button:focus-visible{outline:2px solid #396bca;outline-offset:3px}
+
+.goal-change-dialog [role="alert"]:empty{display:none}.goal-change-dialog [role="alert"]:not(:empty){margin:0 0 12px}
+.quest-app .alarm-test-button{display:block;width:100%;min-height:46px;margin:0 0 18px;border:1px solid #d3dce8;border-radius:12px;background:#fff;color:#4775c5;font-family:inherit;font-size:14px}
+
+.quest-app :is(.journey-card-copy h3,.reward-test-heading h3,.reward-demo-info h3){font-weight:600!important}
+
+
+/* Locked reward artwork: soft gray veil, readable labels. */
+.quest-app .reward-readable .journey-card.locked .journey-art:after{content:"";display:block;position:absolute;inset:0;background:rgba(23,43,70,.35);z-index:10;pointer-events:none}
+
+/* Equal spacing between the three home sections. */
+.app.quest-app.quest-home .home-focus-goal{margin-top:16px;margin-bottom:16px}
+.app.quest-app.quest-home .home-quest-summary{margin-top:0}
+
+.quest-app .reward-readable .journey-card.locked .journey-art:before{content:"";position:absolute;left:50%;top:50%;width:28px;height:28px;transform:translate(-50%,-50%);z-index:11;pointer-events:none;background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='10' width='14' height='11' rx='2'/%3E%3Cpath d='M8 10V7a4 4 0 0 1 8 0v3M12 14v3'/%3E%3C/svg%3E")}
+/* Activity completion stays beside the activity details. */
+.app.quest-app .academy-card.activity-toggle-card{display:flex;flex-direction:row;align-items:center;gap:14px;min-height:106px;padding:16px;background:#fff;border:1px solid #d3dce8;animation:none}
+.app.quest-app .activity-toggle-card .quest-card-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:6px}
+.app.quest-app .activity-toggle-card .academy-title{display:block;font-size:18px;color:#293545}
+.app.quest-app .activity-toggle{display:flex;flex:none;flex-direction:column;align-items:center;gap:5px;padding:0;background:transparent;border:0;color:#4775c5;font:inherit;font-size:12px}
+.activity-toggle-circle{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#edf3ff;color:#6b99ed}
+.activity-toggle-circle svg{width:28px;height:28px}.activity-toggle-circle path{stroke:currentColor;stroke-width:2.7;stroke-linecap:round;stroke-linejoin:round}
+.app.quest-app .activity-toggle[aria-pressed="true"]{color:#2e95a8}.activity-toggle[aria-pressed="true"] .activity-toggle-circle{background:#2e95a8;color:white}
+.activity-toggle:focus-visible{outline:2px solid #396bca;outline-offset:5px;border-radius:8px}
+.app.quest-app .record-history .record-category{border-bottom:1px solid #dce3ee;padding-bottom:14px;margin-bottom:14px}
+.app.quest-app .record-history .summary{box-sizing:border-box;width:100%;min-height:84px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;margin-top:12px;padding:14px 16px;border-radius:16px}
+.app.quest-app .record-history .summary b{font-size:22px;line-height:1.3}
+/* Category colors shared by both completion button states. */
+.app.quest-app .activity-toggle-card[data-quest-category="0"]{--toggle-soft:#edf3ff;--toggle-color:#506eaa}
+.app.quest-app .activity-toggle-card[data-quest-category="1"]{--toggle-soft:#e9f5ef;--toggle-color:#487d62}
+.app.quest-app .activity-toggle-card[data-quest-category="2"]{--toggle-soft:#fff0e8;--toggle-color:#b66035}
+.app.quest-app .activity-toggle-card[data-quest-category="3"]{--toggle-soft:#f0edfa;--toggle-color:#7961a5}
+.app.quest-app .activity-toggle-card .activity-toggle{color:var(--toggle-color)}
+.app.quest-app .activity-toggle-card .activity-toggle-circle{background:var(--toggle-soft);color:var(--toggle-color)}
+.app.quest-app .activity-toggle-card .activity-toggle[aria-pressed="true"]{color:var(--toggle-color)}
+.app.quest-app .activity-toggle-card .activity-toggle[aria-pressed="true"] .activity-toggle-circle{background:var(--toggle-color);color:#fff}
+/* Match the original completed-card palette in the compact buttons. */
+.app.quest-app .activity-toggle-card[data-quest-category="0"]{--toggle-fill:#9dbaf4}
+.app.quest-app .activity-toggle-card[data-quest-category="1"]{--toggle-fill:#5dc874}
+.app.quest-app .activity-toggle-card[data-quest-category="2"]{--toggle-fill:#f5a580}
+.app.quest-app .activity-toggle-card[data-quest-category="3"]{--toggle-fill:#ad97ef}
+.app.quest-app .activity-toggle-card .activity-toggle[aria-pressed="true"] .activity-toggle-circle{background:var(--toggle-fill);color:#fff}
+/* Reserve the label space while hiding the incomplete caption. */
+.app.quest-app .activity-toggle[aria-pressed="false"]>span:last-child{visibility:hidden}
+/* Restore compact activity rows while retaining the completion toggle. */
+.app.quest-app .academy-card.activity-toggle-card{min-height:78px;padding:12px;gap:10px}
+.app.quest-app .activity-toggle-card .quest-card-copy{gap:0}
+.app.quest-app .activity-toggle-card .activity-toggle{gap:2px;font-size:11px;line-height:16px}
+.app.quest-app .activity-toggle-card .activity-toggle-circle{width:36px;height:36px}
+.app.quest-app .activity-toggle-card .activity-toggle-circle svg{width:24px;height:24px}
+/* Keep the check centered regardless of the completion caption. */
+.app.quest-app .activity-toggle-card .activity-toggle{position:relative;display:grid;place-items:center;width:44px;height:44px;gap:0;align-self:center}
+.app.quest-app .activity-toggle-card .activity-toggle>span:last-child{position:absolute;top:calc(50% + 20px);left:50%;transform:translateX(-50%);white-space:nowrap;line-height:16px}
+/* Contain reward overlay layers so they cannot paint over fixed navigation. */
+.app.quest-app .journey-card .journey-art{isolation:isolate;overflow:hidden}
+/* Center both lines of the total EXP panel; remove inherited right alignment. */
+.app.quest-app .record-history .summary{text-align:center;font-size:13px;line-height:20px;gap:6px;min-height:84px;padding:14px 16px}
+.app.quest-app .record-history .summary b{display:block;float:none;position:static;align-self:center;margin:0!important;width:auto;text-align:center;font-size:22px;line-height:28px;font-weight:600!important}
+/* Completion state is conveyed by the check, color, and brief feedback. */
+.app.quest-app .activity-toggle-card .activity-toggle>span:last-child{display:none}
+/* The native toggle covers the whole card, including icon and title. */
+.app.quest-app .activity-toggle-card .activity-toggle{position:absolute;inset:0;width:100%;height:100%;padding:12px;display:grid;align-items:center;justify-items:end;border-radius:inherit;cursor:pointer;z-index:1}
+.app.quest-app .activity-toggle-card .activity-toggle:focus-visible{outline:2px solid var(--toggle-color);outline-offset:-3px}
+.app.quest-app .activity-toggle-card .activity-toggle:disabled{cursor:default}
+.app.quest-app .activity-toggle-card .quest-card-copy{padding-right:54px}
+/* Check controls have no decorative border. */
+.app.quest-app .activity-toggle-card .activity-toggle,.app.quest-app .activity-toggle-card .activity-toggle-circle{border:0;box-shadow:none}
+
+.app.quest-app .activity-toggle-card,.app.quest-app .activity-toggle-card *{transition:none}
+
+/* Completion feedback without captions. */
+.app.quest-app .activity-toggle-card.activity-recorded{animation:none}
+.app.quest-app .activity-recorded .activity-toggle-circle{animation:activity-record-pop .5s cubic-bezier(.2,.8,.3,1) both}
+
+@keyframes activity-record-pop{0%{transform:scale(.85)}45%{transform:scale(1.15)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.app.quest-app .activity-toggle-card.activity-recorded,.app.quest-app .activity-recorded .activity-toggle-circle{animation:none}}
+
+.activity-recorded-feedback{position:absolute;right:10px;top:5px;z-index:2;pointer-events:none;padding:2px 6px;border-radius:8px;background:#fff;color:var(--toggle-color);font-size:11px;font-weight:500;line-height:16px;animation:activity-record-label .75s ease-out both}
+@keyframes activity-record-label{0%{opacity:0;transform:translateY(5px)}20%,70%{opacity:1}100%{opacity:0;transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){.activity-recorded-feedback{animation:none}}
+/* Center the floating caption on the 36px check, inset 12px from the card. */
+.app.quest-app .activity-recorded-feedback{right:30px;left:auto;transform:translateX(50%);white-space:nowrap;animation-name:activity-record-label-centered}
+@keyframes activity-record-label-centered{0%{opacity:0;transform:translate(50%,5px)}20%,70%{opacity:1}100%{opacity:0;transform:translate(50%,-3px)}}
+@media(prefers-reduced-motion:reduce){.app.quest-app .activity-recorded-feedback{animation:none}}
+/* Alarm and time settings use Pretendard SemiBold for emphasized text. */
+.app.quest-app :is(.alarm-page,.wheel-modal) :is(h1,h2,h3,strong,b,.alarm-digits,.wheel-readout,.wheel-option.chosen){font-weight:600!important}
+/* Shared compact typography for all growth reward cards. */
+.app.quest-app .journey-card .reward-title-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.app.quest-app .journey-card .reward-title-row>span{font-size:12px;font-weight:500;color:var(--q-muted);white-space:nowrap}
+/* Subtly rounded UI surfaces across every app screen. */
+.app.quest-app :is(.traveler-home,.home-focus-goal,.home-quest-summary,.quest-card,.quest-progress-card,.quest-scene-card,.journey-card,.journey-art,.alarm-card,.reward-next,.reward-complete,.panel,.summary,.note,.weekly-summary-card,.modal,.wheel-modal,.wheel-selection,.character-option,.goal-options button,.name-field input,.q-primary,.primary,.q-round,.alarm-test-button,.quest-tabs button,.quest-category-tabs button,.category-tabs button,.calendar button,.earned-pill,.quest-symbol),
+.app.quest-app button:not(.alarm-switch):not(.icon):not(.q-icon):not(.activity-toggle-circle),
+:is(.goal-change-dialog,.character-change-dialog,.developer-level-dialog),
+:is(.goal-change-dialog,.character-change-dialog,.developer-level-dialog) :is(button,input,.goal-change-note){border-radius:8px!important}
+.app.quest-app .activity-toggle-circle{border-radius:50%!important}
+/* Activity / weekly challenge straight underline tabs. */
+.app.quest-app .quest-view-tabs{display:flex;gap:0;padding:0;margin:0 0 20px;background:transparent;border:0;border-bottom:1px solid #dce3ed;border-radius:0}
+.app.quest-app .quest-view-tabs button{flex:1;min-height:48px;padding:14px 8px;margin-bottom:-1px;border:0!important;border-bottom:2px solid transparent!important;border-radius:0!important;background:transparent;color:#748297;font-weight:500!important;box-shadow:none;transition:color .16s ease,border-color .16s ease}
+.app.quest-app .quest-view-tabs button[aria-pressed="true"]{color:#396bca;border-bottom-color:#396bca!important;font-weight:600!important;background:transparent;box-shadow:none}
+.app.quest-app .quest-view-tabs button:focus-visible{outline:2px solid #6b99ed;outline-offset:-3px}
+@media(prefers-reduced-motion:reduce){.app.quest-app .quest-view-tabs button{transition:none}}
+/* Draw tab selection independently of shared button corner styles. */
+.app.quest-app .quest-view-tabs button{position:relative;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.app.quest-app .quest-view-tabs button::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:0;background:transparent;pointer-events:none}
+.app.quest-app .quest-view-tabs button[aria-pressed="true"]::after{background:#396bca}
+/* Unlock labels use Medium in both the next reward and full reward list. */
+.app.quest-app .journey-card.locked button:disabled{font-weight:500!important}
+/* Reward cards: consistent 16px inset, 8px text rhythm, 40px actions. */
+.app.quest-app .reward-list .journey-bundle{grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:160px}
+.app.quest-app .reward-list .journey-bundle .journey-art{min-height:160px;border-radius:0!important}
+.app.quest-app .reward-list .journey-card-copy{padding:16px!important;gap:8px;min-height:160px;box-sizing:border-box}
+.app.quest-app .reward-list .reward-income{margin:0!important;line-height:1.5}
+.app.quest-app .reward-list .journey-card button{min-height:40px;margin-top:auto;font-weight:500!important}
+.app.quest-app .reward-next .journey-card-copy{padding:16px!important;display:flex;flex-direction:column;gap:8px}
+.app.quest-app .reward-next .reward-income{margin:0;line-height:1.5}
+.app.quest-app .reward-next .journey-card button{min-height:40px;margin-top:8px;font-weight:500!important}
+.app.quest-app .journey-card .reward-title-row{column-gap:8px;row-gap:2px}
+@media(max-width:360px){.app.quest-app .reward-list .journey-card-copy{padding:12px!important}.app.quest-app .reward-list .reward-title-row h3{font-size:16px}}
+/* Keep each day's heading, activities and total EXP inside one record card. */
+.app.quest-app .record-history .journal-records>.panel{box-sizing:border-box;padding:16px;margin:0 0 16px;background:#fff;border:1px solid #d3dce8;border-radius:8px!important;box-shadow:none}
+.app.quest-app .record-history .journal-records>.panel>.date{margin:0 0 12px;padding:0 0 12px;border-bottom:1px solid #e7edf5}
+.app.quest-app .record-history .journal-records>.panel>.date h3{margin:0;font-size:16px;line-height:1.5;font-weight:600!important}
+.app.quest-app .record-history .journal-records>.panel>.summary{margin-top:12px}
+@media(max-width:360px){.app.quest-app .record-history .journal-records>.panel{padding:12px}}
+/* Reserve scrollbar space so category length cannot change the viewport width. */
+html{scrollbar-gutter:stable}
+@supports not (scrollbar-gutter:stable){html{overflow-y:scroll}}
+.app.quest-app .quest-page{width:100%;min-width:0;box-sizing:border-box}
+.app.quest-app .quest-list{width:100%;min-width:0;grid-template-columns:minmax(0,1fr)}
+/* One shared screen width and content inset for every main destination. */
+.app.quest-app{width:100%!important;max-width:430px!important;margin-inline:auto!important;box-sizing:border-box}
+.app.quest-app :is(.quest-page,.alarm-page,.reward-readable){width:100%;max-width:none;box-sizing:border-box;padding-left:22px!important;padding-right:22px!important}
+.app.quest-app :is(.traveler-home,.home-focus-goal,.home-quest-summary){margin-left:22px!important;margin-right:22px!important;width:auto!important}
+.app.quest-app .quest-home-heading{padding-left:22px!important;padding-right:22px!important}
+/* S23+ reference viewport: 360 x 780 CSS px at a 3x display scale.
+   Keep responsive sizing for users with different display zoom settings. */
+.app.quest-app{max-width:360px!important}
+.app.quest-app .nav{width:min(100%,360px)!important;max-width:360px!important}
+.app.quest-app .quest-scene-card{margin-left:22px!important;margin-right:22px!important;width:auto;min-width:0}
+.app.quest-app .quest-scene-card :is(.traveler-home,.night-home){margin:0!important;width:100%!important;max-width:100%;box-sizing:border-box;border-radius:0!important;height:clamp(300px,46dvh,360px)!important;min-height:0!important}
+.app.quest-app .quest-scene-card .traveler-hud{left:16px;right:16px}
+.app.quest-app .home-focus-goal{gap:8px}
+.app.quest-app .home-focus-goal>div{min-width:0}
+.app.quest-app .home-focus-goal button{white-space:nowrap}
+/* Shared 430 x 1140 design viewport; content remains scrollable. */
+.app.quest-app{max-width:430px!important;min-height:1140px}
+.app.quest-app .nav{width:min(100%,430px)!important;max-width:430px!important}
+.app.quest-app .quest-scene-card :is(.traveler-home,.night-home){height:420px!important;min-height:0!important}
+@media(max-height:1139px){.app.quest-app{min-height:100dvh}}
+/* No trailing divider underneath the bedtime row. */
+.app.quest-app .alarm-card .alarm-entry:last-of-type{border-bottom:0!important}
+/* Long record lists must flow beyond the design viewport without clipping. */
+.app.quest-app:has(.record-history),.app.quest-app .quest-archive,.app.quest-app .record-history,.app.quest-app .journal-records{height:auto!important;max-height:none!important;overflow:visible!important}
+.app.quest-app:has(.record-history){padding-bottom:calc(100px + env(safe-area-inset-bottom))!important}
+/* Calendar uses the same corner radius as the record cards. */
+.app.quest-app .record-history .journal-calendar{border-radius:8px!important}
+.app.quest-app .alarm-page>.note{display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;padding:12px 8px!important;text-align:center;white-space:nowrap;font-size:clamp(9px,2.75vw,12px)!important;line-height:1.5}
+.app.quest-app .alarm-page>.note .journal-art{position:static!important;display:block;flex:0 0 18px;width:18px!important;height:18px!important;margin:0!important;transform:none!important}
+.app.quest-app .alarm-note-text{min-width:0;font-size:inherit;line-height:inherit;white-space:nowrap}
+.app.quest-app .alarm-page>.note .journal-art{display:none!important}
+.app.quest-app .alarm-page>.note{font-size:clamp(10px,3vw,13px)!important;gap:0}
+
+/* Immersive reward cards: same layout as the background-overlay design preview. */
+.app.quest-app .reward-readable .journey-bundle{position:relative;display:block!important;height:280px!important;min-height:280px!important;overflow:hidden;isolation:isolate;background:#263a50}
+.app.quest-app .reward-readable .journey-bundle>.journey-art{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;border-radius:0!important}
+.app.quest-app .reward-readable .journey-bundle:after{content:'';position:absolute;inset:0;z-index:12;pointer-events:none;background:linear-gradient(90deg,rgba(21,43,73,.92),rgba(21,43,73,.18))}
+.app.quest-app .reward-readable .journey-bundle>.journey-card-copy{position:relative;z-index:13;width:68%;height:100%;min-height:0!important;padding:20px!important;display:flex;flex-direction:column;gap:8px;box-sizing:border-box;background:transparent!important}
+.app.quest-app .reward-readable .journey-bundle .reward-title-row{display:flex;flex-direction:column-reverse;align-items:flex-start;gap:4px}
+.app.quest-app .reward-readable .journey-bundle .reward-title-row h3{color:#fff!important;font-size:20px!important;line-height:1.35;margin:0}
+.app.quest-app .reward-readable .journey-bundle .reward-title-row>span{color:#e0e9f5!important;font-size:12px}
+.app.quest-app .reward-readable .journey-bundle .reward-income{color:#fff!important;font-size:12px;margin:0!important;white-space:nowrap}
+.app.quest-app .reward-readable .journey-bundle .journey-card-copy>button{position:static!important;margin-top:auto!important;width:110px!important;min-height:36px!important;height:36px!important;flex:none;background:rgba(255,255,255,.9)!important;color:#34547d!important;border:1px solid rgba(255,255,255,.45)!important;font-size:12px!important;font-weight:500!important;opacity:1}
+.app.quest-app .reward-readable .journey-bundle .bundle-character{left:72%!important;top:auto!important;bottom:12px!important;width:110px!important;height:132px!important;transform:translateX(-50%)!important;z-index:13}
+.app.quest-app .reward-readable .journey-bundle.locked .journey-art:before{left:80%;z-index:15}
+.app.quest-app .reward-list{gap:16px}
+.app.quest-app .reward-readable .journey-bundle .reward-title-row{gap:8px}
+.app.quest-app .reward-readable .journey-bundle .reward-title-row>span{line-height:20px}
+.app.quest-app .reward-readable .journey-bundle .reward-title-row h3{line-height:27px}
+.app.quest-app .reward-readable .journey-bundle .reward-income{line-height:20px!important}
+.app.quest-app .reward-readable .journey-bundle .journey-card-copy>button{background:#6689cb!important;color:#fff!important;border:1px solid #5d8ee8!important;opacity:1!important}
+/* Blue-compatible contrast: fade only behind copy; preserve clear scenery. */
+.app.quest-app .reward-readable .journey-bundle:after{background:linear-gradient(90deg,rgba(20,42,79,.82) 0%,rgba(20,42,79,.6) 36%,rgba(20,42,79,.16) 65%,rgba(20,42,79,0) 82%)}
+.app.quest-app .reward-readable .journey-bundle.locked .journey-art:after{background:rgba(20,42,79,.25)}
+.app.quest-app .reward-readable .journey-bundle .journey-card-copy>button{border:0!important;box-shadow:none!important}
+/* Reward cards and actions use fills only, without decorative outlines. */
+.app.quest-app .reward-readable .journey-bundle,
+.app.quest-app .reward-readable .journey-bundle>.journey-art,
+.app.quest-app .reward-readable .journey-bundle>.journey-card-copy,
+.app.quest-app .reward-readable .journey-bundle .journey-card-copy>button{border:0!important;box-shadow:none!important}
+/* Compact reward typography: consistent 4px spacing between text rows. */
+.app.quest-app .reward-readable .journey-bundle>.journey-card-copy{gap:4px}
+.app.quest-app .reward-readable .journey-bundle .reward-title-row{gap:4px}
+.app.quest-app .reward-readable .journey-bundle .reward-title-row>span{line-height:18px}
+.app.quest-app .reward-readable .journey-bundle .reward-title-row h3{line-height:25px}
+.app.quest-app .reward-readable .journey-bundle .reward-income{line-height:18px!important}
+/* Shared main-screen alignment and spacing. */
+.app.quest-app :is(.quest-page,.alarm-page,.reward-readable){padding-top:20px!important}
+.app.quest-app .quest-home-heading{padding-top:20px!important;padding-bottom:24px!important}
+.app.quest-app :is(.q-heading,.journal-heading){padding-top:0!important;padding-bottom:0!important;margin-top:0!important;margin-bottom:24px!important;align-items:flex-start!important;height:auto!important;min-height:0!important}
+.app.quest-app :is(.quest-home-heading,.q-heading,.journal-heading)>div{position:relative;padding-top:20px}
+.app.quest-app :is(.quest-home-heading,.q-heading) .q-kicker{position:absolute;top:0;left:0;line-height:14px}
+.app.quest-app :is(.quest-home-heading,.q-heading,.journal-heading) h1{margin:0!important;font-size:28px!important;line-height:36px!important}
+.app.quest-app :is(.q-heading,.journal-heading) p{margin-top:8px!important}
+.app.quest-app .reward-list{gap:16px!important}
+.app.quest-app .reward-readable .journey-bundle>.journey-card-copy{padding:20px!important}
+.app.quest-app .reward-readable .journey-bundle .journey-card-copy>button{margin-top:auto!important}
+.app.quest-app .reward-readable .journey-bundle.locked .journey-art:before{left:auto;right:16px;top:16px;width:24px;height:24px;transform:none}
+.app.quest-app:not(.is-onboarding){padding-bottom:calc(106px + env(safe-area-inset-bottom))!important}
+/* Activity content has a 4px parent offset; compensate to align its title. */
+.app.quest-app .quest-page{padding-top:16px!important}
+/* Typography hierarchy: SemiBold headings, Medium actions, Regular reward metadata. */
+.app.quest-app :is(.quest-home-heading,.q-heading,.journal-heading) h1,
+.app.quest-app .reward-readable .reward-section-title h2,
+.app.quest-app .reward-readable .journey-bundle .reward-title-row h3{font-weight:600!important}
+.app.quest-app .reward-readable .journey-bundle .journey-card-copy>button{font-weight:500!important}
+.app.quest-app .reward-readable .journey-bundle .reward-title-row>span,
+.app.quest-app .reward-readable .journey-bundle .reward-income{font-weight:400!important}
+/* First-run screens follow the same type hierarchy as the main screens. */
+.app.quest-app .quest-setup .setup-copy h1,
+.app.quest-app .quest-setup .setup-copy h1 em{font-weight:600!important}
+.app.quest-app .quest-setup footer .q-primary{font-weight:500!important}
+/* Keep the home eyebrow on one line so it cannot overlap the title. */
+.app.quest-app .quest-home-heading>div{flex:1;min-width:0}
+.app.quest-app .quest-home-heading .q-kicker{white-space:nowrap;line-height:14px}
+/* Single design preview: clear scene with a separate navy information bar. */
+.app.quest-app .reward-scene-preview{margin-bottom:24px}
+.app.quest-app .reward-readable .reward-scene-preview .journey-bundle{height:210px!important;min-height:210px!important}
+.app.quest-app .reward-readable .reward-scene-preview .journey-bundle:after{display:none}
+.app.quest-app .reward-readable .reward-scene-preview .journey-bundle>.journey-art{height:130px!important;bottom:auto!important}
+.app.quest-app .reward-readable .reward-scene-preview .journey-bundle .bundle-character{left:50%!important;bottom:0!important;width:100px!important;height:118px!important}
+.app.quest-app .reward-readable .reward-scene-preview .journey-bundle>.journey-card-copy{position:absolute;top:130px;left:0;width:100%;height:80px;padding:12px 16px!important;display:grid;grid-template-columns:minmax(0,1fr) 104px;grid-template-rows:26px 18px;gap:4px 12px;background:#142a4f!important;align-content:center}
+.app.quest-app .reward-readable .reward-scene-preview .reward-title-row{grid-column:1;grid-row:1;flex-direction:row;align-items:baseline;gap:8px;flex-wrap:nowrap;min-width:0}
+.app.quest-app .reward-readable .reward-scene-preview .reward-title-row h3{font-size:18px!important;white-space:nowrap}
+.app.quest-app .reward-readable .reward-scene-preview .reward-title-row>span{font-size:11px;white-space:nowrap}
+.app.quest-app .reward-readable .reward-scene-preview .reward-income{grid-column:1;grid-row:2;font-size:11px!important;color:#ccd8ea!important}
+.app.quest-app .reward-readable .reward-scene-preview .journey-card-copy>button{grid-column:2;grid-row:1 / 3;align-self:center;width:104px!important;height:36px!important;margin:0!important;pointer-events:none}
+/* Softer preview information bar to complement the existing blue action. */
+.app.quest-app .reward-readable .reward-scene-preview .journey-bundle>.journey-card-copy{background:#edf3fc!important}
+.app.quest-app .reward-readable .reward-scene-preview .reward-title-row h3{color:#29384e!important}
+.app.quest-app .reward-readable .reward-scene-preview .reward-title-row>span,
+.app.quest-app .reward-readable .reward-scene-preview .reward-income{color:#687c99!important}
+/* One reward per swipe; next-growth reward remains a normal card. */
+.app.quest-app .reward-list.reward-carousel{display:flex!important;gap:16px!important;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0;overscroll-behavior-x:contain}
+.reward-carousel::-webkit-scrollbar{display:none}
+.app.quest-app .reward-list.reward-carousel>.journey-bundle{flex:0 0 100%;width:100%;min-width:0;scroll-snap-align:start;scroll-snap-stop:always;box-sizing:border-box}
+.reward-carousel-controls{display:flex;justify-content:center;align-items:center;gap:20px;margin-top:12px;color:#687c99;font-size:12px}
+.app.quest-app .reward-carousel-controls button{width:36px;height:36px;background:#edf3fc;color:#396bca;border:0;box-shadow:none;font-size:24px;line-height:1}
+.reward-carousel-controls button:disabled{opacity:.3}
+.app.quest-app .reward-readable .journey-bundle.is-equipped .journey-card-copy>button{background:#4773be!important;color:#fff!important}
+.app.quest-app .reward-readable .journey-bundle.locked .journey-card-copy>button{background:#9188b8!important;color:#fff!important}
+
+.reward-carousel{cursor:grab;user-select:none;-webkit-user-select:none}
+.app.quest-app .reward-list.reward-carousel.is-dragging{cursor:grabbing;scroll-snap-type:none;scroll-behavior:auto}
+.reward-carousel.is-dragging *{cursor:grabbing!important}
+
+/* Growth panoramas: smaller preview sprites anchored to each scene floor. */
+.app.quest-app .reward-readable .journey-bundle .bundle-character{width:84px!important;height:100px!important;bottom:calc(var(--reward-floor,15%) - 3px)!important}
+.app.quest-app .reward-readable .journey-bundle[data-bundle="white"]{--reward-floor:10%}
+.app.quest-app .reward-readable .journey-bundle[data-bundle="desert"]{--reward-floor:13%}
+.app.quest-app .reward-readable .journey-bundle[data-bundle="forest"]{--reward-floor:13%}
+.app.quest-app .reward-readable .journey-bundle[data-bundle="deepForest"]{--reward-floor:16%}
+.app.quest-app .reward-readable .journey-bundle[data-bundle="runFrontier"]{--reward-floor:14%}
+.app.quest-app .reward-readable .journey-bundle[data-bundle="city"]{--reward-floor:10%}
+.app.quest-app .reward-readable .journey-bundle:is([data-bundle="sky"],[data-bundle="flightFrontier"],[data-bundle="subway"]){--reward-floor:32%}
+.app.quest-app .traveler-home[data-background="desert"],.app.quest-app .traveler-home[data-background="forest"]{--scene-foot:14%}
+.app.quest-app .traveler-home[data-background="white"]{--scene-foot:9%}
+.app.quest-app .traveler-home[data-background="deepForest"]{--scene-foot:17%}
+.app.quest-app .traveler-home[data-background="runFrontier"]{--scene-foot:15%}
+.app.quest-app .traveler-home[data-background="city"]{--scene-foot:9%}
+.app.quest-app .desert-home[data-background="subway"] .desert-pan-track{left:0!important}
+
+/* Station walking shares the deck baseline in home and reward preview. */
+.app.quest-app .reward-readable .journey-bundle[data-bundle="subway"]{--reward-floor:10%}
+.app.quest-app .desert-home[data-background="subway"] .traveler-art{height:23%;bottom:9%;width:auto;aspect-ratio:1}
+
+/* Matching nighttime panoramas, with independent gender-specific resting sprites. */
+.growth-night{position:absolute;inset:0;overflow:hidden;--rest-floor:10%}
+.growth-night-landscape{position:absolute;inset:0;background-position:center;background-size:auto 100%;background-repeat:repeat-x;image-rendering:pixelated}
+.growth-night-rest{position:absolute;left:50%;bottom:var(--rest-floor);width:32%;height:25%;transform:translateX(-50%)}
+.growth-night-rest>img{width:100%;height:100%;object-fit:contain;object-position:center bottom;image-rendering:pixelated}
+.growth-sleep-mark{position:absolute;left:62%;top:8%;width:44px;height:54px;pointer-events:none;color:#eef3ff;z-index:2;text-shadow:0 1px 3px #162843}
+.growth-sleep-mark i{position:absolute;left:0;bottom:0;font-style:normal;font-weight:600;font-size:13px;line-height:1;opacity:0;animation:growth-sleep 7.2s linear infinite}
+.growth-sleep-mark i:nth-child(2){animation-delay:-2.4s}
+.growth-sleep-mark i:nth-child(3){animation-delay:-4.8s}
+.growth-night[data-growth-night="desert"],.growth-night[data-growth-night="forest"]{--rest-floor:12%}
+.growth-night[data-growth-night="deepForest"]{--rest-floor:16%}
+.growth-night[data-growth-night="runFrontier"]{--rest-floor:14%}
+.growth-night[data-growth-night="sky"],.growth-night[data-growth-night="flightFrontier"]{--rest-floor:32%}
+@keyframes growth-sleep{0%{opacity:0;transform:translate(0,0) scale(.75)}15%{opacity:.42}75%{opacity:.32}100%{opacity:0;transform:translate(25px,-42px) scale(1.25)}}
+@media(prefers-reduced-motion:reduce){.growth-sleep-mark i{animation:none;opacity:.4}.growth-sleep-mark i:nth-child(2){transform:translate(12px,-16px)}.growth-sleep-mark i:nth-child(3){transform:translate(24px,-32px)}}
+.evolution-preview{margin:24px 0}
+.evolution-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 12px 12px;border-radius:8px;background:linear-gradient(#eaf2fcbb,#eaf2fcdd),url('../assets/backgrounds/growth-v2/08-future-city.png') center/cover}
+.evolution-pair figure{margin:0;text-align:center}
+.evolution-figure{height:160px;display:flex;align-items:flex-end;justify-content:center}
+.evolution-figure img{height:156px;max-width:100%;object-fit:contain;image-rendering:pixelated}
+.evolution-figure img.evolution-modern{height:124px}
+.evolution-pair figcaption{font-size:12px;color:#405b7c;font-weight:500;margin-top:8px}
+.evolution-preview>p{font-size:11px;color:#687c99;line-height:1.5;margin:8px 0 0}
+.app.quest-app .evolution-figure img{width:156px!important;height:156px!important}.app.quest-app .evolution-figure img.evolution-modern{width:140px!important;height:140px!important}
+
+.growth-night[data-growth-night="white"] .growth-tent-rest{width:68%;height:42%;bottom:8%}
+.growth-tent-rest .growth-sleep-mark{left:53%;top:23%;right:auto}
+
+/* Exclude generated exterior haze from the tent silhouette. */
+.growth-tent-rest>img{clip-path:polygon(57% 1%,61% 4%,64% 1%,66% 4%,63% 10%,65% 12%,85% 58%,86% 62%,94% 80%,96% 78%,98% 82%,96% 89%,93% 89%,92% 87%,31% 98%,27% 93%,8% 85%,4% 85%,2% 82%,3% 77%,6% 77%,7% 79%,25% 34%,24% 32%,24% 27%,26% 26%,28% 29%,29% 31%,57% 13%,59% 10%,56% 5%)}
+
+/* Moonlit subjects with a local warm lantern, rather than an exterior halo. */
+.growth-night-rest>img{filter:brightness(.72) saturate(.78)}
+.growth-tent-rest::after{content:'';position:absolute;left:65%;top:40%;width:27%;height:35%;transform:translate(-50%,-50%);pointer-events:none;background:radial-gradient(ellipse,rgba(255,249,206,1) 0%,rgba(255,229,139,.9) 9%,rgba(255,193,80,.55) 20%,rgba(255,165,64,.17) 40%,transparent 70%);mix-blend-mode:screen;animation:tent-lantern-glow 5.6s ease-in-out infinite}
+@keyframes tent-lantern-glow{0%,100%{opacity:.68;transform:translate(-50%,-50%) scale(.9)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
+@media(prefers-reduced-motion:reduce){.growth-tent-rest::after{animation:none;opacity:.95}}
+
+.growth-night .growth-field-rest{width:67%;height:34%;bottom:12%}
+
+.growth-field-rest .growth-sleep-mark{left:28%;top:0}
+
+.meadow-fireflies{position:absolute;inset:0;pointer-events:none}
+.meadow-fireflies i{position:absolute;width:3px;height:3px;border-radius:50%;background:#dbeea4;box-shadow:0 0 7px 2px #c3e89166;animation:meadow-firefly 8s ease-in-out infinite;left:22%;top:68%}
+.meadow-fireflies i:nth-child(2){left:74%;top:73%;animation-delay:-2s}
+.meadow-fireflies i:nth-child(3){left:62%;top:58%;animation-delay:-4s}
+.meadow-fireflies i:nth-child(4){left:35%;top:84%;animation-delay:-6s}
+@keyframes meadow-firefly{0%,100%{opacity:.08;transform:translate(0,0)}45%{opacity:.7;transform:translate(8px,-12px)}70%{opacity:.3;transform:translate(-3px,-6px)}}
+@media(prefers-reduced-motion:reduce){.growth-field-rest>img{animation:none}.meadow-fireflies i{animation:none;opacity:.4}}
+.growth-night[data-growth-night="desert"] .growth-night-landscape{background-size:cover;background-repeat:no-repeat;background-position:center}.growth-night .growth-field-rest{bottom:16%}
+
+.growth-field-rest>img{filter:url(#field-clean-alpha) brightness(.72) saturate(.78)}
+
+.growth-night[data-growth-night="forest"] .growth-night-landscape{background-size:cover;background-repeat:no-repeat}.growth-night .growth-forest-rest{width:60%;height:53%;bottom:9%}.growth-forest-rest .growth-sleep-mark{left:49%;top:34%}
+
+.forest-night-full{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center bottom;image-rendering:pixelated}.growth-forest-unified>.growth-sleep-mark{left:54%;top:calc(57% - 54px)}
+
+/* Subtle cool moonlight for the meadow female, preserving the approved male palette. */
+.growth-field-rest>img[src*="/female/"]{filter:url(#field-clean-alpha) brightness(.67) saturate(.60)}
+
+/* Gentle moonlight confined to the visible moon in each night composition. */
+.growth-night[data-growth-night="white"] .growth-night-landscape::after,.growth-night[data-growth-night="desert"] .growth-night-landscape::after{content:'';position:absolute;width:86px;height:86px;pointer-events:none;border-radius:50%;background:radial-gradient(circle,rgba(215,237,255,.22) 0%,rgba(166,204,255,.12) 25%,rgba(139,180,249,.04) 48%,transparent 70%);mix-blend-mode:screen;animation:gentle-moonlight 8s ease-in-out infinite}
+.growth-night[data-growth-night="white"] .growth-night-landscape::after{left:89%;top:38%}
+.growth-night[data-growth-night="desert"] .growth-night-landscape::after{left:37.5%;top:8.5%}
+@keyframes gentle-moonlight{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(.94)}50%{opacity:.9;transform:translate(-50%,-50%) scale(1.08)}}
+@media(prefers-reduced-motion:reduce){.growth-night .growth-night-landscape::after{animation:none!important;opacity:.65;transform:translate(-50%,-50%)}}
+
+/* Ruins sleep: head at lower left of center; Zs rise diagonally above it. */
+.growth-ruins-unified>.growth-sleep-mark{left:43%;top:calc(66% - 54px)}
+
+
+.growth-alpine-unified>.growth-sleep-mark{left:37%;top:calc(59% - 54px)}
+
+/* Same daytime geography, moonlit for camping through level 50. */
+.camp-day-landscape{position:absolute;inset:0;background-position:center;background-size:auto 100%;background-repeat:repeat-x;image-rendering:pixelated;filter:brightness(.31) saturate(.55)}
+.growth-camp-night:before{content:'';position:absolute;inset:0;background:#173165;mix-blend-mode:color;z-index:1;pointer-events:none;opacity:.6}
+.growth-camp-night .camp-sleeper{z-index:2;width:66%;height:auto;aspect-ratio:3/2;bottom:6%}
+.growth-camp-night[data-growth-night="deepForest"] .camp-sleeper{bottom:9%}
+.growth-camp-night[data-growth-night="sky"] .camp-sleeper,.growth-camp-night[data-growth-night="flightFrontier"] .camp-sleeper{bottom:7%}
+.camp-sleeper>img{display:block;filter:url(#camp-clean-alpha) brightness(.76) saturate(.8)}
+.camp-sleeper .growth-sleep-mark{left:36%;top:18%}
+.camp-lantern-glow{position:absolute;left:9%;top:58%;width:27%;height:35%;pointer-events:none;transform:translate(-50%,-50%);background:radial-gradient(ellipse,#fff3bba6 0%,#ffcb6a70 13%,#ffb34a24 42%,transparent 70%);mix-blend-mode:screen;animation:tent-lantern-glow 6s ease-in-out infinite}
+[data-camp-gender="female"] .camp-lantern-glow{left:11%;top:65%}
+@media(prefers-reduced-motion:reduce){.camp-lantern-glow{animation:none;opacity:.8}}
+
+.wasteland-camp-unified>.camp-lantern-glow{left:30.5%;top:75.5%;width:13%;height:12%;opacity:.5}
+.wasteland-camp-unified[data-camp-gender="male"]>.camp-lantern-glow{left:19.7%;top:75%;width:8%;height:7%;opacity:.4}
+.wasteland-camp-unified[data-camp-gender="female"]>.camp-lantern-glow{left:18.2%;top:74.5%;width:8%;height:7%;opacity:.4}
+.wasteland-camp-unified>.growth-sleep-mark{left:45%;top:calc(68% - 54px)}
+
+
+.meadow-camp-unified>.camp-lantern-glow{left:30.5%;top:75.5%;width:13%;height:12%;opacity:.5}
+.meadow-camp-unified>.growth-sleep-mark{left:45%;top:calc(68% - 54px)}
+
+/* Full-resolution standing portraits need smooth downsampling, not pixel-art scaling. */
+.app.quest-app .traveler-art > img,
+.app.quest-app .bundle-character > img.bundle-standing,
+.app.quest-app .bundle-character > img.female-standing {
+  image-rendering: auto !important;
+  object-fit: contain;
+  animation: none !important;
+  transform: none !important;
+  filter: none !important;
+  opacity: 1;
+}
+
+/* Ground the standing portraits in the warm wasteland light. */
+.app.quest-app .quest-scene-card .desert-home[data-background="white"]:not(.night-home) .traveler-art:has(> img) {
+  height: 20%;
+  bottom: 16.8%;
+  isolation: isolate;
+}
+.app.quest-app .traveler-home[data-background="white"] .traveler-art:has(> img)::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 3.7%;
+  width: 38%;
+  height: 5%;
+  transform: translateX(-50%) rotate(-5deg);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #37251db3 0%, #47302366 42%, #47302300 74%);
+  pointer-events: none;
+  z-index: -1;
+}
+.app.quest-app .traveler-home[data-background="white"] .traveler-art > img,
+.app.quest-app .journey-bundle[data-bundle="white"] .bundle-character > img {
+  filter: sepia(.10) saturate(.94) brightness(1.03) !important;
+}
+
+/* Meadow: match the approved wasteland scale with softer daylight and ground contact. */
+.app.quest-app .quest-scene-card .desert-home:is([data-background="desert"],[data-background="forest"],[data-background="deepForest"],[data-background="runFrontier"]):not(.night-home) .traveler-art {
+  height: 20%;
+  width: auto;
+  aspect-ratio: 1;
+  max-width: none;
+  max-height: none;
+  bottom: 14%;
+  isolation: isolate;
+}
+.app.quest-app .traveler-home:is([data-background="desert"],[data-background="forest"],[data-background="deepForest"],[data-background="runFrontier"]) .traveler-art::before,
+.app.quest-app .journey-bundle:is([data-bundle="desert"],[data-bundle="forest"],[data-bundle="deepForest"],[data-bundle="runFrontier"]) .bundle-character::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 2%;
+  width: 38%;
+  height: 5%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #28342199 0%, #3343294d 42%, #33432900 74%);
+  pointer-events: none;
+  z-index: -1;
+}
+.app.quest-app .journey-bundle:is([data-bundle="desert"],[data-bundle="forest"],[data-bundle="deepForest"],[data-bundle="runFrontier"]) .bundle-character { isolation: isolate; }
+.app.quest-app .traveler-home:is([data-background="desert"],[data-background="forest"],[data-background="deepForest"],[data-background="runFrontier"]) .traveler-art > canvas,
+.app.quest-app .journey-bundle:is([data-bundle="desert"],[data-bundle="forest"],[data-bundle="deepForest"],[data-bundle="runFrontier"]) .bundle-character > canvas {
+  image-rendering: auto;
+  filter: sepia(.06) saturate(.94) brightness(1.03);
+}
+
+/* Apricot satchel portrait: warm dusk light and contact under shoes and broom. */
+.app.quest-app .traveler-home[data-background="white"] .traveler-art > img.female-standing,
+.app.quest-app .journey-bundle[data-bundle="white"] img[src*="idle-standing-apricot"] {
+  filter: sepia(.12) saturate(.84) brightness(.97) !important;
+}
+.app.quest-app .traveler-home[data-background="white"] .traveler-art:has(> img.female-standing)::before {
+  left: 48%;
+  bottom: 2.2%;
+  width: 40%;
+  height: 4.5%;
+  background: radial-gradient(ellipse, #38261dcc 0%, #49312570 35%, #49312500 74%);
+}
+
+/* Approved walking portraits use their own animation renderer. */
+.app.quest-app canvas.approved-walk { width:100%; height:100%; object-fit:contain; }
+
+/* Larger meadow characters; keep the canvas sole anchored to the same ground. */
+.app.quest-app .quest-scene-card .desert-home:is([data-background="desert"],[data-background="forest"],[data-background="deepForest"],[data-background="runFrontier"]):not(.night-home) .traveler-art {
+ height:32%; bottom:13.53%;
+}
+
+/* Standing feet meet a compact contact shadow on the foreground plane. */
+.app.quest-app .quest-scene-card .desert-home[data-background="white"]:not(.night-home) .traveler-art:has(> img){
+ height:30%;bottom:13%;width:auto;aspect-ratio:1;max-height:none;max-width:none;
+}
+.app.quest-app .traveler-home[data-background="white"] .traveler-art:has(> img)::before{
+ left:54%;bottom:2.7%;width:25%;height:3.2%;z-index:0;
+ transform:translateX(-50%);
+ background:radial-gradient(ellipse,#493329b8 0%,#50382c85 30%,#60453238 60%,transparent 76%);
+}
+.app.quest-app .traveler-home[data-background="white"] .traveler-art:has(> img.female-standing)::before{
+ left:54%;bottom:2.8%;width:22%;height:3%;
+}
+.app.quest-app .traveler-home[data-background="white"] .traveler-art>img{position:relative;z-index:1}
+
+/* Static wasteland uses the open central ground, not a scrolling tile edge. */
+.app.quest-app .quest-scene-card .desert-home[data-background="white"]:not(.night-home){
+ background:#bd906f url("../assets/backgrounds/growth-v2/01-wasteland-painted-v1.png") center/auto 100% no-repeat!important;
+}
+.app.quest-app .desert-home[data-background="white"]:not(.night-home)>.desert-pan-track{display:none!important}
+.app.quest-app .quest-scene-card .desert-home[data-background="white"]:not(.night-home) .traveler-art:has(> img){
+ transform:translateX(-50%)!important;scale:1!important;height:32%;bottom:14.75%;
+}
+
+/* Keep the eight-frame walk on the painted path, with a quiet contact shadow. */
+.app.quest-app .quest-scene-card .desert-home:is([data-background="desert"],[data-background="forest"],[data-background="deepForest"],[data-background="runFrontier"]):not(.night-home) .traveler-art:has(>canvas.approved-walk){
+ height:32%;bottom:14.75%;transform:translateX(-50%);scale:1;
+}
+.app.quest-app .quest-scene-card .desert-home:is([data-background="desert"],[data-background="forest"],[data-background="deepForest"],[data-background="runFrontier"]):not(.night-home) .traveler-art:has(>canvas.approved-walk)::before{
+ left:48%;bottom:2.4%;width:35%;height:3%;z-index:0;
+ background:radial-gradient(ellipse,#39402c66 0%,#39402c30 45%,transparent 75%);
+}
+.app.quest-app .quest-scene-card .desert-home:is([data-background="desert"],[data-background="forest"],[data-background="deepForest"],[data-background="runFrontier"]) canvas.approved-walk{
+ position:relative;z-index:1;
+}
+.app.quest-app .quest-scene-card .desert-home:is([data-background="desert"],[data-background="forest"],[data-background="deepForest"],[data-background="runFrontier"]) .desert-pan-track img{
+ image-rendering:auto;
+}
+/* Forest path sits slightly higher than the meadow path in the painted panorama. */
+.app.quest-app .quest-scene-card .desert-home[data-background="forest"]:not(.night-home) .traveler-art:has(>canvas.approved-walk){bottom:18.5%}
+
+/* Place soles on the stone walkway and snow surface. */
+.app.quest-app .quest-scene-card .desert-home[data-background="deepForest"]:not(.night-home) .traveler-art:has(>canvas.approved-walk){bottom:14.75%}
+.app.quest-app .quest-scene-card .desert-home[data-background="runFrontier"]:not(.night-home) .traveler-art:has(>canvas.approved-walk){bottom:14.75%}
+
+/* Level 1–30 reward thumbnails mirror the approved daytime scenes. */
+.app.quest-app .reward-readable .journey-bundle:is([data-bundle="white"],[data-bundle="desert"],[data-bundle="forest"],[data-bundle="deepForest"],[data-bundle="runFrontier"]) .reward-panorama{
+ background-size:auto 100%!important;background-position:center center!important;
+ image-rendering:auto;animation:none!important;filter:none!important;
+}
+.app.quest-app .reward-readable .journey-bundle:is([data-bundle="white"],[data-bundle="desert"],[data-bundle="forest"],[data-bundle="deepForest"],[data-bundle="runFrontier"]) .journey-art{filter:none!important}
+.app.quest-app .reward-readable .journey-bundle:is([data-bundle="white"],[data-bundle="desert"],[data-bundle="forest"],[data-bundle="deepForest"],[data-bundle="runFrontier"]) .bundle-character{
+ inset:auto auto 14.75% 50%!important;width:100px!important;height:100px!important;
+ padding:0!important;transform:translateX(-50%)!important;display:block;isolation:isolate;
+}
+.app.quest-app .reward-readable .journey-bundle[data-bundle="forest"] .bundle-character{bottom:18.5%!important}
+.app.quest-app .reward-readable .journey-bundle[data-bundle="white"] .bundle-character{bottom:12%!important}
+.app.quest-app .reward-readable .journey-bundle:is([data-bundle="white"],[data-bundle="desert"],[data-bundle="forest"],[data-bundle="deepForest"],[data-bundle="runFrontier"]) .bundle-character>img,
+.app.quest-app .reward-readable .journey-bundle .bundle-character>canvas.approved-walk{
+ width:100%!important;height:100%!important;object-fit:contain;position:relative;z-index:1;
+}
+.app.quest-app .reward-readable .journey-bundle:is([data-bundle="white"],[data-bundle="desert"],[data-bundle="forest"],[data-bundle="deepForest"],[data-bundle="runFrontier"]) .bundle-character::before{
+ content:"";position:absolute;left:48%;bottom:2.4%;width:35%;height:3%;z-index:0;border-radius:50%;transform:translateX(-50%);
+ background:radial-gradient(ellipse,#39402c66,transparent 75%);
+}
+/* Reward thumbnails show a still pose and still scenery at every level. */
+.app.quest-app .journey-bundle .journey-art *,
+.app.quest-app .journey-bundle .journey-art *::before,
+.app.quest-app .journey-bundle .journey-art *::after{animation:none!important;transition:none!important}
+
+/* Match the level-one daytime camera to the other ground scenes. */
+.app.quest-app .quest-scene-card .white-home:not(.night-home) > .traveler-stage,
+.app.quest-app .quest-scene-card .white-home:not(.night-home) > .clearing-scene{transform:none!important}
+
+/* A small, stationary discovery on the snowy roadside. Crop transparent padding only. */
+.app .snow-broom-discovery {
+ position:absolute; z-index:6; left:76%; bottom:12.5%;
+ width:84px; height:62px; padding:0; margin:0; overflow:hidden;
+ border:0; border-radius:0; background:transparent; box-shadow:none;
+ cursor:pointer; transform:translateX(-50%); touch-action:manipulation;
+}
+.app .snow-broom-discovery img {
+ position:absolute; width:110px; height:165px; max-width:none;
+ left:-14px; top:-57px; pointer-events:none; object-fit:contain;
+}
+.app .snow-broom-discovery:focus-visible { outline:2px solid #eac68b; outline-offset:4px; border-radius:12px; }
+.app .night-home .snow-broom-discovery { filter:brightness(.7) saturate(.8); }
+/* World-anchored discovery: flattened painted snow blends into the path. */
+.app .snow-broom-discovery { left:0; bottom:21%; width:82px; height:44px; z-index:0; }
+.app .snow-broom-discovery img { width:82px; height:auto; left:0; top:3px; }
+
+.app .traveler-home[data-background="runFrontier"] > .traveler-stage { z-index:1; pointer-events:none; }
+.app .traveler-home:is([data-background="sky"],[data-background="flightFrontier"]) .traveler-art { height:41%!important; width:auto!important; aspect-ratio:1; left:50%!important; top:50%!important; bottom:auto!important; transform:translate(-50%,-50%)!important; }
+.winter-broom-flight { width:100%; height:100%; object-fit:contain; }
+.app .traveler-home:is([data-background="sky"],[data-background="flightFrontier"]) .desert-pan-track { animation:sky-broom-drift 110s linear infinite!important; animation-play-state:running!important; }
+@keyframes sky-broom-drift { from {transform:translateX(-66.666667%)} to {transform:translateX(-33.333333%)} }
+.broom-required { box-sizing:border-box; width:calc(100% - 32px); max-width:372px; padding:26px; border:1px solid #d3dce8; border-radius:20px; color:#293545; background:#fff; box-shadow:0 16px 48px #26334d26; font-family:inherit; }
+.broom-required::backdrop { background:#172b465c; }
+.broom-required h2 { color:#293545; font-size:19px; margin:0 0 12px; }
+.broom-required p { color:#607087; line-height:1.7; font-size:14px; margin:0 0 20px; word-break:keep-all; }
+.broom-required button { width:100%; min-height:46px; border:0; border-radius:12px; padding:12px; background:#6689cb; color:#fff; cursor:pointer; font:inherit; font-weight:600; }
+.broom-required button:hover { background:#6689cb; }
+.broom-required button:focus-visible { outline:3px solid #a9c6fa; outline-offset:3px; }
+@media(prefers-reduced-motion:reduce){.app .traveler-home:is([data-background="sky"],[data-background="flightFrontier"]) .desert-pan-track{animation:none!important}}
+
+/* Quiet discovery cue; stays inside the prop's existing clipped hit area. */
+.snow-broom-discovery .broom-glint,.snow-broom-discovery .broom-dust{position:absolute;pointer-events:none;opacity:0;background:#ffe6a3;left:30px;top:12px;}
+.snow-broom-discovery .broom-glint{width:10px;height:10px;left:28.5px;top:10.5px;background:#fff0bd;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);}
+.snow-broom-discovery .broom-dust{width:2.5px;height:2.5px;border-radius:50%;box-shadow:0 0 4px #ffe2a0;}
+.snow-broom-discovery.is-glinting .broom-glint{animation:broom-soft-glint 1.2s ease-in-out both;}
+.snow-broom-discovery.is-glinting .broom-dust-one{animation:broom-soft-dust 1s .1s ease-out both;left:33px;top:18px;}
+.snow-broom-discovery.is-glinting .broom-dust-two{animation:broom-soft-dust 1s .2s ease-out both;left:38px;top:20px;}
+@keyframes broom-soft-glint{0%,100%{opacity:0;transform:scale(.4)}35%{opacity:1;transform:scale(1)}65%{opacity:.6;transform:scale(.8)}}
+@keyframes broom-soft-dust{0%{opacity:0;transform:translate(0,0)}30%{opacity:.9}100%{opacity:0;transform:translate(2px,-9px)}}
+@media(prefers-reduced-motion:reduce){.snow-broom-discovery .broom-glint,.snow-broom-discovery .broom-dust{animation:none!important;opacity:0!important}}
+
+.snow-broom-discovery::after{content:'';position:absolute;left:21px;top:3px;width:25px;height:25px;border-radius:50%;background:radial-gradient(circle,#ffd77c99 0%,#ffd77c40 40%,transparent 72%);opacity:0;pointer-events:none}
+.snow-broom-discovery.is-glinting::after{animation:broom-soft-glint 1.2s ease-in-out both}
+@media(prefers-reduced-motion:reduce){.snow-broom-discovery::after{animation:none!important;opacity:0!important}}
+
+/* Near cloud wisps pass faster than the distant mountains during flight. */
+.flight-cloud-pass{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.flight-cloud-pass i{position:absolute;left:-65%;top:29%;width:55%;height:22px;border-radius:50%;background:radial-gradient(ellipse,rgba(248,250,255,.32),rgba(241,246,255,.12) 45%,transparent 72%);filter:blur(5px);animation:flight-cloud-pass 9s linear infinite;opacity:0}
+.flight-cloud-pass i:nth-child(2){top:73%;height:38px;width:72%;animation-duration:7s;animation-delay:-3s}
+.flight-cloud-pass i:nth-child(3){top:45%;height:16px;width:42%;animation-duration:11s;animation-delay:-7s}
+@keyframes flight-cloud-pass{0%{transform:translateX(0);opacity:0}12%,82%{opacity:1}100%{transform:translateX(330%);opacity:0}}
+@media(prefers-reduced-motion:reduce){.flight-cloud-pass{display:none}}
+
+/* Painted modern city: winter travelers on the level foreground sidewalk. */
+.app.quest-app .quest-scene-card .desert-home[data-background="city"]:not(.night-home) .traveler-art:has(>canvas.approved-walk){height:32%;bottom:12%;width:auto;aspect-ratio:1;left:50%;transform:translateX(-50%);scale:1}
+.app.quest-app .desert-home[data-background="city"] .city-pan-tile{aspect-ratio:1.5}
+.app.quest-app .desert-home[data-background="city"] .city-pan-tile img{left:0;width:100%;height:100%;object-fit:fill;image-rendering:auto;filter:none}
+
+.app.quest-app .desert-home[data-background="city"] .traveler-art::before{left:48%;bottom:2.4%;width:35%;height:3%;background:radial-gradient(ellipse,#40362e66,transparent 75%)}
+.app.quest-app .desert-home[data-background="city"] canvas.approved-walk{position:relative;z-index:1}
+.app.quest-app .art-city .reward-panorama{background-size:auto 100%!important;filter:none!important;image-rendering:auto}
+.app.quest-app .art-city .bundle-character{inset:auto auto 12% 50%!important;width:100px!important;height:100px!important;padding:0!important;transform:translateX(-50%)!important}
+.modern-city-evening{position:absolute;inset:0;background:url('../assets/backgrounds/growth-v2/08-korean-city-painted-v1.png') center/auto 100% no-repeat}
+.modern-city-evening::after{content:'';position:absolute;inset:0;background:#19284755;pointer-events:none}
+
+.app.quest-app .desert-home[data-background="city"] .desert-pan-track{--pan-seam:40px;filter:none}
+.app.quest-app .desert-home[data-background="city"] .city-pan-tile{margin-left:-40px;mask-image:linear-gradient(to right,transparent,#000 40px)}
+
+/* Shared city daylight grade, identical across genders and all walk frames. */
+.app.quest-app :is(.desert-home[data-background="city"],.journey-bundle[data-bundle="city"]) canvas.approved-walk{
+ filter:saturate(.78) contrast(.92) brightness(.98) sepia(.10)!important;
+}
+.app.quest-app .desert-home[data-background="city"] .city-pan-tile img,
+.app.quest-app .art-city .reward-panorama{
+ filter:saturate(1.06) contrast(.96) brightness(1.02)!important;
+}
+
+.wasteland-camp-unified .forest-night-full{image-rendering:auto}
+
+/* Current painted character assets retain smooth edges. */
+.traveler-art>img,.camp-sleeper>img,.growth-night-rest>img,.forest-night-full,.camp-day-landscape{image-rendering:auto!important}
+.camp-sleeper>img{filter:none}
+
+/* Horizontal buried broom: wood and straw peek through the snow. */
+.app .snow-broom-discovery{width:156px;height:58px;bottom:10%;z-index:2}
+.app .snow-broom-discovery img{width:100%;height:auto;top:-21%;image-rendering:auto}
+.snow-broom-discovery .broom-glint{left:70px;top:28px}
+.snow-broom-discovery::after{left:63px;top:21px}
+.snow-broom-discovery.is-glinting .broom-dust-one{left:48px;top:22px}
+.snow-broom-discovery.is-glinting .broom-dust-two{left:54px;top:24px}
+
+/* Center the level 40–60 reward characters within their thumbnail scenery. */
+.app.quest-app .reward-readable .journey-bundle:is([data-bundle="sky"],[data-bundle="flightFrontier"],[data-bundle="city"]) .bundle-character{
+ inset:auto auto 12% 50%!important;width:100px!important;height:100px!important;
+ max-width:80%;padding:0!important;transform:translateX(-50%)!important;
+}
+.app.quest-app .reward-readable .journey-bundle:is([data-bundle="sky"],[data-bundle="flightFrontier"]) .bundle-character{
+ top:50%!important;bottom:auto!important;width:140px!important;height:140px!important;transform:translate(-50%,-50%)!important;
+}
+.app.quest-app .reward-readable .journey-bundle:is([data-bundle="sky"],[data-bundle="flightFrontier"],[data-bundle="city"]) .bundle-character>canvas{
+ width:100%!important;height:100%!important;max-width:none;object-fit:contain;
+}
+.app.quest-app .reward-readable .reward-scene-preview .journey-bundle:is([data-bundle="sky"],[data-bundle="flightFrontier"],[data-bundle="city"]) .bundle-character{
+ top:auto!important;bottom:0!important;width:100px!important;height:100px!important;transform:translateX(-50%)!important;
+}
+.app.quest-app .reward-readable .reward-scene-preview .journey-bundle:is([data-bundle="sky"],[data-bundle="flightFrontier"]) .bundle-character{
+ top:50%!important;bottom:auto!important;width:120px!important;height:120px!important;transform:translate(-50%,-50%)!important;
+}
+
+/* Distant forest resting scene: sleep marks follow the pillow. */
+.growth-forest-unified>.growth-sleep-mark{left:43%;top:calc(74% - 54px)}
+
+.ruins-camp-unified>.growth-sleep-mark{left:37%;top:calc(68% - 54px)}
+
+.alpine-camp-unified>.growth-sleep-mark{left:38%;top:calc(71% - 54px)}
+
+/* A nearly buried discovery blends into the alpine snow. */
+.snow-broom-discovery.is-glinting .broom-glint{opacity:.25;animation:none}
+.snow-broom-discovery.is-glinting .broom-dust,.snow-broom-discovery.is-glinting::after{animation:none;opacity:0}
+
+.sky-platform-unified>.growth-sleep-mark{left:43%;top:calc(65% - 54px)}
+
+/* Keep the level 50 landmark visible in the reward thumbnail. */
+.app.quest-app .reward-readable .journey-bundle[data-bundle="flightFrontier"] .reward-panorama{
+ background-image:url('../assets/backgrounds/growth-v2/07-alpine-castle-v2.png')!important;
+ background-position:65% center!important;
+ background-size:auto 100%!important;
+ background-repeat:no-repeat!important;
+ animation:none!important;
+ image-rendering:auto;
+}
+
+.app.quest-app .reward-readable .journey-bundle[data-bundle="sky"] .reward-panorama{background-position:65% center!important;background-size:auto 100%!important;background-repeat:no-repeat!important;animation:none!important;image-rendering:auto}
+
+/* Coordinates follow each portrait image, including its cover crop. */
+.growth-night>.sleep-head-anchor{width:0;height:0;right:auto;bottom:auto;overflow:visible;color:#f0f5ff;text-shadow:0 1px 3px #10243e;pointer-events:none}
+.growth-night>.sleep-head-anchor i{left:0;top:0;bottom:auto;font:600 14px/1 sans-serif;animation:night-head-sleep 6s linear infinite;opacity:0}
+.growth-night>.sleep-head-anchor i:nth-child(2){animation-delay:-2s}
+.growth-night>.sleep-head-anchor i:nth-child(3){animation-delay:-4s}
+@keyframes night-head-sleep{0%{opacity:0;transform:translate(0,0) scale(.7)}15%{opacity:.8}65%{opacity:.65}100%{opacity:0;transform:translate(30px,-44px) scale(1.15)}}
+@media(prefers-reduced-motion:reduce){.growth-night>.sleep-head-anchor i{animation:none;opacity:.65;transform:translate(0,0)}.growth-night>.sleep-head-anchor i:nth-child(2){transform:translate(12px,-16px)}.growth-night>.sleep-head-anchor i:nth-child(3){transform:translate(24px,-32px)}}
+
+/* Subtle sleep letters across all night scenes. */
+.growth-sleep-mark,.growth-night>.sleep-head-anchor,.sleep-letters,.city-sleep,.ridge-sleep{opacity:.4!important;text-shadow:0 1px 2px #10243e33!important}
+
+/* Matched panorama edges and exact distance at the wrap boundary. */
+.app.quest-app .desert-pan-track{--pan-seam:32px}
+.app.quest-app .traveler-home:is([data-background="sky"],[data-background="flightFrontier"],[data-background="city"]) .desert-pan-track{animation:panorama-exact-loop 110s linear infinite!important;animation-play-state:running!important}
+@keyframes panorama-exact-loop{from{transform:translateX(calc(-2 * var(--pan-cycle,2000px)))}to{transform:translateX(calc(-1 * var(--pan-cycle,2000px)))}}
+.app.quest-app .desert-home[data-background="city"] .desert-pan-track{--pan-seam:32px;filter:none}
+.app.quest-app .desert-home[data-background="city"] .city-pan-tile{aspect-ratio:3;margin-left:calc(-1 * var(--pan-seam));mask-image:linear-gradient(to right,transparent,#000 var(--pan-seam))}
+.app.quest-app .desert-home[data-background="city"] .city-pan-tile:first-child{margin-left:0;mask-image:none}
+.app.quest-app .desert-home[data-background="city"] .city-pan-tile img{margin:0;mask-image:none;filter:none!important;object-fit:fill}
+.app.quest-app .traveler-home[data-background="city"] .traveler-art:has(.winter-broom-flight){height:41%!important;width:auto!important;aspect-ratio:1;left:50%!important;top:45%!important;bottom:auto!important;transform:translate(-50%,-50%)!important;scale:1}
+.app.quest-app .traveler-home[data-background="city"] .traveler-art::before{display:none!important}
+.app.quest-app :is(.traveler-home[data-background="city"],.journey-bundle[data-bundle="city"]) .winter-broom-flight{filter:saturate(.86) contrast(.94) brightness(1.04) sepia(.07)}
+.app.quest-app .art-city .bundle-character{inset:50% auto auto 50%!important;width:115px!important;height:115px!important;transform:translate(-50%,-50%)!important}
+.app.quest-app .reward-panorama{animation:none!important;image-rendering:auto}
+.modern-city-evening{background-image:url('../assets/backgrounds/growth-v2/08-han-river-flight-v1.png')}
+/* Let the snow path show through the shallow covering so it shares local light. */
+.app .snow-broom-discovery img{opacity:.68;filter:saturate(.7);mask-image:linear-gradient(to bottom,transparent 42%,#000 56%,#000 68%,transparent 80%)}
+@media(prefers-reduced-motion:reduce){.app.quest-app .traveler-home:is([data-background="sky"],[data-background="flightFrontier"],[data-background="city"]) .desert-pan-track{animation:none!important}}
+
+.app.quest-app .reward-readable .journey-bundle[data-bundle="city"] .bundle-character{top:50%!important;bottom:auto!important;width:140px!important;height:140px!important;transform:translate(-50%,-50%)!important}
+.app.quest-app .reward-readable .reward-scene-preview .journey-bundle[data-bundle="city"] .bundle-character{width:120px!important;height:120px!important}
+.app.quest-app .reward-readable .journey-bundle[data-bundle="city"] .reward-panorama{background-position:65% center!important;background-repeat:no-repeat!important;filter:none!important}
+.app.quest-app .journey-bundle[data-bundle="city"] .reward-static-character{filter:saturate(.86) contrast(.94) brightness(1.04) sepia(.07)}
+.app.quest-app .traveler-home[data-background="city"] .desert-pan-track{animation-delay:-27.5s!important}

@@ -1,0 +1,20 @@
+{
+  "mode": "built-in image_gen edit",
+  "fixes": [
+    {
+      "id": "runFrontier",
+      "prompt": "Localized correction image1: its tiny lantern still has the wrong square/cross-braced design. REPLACE that lantern completely with an exact miniature copy of the ROUND lantern at lower left of image2. Circular bronze base, straight CYLINDRICAL glass, plain round domed cap, arched handle. NO SQUARE CORNERS, NO DIAGONAL OR X BRACES. Total height only 38% of adjacent bag body height. Soft warm light. Keep ground-contact point. Preserve EVERYTHING else exactly: character, equipment, background and all positions. Image1 target, image2 exact lantern design reference. Portrait1122x1402.",
+      "output": "assets/characters/large-bag-v2/male-runFrontier-night-lantern-v2.png"
+    },
+    {
+      "id": "sky",
+      "prompt": "Localized correction image1: its tiny lantern still has the wrong square/cross-braced design. REPLACE that lantern completely with an exact miniature copy of the ROUND lantern at lower left of image2. Circular bronze base, straight CYLINDRICAL glass, plain round domed cap, arched handle. NO SQUARE CORNERS, NO DIAGONAL OR X BRACES. Total height only 38% of adjacent bag body height. Soft warm light. Keep ground-contact point. Preserve EVERYTHING else exactly: character, equipment, background and all positions. Image1 target, image2 exact lantern design reference. Portrait1122x1402.",
+      "output": "assets/characters/large-bag-v2/male-sky-night-lantern-v2.png"
+    },
+    {
+      "id": "city",
+      "prompt": "Localized correction image1: its tiny lantern still has the wrong square/cross-braced design. REPLACE that lantern completely with an exact miniature copy of the ROUND lantern at lower left of image2. Circular bronze base, straight CYLINDRICAL glass, plain round domed cap, arched handle. NO SQUARE CORNERS, NO DIAGONAL OR X BRACES. Total height only 38% of adjacent bag body height. Soft warm light. Keep ground-contact point. Preserve EVERYTHING else exactly: character, equipment, background and all positions. Image1 target, image2 exact lantern design reference. Portrait1122x1402.",
+      "output": "assets/characters/large-bag-v2/male-city-night-lantern-v2.png"
+    }
+  ]
+}

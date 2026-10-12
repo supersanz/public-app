@@ -1,6 +1,6 @@
 'use strict';
 // Start the public release independently of earlier developer/test progress.
-const KEY='daily-quest-vercel-20261003055737126', cats=['자기계발','건강','생활력','휴식','카페인'];
+const KEY='daily-quest-vercel-20261012083018641', cats=['자기계발','건강','생활력','휴식','카페인'];
 const acts=[['학원',0,'academy'],['공부',0,'study'],['독서',0,'book'],['코딩',0,'computer'],['러닝',1,'running'],['근력운동',1,'dumbbell'],['요리',2,'food'],['청소',2,'home'],['산책',3,'leaf'],['게임',3,'game'],['영화',3,'film'],['커피',4,'coffee'],['에너지드링크',4,'energyCan'],['박카스',4,'tonicBottle'],['음악 감상',3,'headphones'],['노래 부르기',3,'mic'],['필라테스',1,'pilates']];
 // Stable activity IDs: append new quests without changing historical records.
 const QuestCatalog={};
@@ -11,7 +11,7 @@ const QuestCatalog={};
  ['감사 일기',3,'leaf','좋았던 순간 남기기','감사했던 일 한 가지 적기',15,'daily'],
  ['물 마시기',4,'coffee','물 한 잔의 여유','물 한 잔 마시기',10,'daily'],
  ['디지털 휴식',3,'moon','잠깐 화면 내려놓기','화면 없이 15분 쉬기',20,'daily'],
- ['생활비 기록',2,'history','오늘의 지출 살피기','지출을 기록하고 확인하기',20,'daily'],
+ ['가계부 정리',2,'history','오늘의 지출 살피기','지출을 기록하고 확인하기',20,'daily'],
  ['주간 독서',0,'book','한 주의 독서','이번 주 책 50쪽 읽기',100,'weekly'],
  ['주간 운동',1,'dumbbell','세 번의 움직임','이번 주 운동 3회 마치기',120,'weekly'],
  ['주간 정리',2,'home','한 공간 새로 정리하기','방이나 책상 한 곳을 꼼꼼히 정리하기',80,'weekly'],
@@ -28,7 +28,7 @@ const WeeklyQuestRules={};
  ['청소왕',2,'home',[7],3,80],
  ['지식을 쌓자',0,'book',[0,1,3,18],5,120],
  ['우리 집 요리사',2,'food',[6],3,100],
- ['음악에 미치는 내가',3,'headphones',[9,10,14,15],5,80],
+ ['음악과 함께',3,'headphones',[9,10,14,15],5,80],
  ['좀 더 빠르게',3,'leaf',[8],3,90],
  ['사람이 물을 마셔야지',2,'coffee',[21],5,60]
 ].forEach(([title,category,icon,activities,target,xp])=>{const id=acts.length;acts.push([title,category,icon]);QuestCatalog[id]={title,xp,period:'weekly'};WeeklyQuestRules[id]={activities,target,xp};});
@@ -44,8 +44,8 @@ acts.push(['수면 8시간',3,'moon']);
 ].forEach(([title,icon,xp])=>{QuestCatalog[acts.length]={title,xp,period:'daily'};acts.push([title,0,icon]);});
 
 const coffeeWeeklyId=acts.length;
-acts.push(['카페인 누적',2,'coffee']);
-QuestCatalog[coffeeWeeklyId]={title:'카페인 누적',xp:30,period:'weekly'};
+acts.push(['내 몸엔 카페인이 흘러',2,'coffee']);
+QuestCatalog[coffeeWeeklyId]={title:'내 몸엔 카페인이 흘러',xp:30,period:'weekly'};
 WeeklyQuestRules[coffeeWeeklyId]={activities:[11,12,13],target:10,xp:30,countUnits:true,unit:'회'};
 WeeklyQuestRules[32].description='이번 주 독서 활동을 3회 기록해 보세요.';
 // Append activities so existing records keep their original IDs.
@@ -55,7 +55,7 @@ for(const [title,icon] of [['수영','swimming'],['자전거','cycling'],['등�
  WeeklyQuestRules[33].activities.push(id);
 }
 WeeklyQuestRules[33].description='이번 주 운동 활동을 5회 기록해 보세요.';
-WeeklyQuestRules[coffeeWeeklyId].description='커피·에너지 드링크·박카스 기록을 합쳐 10회.';
+WeeklyQuestRules[coffeeWeeklyId].description='카페인이 들어간 음료를 10회 마시기.';
 WeeklyQuestRules[36].description='이번 주 요리 활동을 3회 기록해 보세요.';
 WeeklyQuestRules[37].activities=[14,15];
 WeeklyQuestRules[37].target=3;

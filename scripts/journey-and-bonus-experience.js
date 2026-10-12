@@ -1,20 +1,16 @@
 'use strict';
-function travelerRewardTitle(lv){return ({5:'사막으로',10:'숲속으로',20:'고대숲으로',30:'새로운 길로',40:'하늘섬으로',50:'구름 너머로',60:'21세기로',70:'한강을 건너',80:'일하는 하루'})[lv]||travelerTitle(lv)}
-function travelerTitle(lv){return lv>=80?'프리랜서':lv>=40?'마법사':lv>=20?'탐험가 +':lv>=10?'탐험가':'여행자'}
-const travelerStanding='assets/characters/male/idle-standing-navy-v2.png';
+function travelerRewardTitle(lv){return ({5:'초원으로',10:'숲속으로',20:'유적으로',30:'새로운 길로',40:'하늘 성으로',60:'현대 도시로'})[lv]||travelerTitle(lv)}
+function travelerTitle(lv){return lv>=40?'마법사':lv>=20?'탐험가 +':lv>=10?'탐험가':'여행자'}
+const travelerStanding='assets/characters/large-bag-v2/male-standing.png';
 const travelerForest='assets/backgrounds/forest-day-panorama.png';
 const travelerDesert='assets/backgrounds/desert-day-panorama.png';
-function travelerPreviewScene(){if(data.disableScenePreview&&(typeof location==='undefined'||new URLSearchParams(location.search).get('scenePreview')!=='1'))return null;const id=typeof location!=='undefined'?new URLSearchParams(location.search).get('preview'):null;return ['forest','deepForest','runFrontier','sky','flightFrontier','city','subway','academy'].includes(id)?id:null}
+function travelerPreviewScene(){if(data.disableScenePreview&&(typeof location==='undefined'||new URLSearchParams(location.search).get('scenePreview')!=='1'))return null;const id=typeof location!=='undefined'?new URLSearchParams(location.search).get('preview'):null;return id==='flightFrontier'?'sky':['forest','deepForest','runFrontier','sky','city'].includes(id)?id:null}
 function travelerForestPreview(){return !!travelerPreviewScene()}
-function travelerPanorama(id){return ({desert:travelerDesert,forest:travelerForest,deepForest:'assets/backgrounds/ancient-forest-day-panorama.png',runFrontier:'assets/backgrounds/forgotten-skyway-day-panorama.png',sky:'assets/backgrounds/sky-island-day-panorama.png',flightFrontier:'assets/backgrounds/starlight-city-day-panorama.png',city:'assets/backgrounds/modern-city-downtown-a.png',subway:'assets/backgrounds/han-river-flight-day-panorama.png'})[id]}
+const growthBackgrounds={white:'01-wasteland',desert:'02-meadow',forest:'03-forest',deepForest:'04-ruins',runFrontier:'05-alpine',sky:'06-clouds',flightFrontier:'07-sky-castle',city:'08-future-city'};
+function travelerPanorama(id){if(id==='city')return 'assets/backgrounds/growth-v2/08-korean-city-painted-v1.png';if(id==='deepForest')return 'assets/backgrounds/growth-v2/04-ruins-painted-v1.png';if(id==='runFrontier')return 'assets/backgrounds/growth-v2/05-alpine-painted-v1.png';if(id==='forest')return 'assets/backgrounds/growth-v2/03-forest-painted-v1.png';if(id==='desert')return 'assets/backgrounds/growth-v2/02-meadow-painted-v1.png';if(id==='white')return 'assets/backgrounds/growth-v2/01-wasteland-painted-v1.png';return growthBackgrounds[id]?'assets/backgrounds/growth-v2/'+growthBackgrounds[id]+'.png':undefined}
 // Each outdoor loop contains original scenery plus a newly drawn continuation.
-function travelerPanoramaTiles(id){
- const original=travelerPanorama(id);
- const extension=({desert:'desert',forest:'forest',deepForest:'ancient-forest',runFrontier:'forgotten-skyway',sky:'sky-island',flightFrontier:'starlight-city'})[id];
- if(id==='city')return [original,'assets/backgrounds/modern-city-downtown-b.png'];
- if(id==='subway')return [original,'assets/backgrounds/subway-day-panorama.png'];
- return original&&extension?[original,'assets/backgrounds/'+extension+'-day-extension.png']:[];
-}
+function travelerPanoramaTiles(id){const image=travelerPanorama(id);return image?[image,image]:[];}
+
 function travelerTrackRepeat(track){
  const count=Number(track.dataset?.loopTiles)||1;
  const overlap=parseFloat(getComputedStyle(track).getPropertyValue('--pan-seam'))||0;
@@ -24,7 +20,10 @@ function travelerTrackRepeat(track){
 // Preview supplies an initial bundle; choosing a reward replaces both slots.
 const travelerPreviewEquipment={};
 function travelerState(){const state=TravelerRewards.state(data.travelerJourney,player().lv);return travelerForestPreview()?{...state,background:travelerPreviewScene(),motion:TravelerRewards.bundles[travelerPreviewScene()],...travelerPreviewEquipment}:state}
-function travelerAlarmTimesReady(){return [0,1].every(i=>[0,1].every(j=>data.alarmTimesConfigured?.[i+','+j]===true&&/^([01]\d|2[0-3]):[0-5]\d$/.test(data.alarms?.[i]?.[j]||''))&&data.alarms[i][0]!==data.alarms[i][1])} 
+function travelerAlarmTimesReady(now=new Date()){
+ const i=[0,6].includes(now.getDay())?1:0;
+ return [0,1].every(j=>data.alarmTimesConfigured?.[i+','+j]===true&&/^([01]\d|2[0-3]):[0-5]\d$/.test(data.alarms?.[i]?.[j]||''))&&data.alarms[i][0]!==data.alarms[i][1];
+}
 function travelerMotionEarnable(){
  const motion=travelerState().motion;
  return !travelerForestPreview()||player().lv>=(TravelerRewards.items[motion]?.level||Infinity)||TravelerRewards.state(data.travelerJourney,player().lv).claimed.includes(motion);
@@ -49,14 +48,12 @@ function travelerMovingScene(id){
 }
 function travelerScene(id){
  if(id==='academy')return travelerCafeScene();
- if(id==='subway'){const tiles=Array(2).fill(`<img src="${travelerPanorama(id)}" alt="" draggable="false">`).join('');return `<div class="river-flight-scene" role="img" aria-label="한강 철교를 달리는 열차와 노을 풍경"><div class="river-flight-track">${tiles}</div><div class="river-train-layer" aria-hidden="true"><div class="river-flight-track river-train-track">${tiles}</div></div></div>`;}
- if(id==='white')return '<div class="clearing-scene" aria-hidden="true"></div>';
  if(travelerPanorama(id))return '';
  return `<div class="journey-scene scene-${id}" aria-hidden="true">${id==='forest'||id==='deepForest'?Array.from({length:12},(_,i)=>`<i class="scene-tree" style="--i:${i}"></i>`).join(''):id==='sky'?'<i class="scene-cloud cloud-a"></i><i class="scene-cloud cloud-b"></i>':'<div class="scene-window"></div><div class="scene-shelf"></div>'}</div>`;
 }
 pages.home=()=>{
  const p=player(),s=travelerState();
- return `<section data-background="${s.background}" class="traveler-home desert-home ${s.background==='academy'?'cafe-home':''} ${s.background==='white'?'white-home':''} ${travelerWalking()?'is-traveling':''}">${travelerMovingScene(s.background)}${s.background!=='subway'&&travelerPanorama(s.background)?`<div data-loop-tiles="2" class="desert-pan-track ${s.background!=='desert'?'forest-pan-track':''}" aria-hidden="true">${Array.from({length:3},()=>travelerPanoramaTiles(s.background).map(src=>s.background==='city'?`<div class="city-pan-tile"><img src="${src}" alt="" draggable="false"></div>`:`<img src="${src}" alt="" draggable="false">`).join('')).join('')}</div>`:''}<header class="traveler-hud"><strong>Lv.${p.lv}</strong><small>${p.xp} / ${LevelCurve.required(p.lv).toLocaleString()} EXP</small><div class="traveler-hud-bar" role="progressbar" aria-label="레벨 경험치" aria-valuemin="0" aria-valuemax="${LevelCurve.required(p.lv)}" aria-valuenow="${p.xp}">${bar(p.xp/LevelCurve.required(p.lv)*100)}</div></header><div class="traveler-stage"><div class="traveler-art" data-traveler-art data-walking="${travelerWalking()}">${travelerArt()}</div></div></section>`;
+ return `<section data-background="${s.background}" class="traveler-home desert-home ${s.background==='academy'?'cafe-home':''} ${s.background==='white'?'white-home':''} ${travelerWalking()?'is-traveling':''}">${travelerMovingScene(s.background)}${travelerPanorama(s.background)?`<div data-loop-tiles="2" class="desert-pan-track ${s.background!=='desert'?'forest-pan-track':''}" aria-hidden="true">${Array.from({length:3},()=>travelerPanoramaTiles(s.background).map(src=>s.background==='city'?`<div class="city-pan-tile"><img src="${src}" alt="" draggable="false"></div>`:`<img src="${src}" alt="" draggable="false">`).join('')).join('')}</div>`:''}<header class="traveler-hud"><strong>Lv.${p.lv}</strong><small>${p.xp} / ${LevelCurve.required(p.lv).toLocaleString()} EXP</small><div class="traveler-hud-bar" role="progressbar" aria-label="레벨 경험치" aria-valuemin="0" aria-valuemax="${LevelCurve.required(p.lv)}" aria-valuenow="${p.xp}">${bar(p.xp/LevelCurve.required(p.lv)*100)}</div></header><div class="traveler-stage"><div class="traveler-art" data-traveler-art data-walking="${travelerWalking()}">${travelerArt()}</div></div></section>`;
 };
 function travelerCafeScene(night=false){
  return `<div class="cafe-world ${night?'cafe-at-night':''}" role="img" aria-label="현대적인 카페에서 노트북으로 작업하는 여행자"><img src="assets/characters/male/cafe-day.png" alt=""><div class="cafe-steam" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><i class="cafe-eye cafe-eye-left" aria-hidden="true"></i><i class="cafe-eye cafe-eye-right" aria-hidden="true"></i></div>`;
@@ -64,30 +61,35 @@ function travelerCafeScene(night=false){
 function travelerBundleCard(bg){
  const s=travelerState(),motion=TravelerRewards.bundles[bg],level=TravelerRewards.items[bg].level;
  const owned=level===1||s.claimed.includes(bg),locked=!owned&&player().lv<level,equipped=s.background===bg&&s.motion===motion;
- const labels={white:['황무지','가만히 서 있기'],desert:['메마른 사막','걷기'],forest:['푸른 숲','걷기'],deepForest:['고대 숲','달리기'],runFrontier:['깊은 숲','달리기 +'],flightFrontier:['천공섬','마법 빗자루 타기'],sky:['하늘섬','마법 빗자루 타기'],city:['도시','도심 거리 걷기'],subway:['한강','종이비행기 타기'],academy:['햇살 드는 카페','컴퓨터 작업'],office:['회사 배경','AI와 함께 일하기']};
+ const labels={white:['황무지','가만히 서 있기'],desert:['새싹 초원','걷기'],forest:['푸른 숲','걷기'],deepForest:['고대 유적','달리기'],runFrontier:['설산','달리기 +'],flightFrontier:['하늘 성','마법 빗자루 타기'],sky:['하늘 성','마법 빗자루 타기'],city:['현대 도시','한강 위 빗자루 비행']};
  const panorama=travelerPanorama(bg);
  const scene=TravelerRewards.items[bg].pending?'<div class="reward-pending-scene">새로운 여정을 준비하고 있어요</div>':panorama?`<div class="reward-panorama" style="background-image:url('${panorama}')"></div>`:travelerScene(bg);
- const character=bg==='subway'?'<div class="coffee-flight" role="img" aria-label="종이비행기 비행 미리보기"><span class="plane-rider-body"></span><span class="plane-rider-hair"></span></div>':bg==='academy'?'':motion==='fly'?'<canvas class="traveler-flight flight-preview" width="256" height="256" aria-label="마법 빗자루 타기 미리보기"></canvas>':['walk','run','deepRun'].includes(motion)?`<canvas class="reward-ground-motion" data-motion="${motion}" width="256" height="256" aria-label="${labels[bg][1]} 미리보기"></canvas>`:`<img class="bundle-standing" src="${travelerStanding}" alt="">`;
+ const character=bg==='academy'?'':motion==='fly'?'<canvas class="traveler-flight flight-preview" width="256" height="256" aria-label="마법 빗자루 타기 미리보기"></canvas>':['walk','run','deepRun'].includes(motion)?`<canvas class="reward-ground-motion" data-motion="${motion}" width="256" height="256" aria-label="${labels[bg][1]} 미리보기"></canvas>`:`<img class="bundle-standing" src="${travelerStanding}" alt="">`;
  const action=TravelerRewards.items[bg].pending?'<button disabled>배경 준비 중</button>':locked?`<button disabled>Lv.${level}에 해금</button>`:!owned?`<button data-journey-action="claim" data-journey-item="${bg}">보상 받기</button>`:equipped?'<button class="equipped" disabled>✓ 장착 중</button>':`<button data-journey-action="equip" data-journey-item="${bg}">장착하기</button>`;
  const exp=TravelerRewards.items[bg].exp??TravelerRewards.items[motion].exp;
- return `<article class="journey-card journey-bundle ${locked?'locked':''} ${equipped?'is-equipped':''}" data-bundle="${bg}"><div class="journey-art art-${bg}">${scene}<div class="bundle-character">${character}</div></div><div class="journey-card-copy"><small>Lv.${level} · ${locked?'잠긴 보상':equipped?'장착 중':owned?'보유 중':'받을 수 있어요'}</small><h3>${labels[bg][0]}</h3><span class="bundle-motion">${labels[bg][1]}</span><p class="reward-income">${exp?`낮에 5초마다 +${exp} EXP`:'기본 보상'}</p>${action}</div></article>`;
+ return `<article class="journey-card journey-bundle ${locked?'locked':''} ${equipped?'is-equipped':''}" data-bundle="${bg}"><div class="journey-art art-${bg}">${scene}<div class="bundle-character">${character}</div></div><div class="journey-card-copy"><div class="reward-title-row"><h3>${labels[bg][0]}</h3><span>Lv.${level}</span></div><p class="reward-income">${exp?`수면 중 5초마다 +${exp} EXP`:'기본 보상'}</p>${action}</div></article>`;
 }
 function travelerJourneyBanner(lv){
  const stages=[
   [1,'여정의 준비','모든 시작은 여기서','황무지에서의 만남','white'],
-  [5,'첫 번째 여정','작은 여행의 시작','사막과 첫 발걸음','desert'],
+  [5,'첫 번째 여정','작은 여행의 시작','초원과 첫 발걸음','desert'],
   [10,'두 번째 여정','초록빛 길을 따라','푸른 숲에서 걷기','forest'],
-  [20,'세 번째 여정','더 깊은 곳으로','고대숲 속 새로운 모험','deepForest'],
-  [30,'네 번째 여정','깊은 숲','공중 유적을 향해 달리기 +','runFrontier'],[40,'다섯 번째 여정','하늘로 이어지는 길','빗자루를 타고 구름 너머로','sky'],[50,'여섯 번째 여정','천공섬','별빛 도시 사이로 날기','flightFrontier'],
-  [60,'일곱 번째 여정','도시','노을빛 거리를 걸어요','city'],[70,'여덟 번째 여정','한강','열차와 나란히 하늘을 날아요','subway'],[80,'아홉 번째 여정','새로운 시대의 하루','카페에서 컴퓨터 작업','academy'],
+  [20,'세 번째 여정','더 깊은 곳으로','고대 유적 속 새로운 모험','deepForest'],
+  [30,'네 번째 여정','설산','눈 덮인 능선을 따라 달리기','runFrontier'],[40,'다섯 번째 여정','하늘 성','빗자루를 타고 하늘 성으로','sky'],
+  [60,'여섯 번째 여정','현대 도시','현대 도시로 향해요','city'],
 
  ];
  const [level,label,title,description,bg]=stages.filter(s=>s[0]<=lv).pop()||stages[0];
  const panorama=travelerPanorama(bg);
  return `<header class="journey-banner banner-${bg}"${panorama?` style="background-image:linear-gradient(90deg,#25302ce6,#25302c50),url('${panorama}')"`:''}><small>${label}</small><h2>${title}</h2><p>Lv.${level} · ${description}</p><span>나의 레벨 <b>Lv.${lv}</b></span></header>`;
 }
+let rewardCarouselIndex=0;
 pages.rewards=()=>{
  const p=player(),bundles=Object.keys(TravelerRewards.bundles);
+ // On entry, start at the equipped reward; keep browsing position on in-page rerenders.
+ if(!document.querySelector('.reward-carousel'))rewardCarouselIndex=Math.max(0,bundles.indexOf(travelerState().background));
+ const initialRewardIndex=rewardCarouselIndex;
+ requestAnimationFrame(()=>{const list=document.querySelector(".reward-carousel");if(list){list.scrollLeft=initialRewardIndex*(list.clientWidth+16);updateRewardCarousel(list);}});
  const next=bundles.find(bg=>TravelerRewards.items[bg].level>p.lv);
  let featured='';
  if(next){
@@ -96,7 +98,7 @@ pages.rewards=()=>{
   const progress=Math.max(0,Math.min(100,(LevelCurve.total(p.lv)+p.xp-LevelCurve.total(previous))/(LevelCurve.total(target)-LevelCurve.total(previous))*100));
   featured=`<section class="reward-next"><div class="reward-section-title"><h2>다음 성장 보상</h2><span>현재 Lv.${p.lv}</span></div>${travelerBundleCard(next)}<div class="reward-next-progress"><div><strong>Lv.${target}까지</strong><span>${remaining.toLocaleString()} EXP 남음</span></div><div role="progressbar" aria-label="다음 보상 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(progress)}">${bar(progress)}</div></div></section>`;
  }else featured='<div class="reward-complete"><strong>모든 성장 보상을 해금했어요!</strong><p>마음에 드는 보상으로 오늘을 보내세요.</p></div>';
- return `<section class="page journey-pass reward-readable">${heading('성장 보상')}<p class="journey-intro">배경과 동작을 한 세트로 받아요.<br>받은 보상은 언제든 자유롭게 교체할 수 있어요.</p>${featured}<section class="reward-collection"><div class="reward-section-title"><h2>전체 보상</h2><span>${bundles.length}가지 여정</span></div><div class="reward-list">${bundles.map(bg=>travelerBundleCard(bg)).join('')}</div></section></section>`;
+ return `<section class="page journey-pass reward-readable">${heading('성장 보상')}<p class="journey-intro">배경과 동작을 한 세트로 받아요.<br>받은 보상은 언제든 자유롭게 교체할 수 있어요.</p>${featured}<section class="reward-collection"><div class="reward-section-title"><h2>전체 보상</h2><span>${bundles.length}가지 여정</span></div><div class="reward-list reward-carousel" role="region" aria-label="전체 보상 슬라이드" tabindex="0">${bundles.map(bg=>travelerBundleCard(bg)).join('')}</div><div class="reward-carousel-controls"><span data-reward-position aria-live="polite">1 / ${bundles.length}</span></div></section></section>`;
 };
 
 pages.style=()=>`<section class="page">${heading('꾸미기','',true)}</section>`;
@@ -133,9 +135,10 @@ window.addEventListener('focus',refreshTraveler);render();
  document.addEventListener('visibilitychange',()=>{last=performance.now();wasWalking=false});
  setInterval(()=>{
   const now=performance.now(),delta=now-last;last=now;
-  const art=document.querySelector('[data-traveler-art]');
-  const night=(typeof travelerNightAt==='function'&&travelerNightAt())||(typeof travelerScheduledNight==='function'&&travelerScheduledNight());
-  const walking=travelerAlarmTimesReady()&&travelerMotionEarnable()&&!night&&!document.hidden&&page==='home'&&!travelerSleeping()&&travelerState().motion!=='still'&&!!art&&!document.querySelector('.is-night-home');
+  const art=document.querySelector('.growth-night-rest')||document.querySelector('.night-home')||document.querySelector('[data-traveler-art]');
+  const night=typeof travelerScheduledNight==='function'&&travelerScheduledNight();
+  const walking=travelerAlarmTimesReady()&&travelerMotionEarnable()&&night&&!document.hidden&&page==='home'&&travelerState().motion!=='still'&&!!art;
+  if(!walking)elapsed=0;
   if(walking&&wasWalking)elapsed+=Math.min(delta,1000);
   wasWalking=walking;
   if(!walking||elapsed<interval)return;
@@ -154,7 +157,17 @@ window.addEventListener('focus',refreshTraveler);render();
   }
   const popup=document.createElement('span');popup.className='traveler-exp-pop';popup.textContent=`+ exp ${gain}`;
   // Keep the reward text above every scene, independent of character canvas updates.
-  const home=art.closest('.traveler-home'),anchor=art.getBoundingClientRect(),bounds=home.getBoundingClientRect();
+  const home=art.closest('.night-home')||art.closest('.traveler-home')||art,anchor=art.getBoundingClientRect(),bounds=home.getBoundingClientRect();
+  const space=home.querySelector('.space-journey-canvas');
+  if(space){
+   const rect=space.getBoundingClientRect(),scale=Math.max(rect.width/space.width,rect.height/space.height);
+   const x=rect.left-bounds.left+(rect.width-space.width*scale)/2+Number(space.dataset.expAnchorX||320)*scale;
+   const y=rect.top-bounds.top+(rect.height-space.height*scale)/2+Number(space.dataset.expAnchorY||220)*scale;
+   home.appendChild(popup);
+   popup.style.left=`${Math.max(12,Math.min(bounds.width-popup.offsetWidth-12,x-popup.offsetWidth/2))}px`;
+   popup.style.top=`${Math.max(70,y-popup.offsetHeight)}px`;
+   setTimeout(()=>popup.remove(),1800);return;
+  }
   popup.style.left=`${Math.max(12,Math.min(bounds.width-100,anchor.left-bounds.left+anchor.width*.68))}px`;
   popup.style.top=`${Math.max(24,anchor.top-bounds.top-12)}px`;
   home.appendChild(popup);setTimeout(()=>popup.remove(),1800);
@@ -171,3 +184,47 @@ window.addEventListener('focus',refreshTraveler);render();
  }
  last=now;requestAnimationFrame(tick);
 }requestAnimationFrame(tick)})();
+
+function updateRewardCarousel(list){
+ const total=list.children.length;
+ rewardCarouselIndex=Math.max(0,Math.min(total-1,Math.round(list.scrollLeft/(list.clientWidth+16))));
+ list.nextElementSibling.querySelector('[data-reward-position]').textContent=(rewardCarouselIndex+1)+' / '+total;
+}
+document.addEventListener('scroll',event=>{if(event.target.matches?.('.reward-carousel'))updateRewardCarousel(event.target)},true);
+document.addEventListener('keydown',event=>{
+ if(!event.target.matches?.('.reward-carousel')||!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+ event.preventDefault();const list=event.target;
+ const index=event.key==='Home'?0:event.key==='End'?list.children.length-1:Math.max(0,Math.min(list.children.length-1,rewardCarouselIndex+(event.key==='ArrowRight'?1:-1)));
+ list.scrollTo({left:index*(list.clientWidth+16),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+});
+// Touch uses native scrolling; mouse dragging also works over the equip button.
+(()=>{
+ let drag=null,suppressClick=null;
+ document.addEventListener('pointerdown',event=>{
+  const list=event.target.closest('.reward-carousel');
+  if(!list||event.pointerType!=='mouse'||event.button!==0)return;
+  suppressClick=null;drag={list,id:event.pointerId,x:event.clientX,left:list.scrollLeft,moved:false};
+ });
+ document.addEventListener('pointermove',event=>{
+  if(!drag||event.pointerId!==drag.id)return;
+  const dx=event.clientX-drag.x;
+  if(!drag.moved&&Math.abs(dx)<6)return;
+  if(!drag.moved){drag.moved=true;drag.list.classList.add('is-dragging');drag.list.setPointerCapture(event.pointerId);}
+  event.preventDefault();drag.list.scrollLeft=drag.left-dx;
+ });
+ function finish(event){
+  if(!drag||event.pointerId!==drag.id)return;
+  const {list,moved,id}=drag;drag=null;
+  if(!moved)return;
+  suppressClick=list;list.classList.remove('is-dragging');
+  if(list.hasPointerCapture(id))list.releasePointerCapture(id);
+  const index=Math.round(list.scrollLeft/(list.clientWidth+16));
+  list.scrollTo({left:index*(list.clientWidth+16),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+ }
+ document.addEventListener('pointerup',finish);
+ document.addEventListener('pointercancel',finish);
+ document.addEventListener('click',event=>{
+  if(suppressClick&&suppressClick.contains(event.target)){event.preventDefault();event.stopImmediatePropagation();suppressClick=null;}
+ },true);
+ document.addEventListener('dragstart',event=>{if(event.target.closest('.reward-carousel'))event.preventDefault();});
+})();

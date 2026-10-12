@@ -12,8 +12,8 @@ travelerTitle=function(lv){return lv>=80?'우주 여행자':oldTitle(lv)};
 travelerRewardTitle=function(lv){return lv===80?'우주로':oldRewardTitle(lv)};
 const style=document.createElement('style');style.textContent='.space-journey-canvas{display:block;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;background:#10182e}.traveler-home:has(>.space-journey-canvas),.night-home:has(>.space-journey-canvas){position:relative;overflow:hidden;background:#10182e!important}.traveler-home>.space-journey-canvas,.night-home>.space-journey-canvas{position:absolute;inset:0}.traveler-home:has(>.space-journey-canvas) .traveler-stage{display:none}.art-academy>.space-journey-canvas{position:absolute;inset:0}.banner-academy{background:#14213c!important}';document.head.appendChild(style);
 
-const sheet=new Image(),femaleSheet=new Image(),bg=new Image(),extension=new Image();extension.src='assets/backgrounds/capsule-cosmos-extension-v8.png';let panorama;
-femaleSheet.src='assets/characters/female/capsule-astronaut-lavender-v2.png';sheet.src='assets/characters/male/capsule-astronaut-blink-v3.png';bg.src='assets/backgrounds/capsule-cosmos-earth-horizon-v7.png';
+const sheet=new Image(),femaleSheet=new Image(),bg=new Image(),extension=new Image();extension.src='assets/backgrounds/growth-v2/10-cosmos.png';let panorama;
+femaleSheet.src='assets/characters/female/capsule-astronaut-lavender-v2.png';sheet.src='assets/characters/male/capsule-astronaut-blink-v3.png';bg.src='assets/backgrounds/growth-v2/10-cosmos.png';
 let paused=matchMedia('(prefers-reduced-motion: reduce)').matches,time=0,last=0,frames={male:[],female:[]};
 Promise.all([sheet.decode(),femaleSheet.decode(),bg.decode(),extension.decode()]).then(()=>{
  const w=Math.round(640*bg.width/bg.height),overlap=80,period=2*(w-overlap);
@@ -34,9 +34,11 @@ Promise.all([sheet.decode(),femaleSheet.decode(),bg.decode(),extension.decode()]
 }).catch(()=>{document.querySelectorAll('.space-journey-canvas').forEach(c=>c.setAttribute('aria-label','우주 배경을 불러오지 못했어요. 새로고침해 주세요.'));});
 function draw(now){if(!paused&&!document.hidden)time+=Math.min(now-(last||now),50);last=now;for(const canvas of document.querySelectorAll('.space-journey-canvas')){const t=canvas.closest('.journey-art')?0:time/1000;const ctx=canvas.getContext('2d');ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,640,640);const period=panorama.width,drift=(period-240+t*9)%period;ctx.drawImage(panorama,drift,0);ctx.drawImage(panorama,drift-period,0);
  for(let i=0;i<14;i++){const x=((i*137.3+t*(i%3+1)*9)%680)-20,y=(i*89.7)%470;ctx.globalAlpha=.10+(i%3)*.04;ctx.fillStyle='#aab5c6';ctx.fillRect(Math.round(x),Math.round(y),2,2);}ctx.globalAlpha=1;
- const blink=t%5.3>4.9&&t%5.3<5.05,f=frames[travelerFemale()?'female':'male'][blink?1:0],width=260,height=f.h*width/f.w;
+ const blink=t%5.3>4.9&&t%5.3<5.05,f=frames[travelerFemale()?'female':'male'][blink?1:0],width=canvas.closest('.journey-art')?195:260,height=f.h*width/f.w;
  // Camera follows the ship: hull stays centered while space drifts right.
  const shipX=320;
+ canvas.dataset.expAnchorX=String(shipX);
+ canvas.dataset.expAnchorY=String(320-height/2-24);
  ctx.save();ctx.translate(shipX,320);
  // Layered pixel exhaust, anchored to the rear nozzle with a steady bright core.
  const nozzle=width/2-7,exhaustY=5,flow=t*7;

@@ -5,10 +5,12 @@
  const header=(title,subtitle,night=false)=>`<header class="journal-heading ${night?'journal-heading-night':''}"><div><h1>${title}</h1><p>${subtitle}</p></div>${decor(night?'night':'reader')}</header>`;
  const corners='<i class="journal-corner tl"></i><i class="journal-corner tr"></i><i class="journal-corner bl"></i><i class="journal-corner br"></i>';
  pages.history=()=>{
+  const monthPrefix=historyMonth.getFullYear()+'-'+String(historyMonth.getMonth()+1).padStart(2,'0');
+  if(!historyDate||!historyDate.startsWith(monthPrefix))historyDate=today().startsWith(monthPrefix)?today():monthPrefix+'-01';
   const doc=new DOMParser().parseFromString(history(),'text/html'),root=doc.querySelector('.record-history');
   root.querySelector('.heading')?.remove();root.querySelector('.intro')?.remove();
   const calendar=root.querySelector('.calendar'),month=root.querySelector('.calendar-heading');
-  const all=calendar.querySelector('[data-date=""]');all.classList.add('journal-all');month.appendChild(all);
+  calendar.querySelector('[data-date=""]')?.remove();
   const first=new Date(historyMonth.getFullYear(),historyMonth.getMonth(),1).getDay();
   calendar.insertAdjacentHTML('afterbegin',Array(first).fill('<span aria-hidden="true"></span>').join(''));
   calendar.querySelectorAll('button').forEach(b=>{b.setAttribute('aria-label',b.dataset.date);b.querySelector('small')?.remove();});
@@ -17,16 +19,17 @@
   const list=doc.createElement('div');list.className='journal-records';list.tabIndex=0;list.setAttribute('role','region');list.setAttribute('aria-label','기록한 활동 목록, 세로 스크롤');
   root.querySelectorAll(':scope > article,:scope > .empty').forEach(e=>list.append(e));root.append(list);
   list.querySelectorAll('.record-activity-icon').forEach(b=>{const span=doc.createElement('span');span.className='journal-activity-name';span.textContent=b.getAttribute('aria-label')||'';b.querySelector('.record-count')?.remove();b.append(span);});
-  list.querySelectorAll('.record-category').forEach(row=>{const i=[0,1,2,3,4].find(n=>row.classList.contains('category-'+n));row.insertAdjacentHTML('afterbegin',decor(['book','heart','house','headphones','coffee'][i]));});
-  list.querySelectorAll('article').forEach(article=>{const sum=article.querySelector('.summary b'),date=article.querySelector('.date');if(sum&&date){date.querySelector('small')?.remove();const pill=doc.createElement('span');pill.className='journal-xp-pill';pill.textContent='총 '+sum.textContent;date.append(pill);}});
+  list.querySelectorAll('.record-category').forEach(row=>{const title=row.querySelector('strong'),activities=row.querySelector('.record-activity-icons'),xp=row.querySelector(':scope > b');const top=doc.createElement('div');top.className='record-category-heading';top.append(title,xp);row.replaceChildren(top,activities);});
+  list.querySelectorAll('article').forEach(article=>{const sum=article.querySelector('.summary b'),date=article.querySelector('.date');if(sum&&date){date.querySelector('small')?.remove();}});
   root.insertAdjacentHTML('afterbegin',header('기록','차곡차곡 쌓이는 나의 하루'));
+
   root.insertAdjacentHTML('beforeend','<button class="primary journal-record-button" data-page="touch">＋ 오늘 기록하기</button>');
   return root.outerHTML;
  };
  pages.alarm=()=>{
   const doc=new DOMParser().parseFromString(alarm(),'text/html'),root=doc.querySelector('.alarm-page');root.querySelector('.heading')?.remove();
   root.insertAdjacentHTML('afterbegin',header('알람','좋은 하루가 좋은 내일을 만든다',true));
-  const note=root.querySelector('.note');note.insertAdjacentHTML('afterbegin',decor('moon'));note.insertAdjacentHTML('beforeend',corners);
+  const note=root.querySelector('.note');const noteText=note.textContent;note.replaceChildren();note.insertAdjacentHTML('beforeend',decor('moon'));const noteLabel=doc.createElement('span');noteLabel.className='alarm-note-text';noteLabel.textContent=noteText;note.append(noteLabel);
   root.querySelectorAll('.alarm-card').forEach(card=>card.insertAdjacentHTML('beforeend',corners));
   root.querySelectorAll('.alarm-label').forEach((label,i)=>{label.querySelector('svg')?.remove();label.insertAdjacentHTML('afterbegin',i%2?icon('moon'):'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>');});
   root.querySelectorAll('.alarm-time-button strong').forEach(el=>{const [period,...time]=el.textContent.trim().split(/\s+/);el.innerHTML='<span class="alarm-period">'+period+'</span><span class="alarm-digits">'+time.join('')+'</span>';});

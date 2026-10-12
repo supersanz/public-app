@@ -1,0 +1,13 @@
+{
+  "mode": "built-in image_gen",
+  "city": "Create a beautiful hand-painted anime adventure-game scrolling panorama of the Han River in Seoul, South Korea, viewed from the air at rooftop height for a little witch flying on a broom. Ultra-wide panorama 3:1 composition. Warm late afternoon daylight, pale blue sky, airy peach cloud wisps. In lower half broad blue Han River with soft gold reflections, Korean riverside parks and a long bridge receding in the distance, behind it dense Korean apartment towers and elegant glass skyscrapers, a few very tall landmark-like towers amid layered distant hazy city blocks and low mountains. Upper middle has open air for the flying character. Clear gentle illustrated brushwork, harmonious muted blue lavender and warm cream, crisp attractive details, no photographic textures. NOT European buildings. No characters, no broom, no text, no foreground road or sidewalk, no interface. Horizontal scrolling game background: BOTH LEFT AND RIGHT edges must match seamlessly at all heights, consistent sky color, same level distant skyline silhouette and river/shore continuation, no big object cut at either edge. City buildings framed mainly in middle 80%; quiet haze and river near matching outer edges. Panoramic 3072x1024 or equivalent 3:1.",
+  "loopEdits": "Repair only the outer left/right 15% of each existing panorama to form a natural continuous horizontal loop. Preserve central landmarks, style and path height. No mirroring.",
+  "assets": [
+    "02-meadow-loop-v2.png",
+    "03-forest-loop-v2.png",
+    "04-ruins-loop-v2.png",
+    "05-alpine-loop-v2.png",
+    "07-castle-loop-v3.png",
+    "08-han-river-flight-v1.png"
+  ]
+}
