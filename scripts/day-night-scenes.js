@@ -31,7 +31,7 @@ pages.home=()=>{
  const night=travelerNightAt(),p=player();
 
  if(!night)return travelerDayHome();
- return `<section class="night-home" aria-label="${travelerNightScene(travelerState().background)?.[1]||'밤의 휴식'}">${travelerNightWorld(travelerState().background)}<header class="traveler-hud"><strong>Lv.${p.lv}</strong><small>${p.xp} / ${LevelCurve.required(p.lv).toLocaleString()} EXP</small><div class="traveler-hud-bar" role="progressbar" aria-label="레벨 경험치" aria-valuemin="0" aria-valuemax="${LevelCurve.required(p.lv)}" aria-valuenow="${p.xp}">${bar(p.xp/LevelCurve.required(p.lv)*100)}</div></header></section>`;
+ return `<section class="night-home" aria-label="${travelerNightScene(travelerState().background)?.[1]||'밤의 휴식'}">${travelerNightWorld(travelerState().background)}<header class="traveler-hud"><strong>Lv.${p.lv}</strong><small>${p.xp.toLocaleString("ko-KR")} / ${LevelCurve.required(p.lv).toLocaleString()} EXP</small><div class="traveler-hud-bar" role="progressbar" aria-label="레벨 경험치" aria-valuemin="0" aria-valuemax="${LevelCurve.required(p.lv)}" aria-valuenow="${p.xp}">${bar(p.xp/LevelCurve.required(p.lv)*100)}</div></header></section>`;
 };
 const nightBaseRender=render;
 render=function(){nightBaseRender();const app=document.getElementById('app'),night=travelerNightAt();app.classList.toggle('is-night-home',page==='home'&&night);app.classList.toggle('is-night-navigation',night)};
@@ -53,3 +53,4 @@ document.addEventListener('click',e=>{
 setInterval(syncTravelerNight,1000);
 window.addEventListener('focus',syncTravelerNight);
 render();
+

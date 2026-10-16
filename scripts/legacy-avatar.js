@@ -1,7 +1,7 @@
 'use strict';
 // Generated pixel artwork is stored locally. Each garment is fitted to the
 // character's 316 x 440 coordinate system, independent of viewport size.
-const pixelAtlas='assets/pixel-wardrobe-v2.png';
+const pixelAtlas='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22/%3E';
 const pixelCrops={
  black:[317,88,304,250],lilac:[632,89,313,260],hoodie:[953,76,300,280],
  shorts:[10,457,302,208],skirt:[322,452,308,223],whiteShoes:[637,455,295,228],blackShoes:[958,451,284,232],

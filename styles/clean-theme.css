@@ -62,7 +62,7 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .character-change-dialog .character-option:hover{background:#eaf0fa;border-color:#9bb8e8}
 .character-change-dialog .character-option.chosen{background:#e5eeff;border-color:#6b99ed;box-shadow:none}
 .character-change-dialog .character-reset-notice{background:#eef3fc;border:1px solid #dce6f5;color:#52647c}
-.character-change-dialog .character-reset-notice strong{color:#334d70}
+.character-change-dialog .character-reset-notice strong{display:inline-block;margin-bottom:4px;color:#293545;font-size:13px}
 .quest-app .home-quest-summary{background:#f5f8fd}
 .quest-app .home-quest-summary p{font-size:14px;color:var(--q-muted)}
 .quest-app .home-quest-summary p span{color:#4775c5;font-weight:600}
@@ -386,7 +386,7 @@ html,body{background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFon
 .quest-app .record-history .record-activity-icon{padding:0;min-height:36px}
 .home-focus-goal{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 22px;padding:14px 16px;border:1px solid #dce6f5;border-radius:16px;background:#fff}
 .home-focus-goal>div{display:grid;gap:5px}.home-focus-goal>div>span{font-size:12px;color:#738095}.home-focus-goal strong{font-size:16px;color:#293545}.home-focus-goal small{font-size:12px;font-weight:500;color:#4775c5;margin-left:6px}.home-focus-goal button{flex-shrink:0;padding:9px 12px;border:1px solid #5788e0;border-radius:10px;background:#6b99ed;color:#fff;font-size:13px}
-.goal-change-dialog{box-sizing:border-box;width:min(390px,calc(100% - 32px));max-height:90dvh;overflow:auto;padding:24px;border:1px solid #d3dce8;border-radius:24px;background:#fff;color:#293545;font-family:inherit}.goal-change-dialog::backdrop{background:#172b465c}.goal-change-dialog h2{font-size:23px;margin:0 0 10px}.goal-change-dialog p{margin:0;font-size:13px;line-height:1.7;color:#687991}.goal-change-options{display:grid;gap:10px;margin:20px 0 12px}.goal-change-options button{display:flex;align-items:center;gap:12px;padding:16px;border:1px solid #d3dce8;border-radius:14px;background:#fff;color:#293545;font:inherit}.goal-change-options button.chosen{background:#edf3ff;border-color:#6b99ed;color:#396bca}.goal-change-options svg{width:23px;height:23px}.goal-change-options small{margin-left:auto;font-size:12px;color:#4775c5}.goal-change-dialog .goal-change-note{margin:0 0 12px;padding:12px;border-radius:12px;background:#f5f8fd}.goal-save,.goal-cancel{display:block;box-sizing:border-box;width:100%;min-height:46px;margin:0;padding:12px;border-radius:12px;font:inherit}.goal-save{background:#6b99ed;color:#fff;border:1px solid #5788e0}.goal-save:disabled{opacity:.45;cursor:default}.goal-cancel{margin-top:12px;background:#fff;border:1px solid #d3dce8;color:#687991}.goal-change-dialog button:focus-visible,.home-focus-goal button:focus-visible{outline:2px solid #396bca;outline-offset:3px}
+.goal-change-dialog{box-sizing:border-box;width:min(390px,calc(100% - 32px));max-height:90dvh;overflow:auto;padding:24px;border:1px solid #d3dce8;border-radius:24px;background:#fff;color:#293545;font-family:inherit}.goal-change-dialog::backdrop{background:#172b465c}.goal-change-dialog h2{font-size:23px;margin:0 0 10px}.goal-change-dialog p{margin:0;font-size:13px;line-height:1.7;color:#687991}.goal-change-options{display:grid;gap:10px;margin:20px 0 12px}.goal-change-options button{display:flex;align-items:center;gap:12px;padding:16px;border:1px solid #d3dce8;border-radius:14px;background:#fff;color:#293545;font:inherit}.goal-change-options button.chosen{background:#edf3ff;border-color:#6b99ed;color:#4775c5}.goal-change-options button>span{display:inline-flex;align-items:center;gap:8px}.goal-change-options button>span::after{content:"";width:14px;color:#4775c5;font-weight:600}.goal-change-options button.chosen>span::after{content:"✓"}.goal-change-options svg{width:23px;height:23px}.goal-change-options small{margin-left:auto;font-size:12px;color:#4775c5}.goal-change-dialog .goal-change-note{margin:0 0 12px;padding:12px;border-radius:12px;background:#f5f8fd}.goal-save,.goal-cancel{display:block;box-sizing:border-box;width:100%;min-height:46px;margin:0;padding:12px;border-radius:12px;font:inherit}.goal-save{background:#6b99ed;color:#fff;border:1px solid #5788e0}.goal-save:disabled{opacity:.45;cursor:default}.goal-cancel{margin-top:12px;background:#fff;border:1px solid #d3dce8;color:#687991}.goal-change-dialog button:focus-visible,.home-focus-goal button:focus-visible{outline:2px solid #396bca;outline-offset:3px}
 
 .goal-change-dialog [role="alert"]:empty{display:none}.goal-change-dialog [role="alert"]:not(:empty){margin:0 0 12px}
 .quest-app .alarm-test-button{display:block;width:100%;min-height:46px;margin:0 0 18px;border:1px solid #d3dce8;border-radius:12px;background:#fff;color:#4775c5;font-family:inherit;font-size:14px}
@@ -1085,3 +1085,113 @@ html{scrollbar-gutter:stable}
 .app.quest-app .reward-readable .journey-bundle[data-bundle="city"] .reward-panorama{background-position:65% center!important;background-repeat:no-repeat!important;filter:none!important}
 .app.quest-app .journey-bundle[data-bundle="city"] .reward-static-character{filter:saturate(.86) contrast(.94) brightness(1.04) sepia(.07)}
 .app.quest-app .traveler-home[data-background="city"] .desert-pan-track{animation-delay:-27.5s!important}
+
+/* One compact experience HUD shared by every daytime and nighttime scene. */
+.app.quest-app .quest-scene-card .traveler-hud{
+ top:16px;left:16px;right:16px;
+ width:auto;
+ display:grid;grid-template-columns:auto minmax(0,1fr);
+ align-items:center;column-gap:12px;row-gap:6px;
+ color:#fff5d9;text-align:left;text-shadow:0 1px 3px #182333b3;
+}
+.app.quest-app .quest-scene-card .traveler-hud>strong{
+ font-size:14px;font-weight:750;line-height:1.2;letter-spacing:-.3px;
+}
+.app.quest-app .quest-scene-card .traveler-hud>small{
+ margin:0;font-size:10px;font-weight:500;line-height:1.2;
+ text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;
+}
+.app.quest-app .quest-scene-card .traveler-hud-bar{
+ grid-column:1 / -1;width:100%;margin:0;padding:0;
+ border:0;outline:0;border-radius:1px;
+ box-shadow:0 0 0 1px #ffffff40,0 1px 3px #18233326;
+ overflow:hidden;
+}
+.app.quest-app .quest-scene-card .traveler-hud-bar .bar{
+ height:4px;margin:0;border-radius:1px;background:#192b3b40;
+}
+.app.quest-app .quest-scene-card .traveler-hud-bar .bar i{
+ height:100%;border-radius:inherit;background:#fff5d9;
+}
+
+/* Restrained corners across the app's cards and rectangular controls. */
+.app.quest-app :is(.quest-scene-card,.home-focus-goal,.home-quest-summary,
+ .quest-card,.quest-progress-card,.activity-toggle-card,.weekly-challenge-card,
+ .journey-card,.alarm-card,.journal-calendar,.record-category,.summary,
+ .reward-test-card,.character-option,.goal-options button){border-radius:6px!important}
+.app.quest-app :is(.q-primary,.primary,.secondary,.q-round,
+ .journey-card button,.home-focus-goal button,.developer-level-button,
+ .name-field input){border-radius:6px!important}
+:is(.character-change-dialog,.goal-change-dialog,.wheel-modal,.developer-level-dialog,.broom-required){border-radius:8px!important}
+:is(.character-change-dialog,.goal-change-dialog,.broom-required) button{border-radius:6px!important}
+
+/* Quiet sleep bonus directly below the experience counter and bar. */
+.app.quest-app .traveler-hud .traveler-exp-pop{
+ left:auto;right:0;top:calc(100% + 8px);
+ font-size:11px;font-weight:600;line-height:1.3;letter-spacing:.02em;
+ color:#d4d9ce;text-shadow:0 1px 2px #18233366;
+ animation:sleep-bonus-rise 1.8s ease-out forwards;
+}
+@keyframes sleep-bonus-rise{
+ 0%{opacity:0;transform:translateY(4px)}
+ 18%,65%{opacity:.85;transform:translateY(0)}
+ 100%{opacity:0;transform:translateY(-6px)}
+}
+@media(prefers-reduced-motion:reduce){.app.quest-app .traveler-hud .traveler-exp-pop{animation:none;opacity:.85}}
+
+/* Refined character selection and compact home toolbar */
+.app.quest-app .quest-home-heading{justify-content:flex-end;padding-top:12px!important;padding-bottom:12px!important}
+.character-change-dialog{box-sizing:border-box;width:min(390px,calc(100% - 32px));padding:24px;border:1px solid #dce6f5;background:#fff;color:#293545;box-shadow:0 18px 60px #18233420}
+.character-change-dialog h2{margin:0 0 6px;font-size:22px}
+.character-change-dialog>p{margin:0;color:#647184}
+.character-change-dialog .character-options{gap:12px;margin:22px 0 18px}
+.character-change-dialog .character-option{min-width:0;padding:14px 12px;border:1px solid #dce6f5;background:#fff;color:#293545;box-shadow:none}
+.character-change-dialog .character-option.chosen{border-color:#6b99ed;background:#edf3ff;color:#4775c5;box-shadow:none}
+.character-change-dialog .character-option img{display:block;width:100%;height:155px;object-fit:contain;image-rendering:auto}
+.character-change-dialog .character-option>span{justify-content:center;align-items:center;margin-top:10px;font-size:14px;gap:8px}
+.character-change-dialog .character-option.chosen>span:after{content:'✓';color:#4775c5}
+.character-change-dialog .character-reset-notice{margin:0;padding:0;background:transparent;border:0;border-radius:0;color:#647184;font-size:12px;line-height:1.65}
+.character-change-dialog [role=alert]:empty{display:none}
+.character-change-dialog .q-primary{width:100%;min-height:48px;margin-top:20px}
+.character-change-dialog .q-text{min-height:40px;margin-top:8px}
+.character-change-dialog button:focus-visible{outline:2px solid #4775c5;outline-offset:3px}
+@media(max-height:650px){.character-change-dialog .character-option img{height:105px}}
+
+/* Full-width home scene with an accessible floating character control. */
+.app.quest-app:has(.home-immersive-scene){padding-top:0!important}
+.app.quest-app .quest-scene-card.home-immersive-scene{position:relative;box-sizing:border-box;margin:16px 22px 0!important;width:auto!important;border:1px solid #dce6f5!important;border-radius:6px!important;overflow:hidden}
+.app.quest-app .home-immersive-scene :is(.traveler-home,.night-home){height:clamp(500px,72svh,660px)!important;min-height:500px!important;border-radius:0!important}
+.app.quest-app .home-immersive-scene .traveler-hud{top:calc(18px + env(safe-area-inset-top));left:18px;right:76px}
+.home-character-control{position:absolute;z-index:40;top:calc(12px + env(safe-area-inset-top));right:12px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;padding:10px;border:1px solid #ffffff66;border-radius:8px;background:#172b4266;color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 2px 8px #0002;cursor:pointer}
+.home-character-control svg{width:22px;height:22px}
+.home-character-control:focus-visible{outline:3px solid white;outline-offset:3px}
+.home-character-control:hover{background:#172b4299}
+
+
+/* Shared day/night viewport budget: reserve room for goal, activity and navigation. */
+.app.quest-app:has(.home-immersive-scene){--home-scene-height:clamp(180px,calc(100svh - 430px - env(safe-area-inset-bottom)),480px);padding-bottom:calc(90px + env(safe-area-inset-bottom))!important}
+.app.quest-app .quest-scene-card.home-immersive-scene{height:auto!important;min-height:0!important;max-height:none!important;margin-top:8px!important}
+.app.quest-app .quest-scene-card.home-immersive-scene :is(.traveler-home,.night-home){height:var(--home-scene-height)!important;min-height:0!important;max-height:none!important}
+.app.quest-app .home-immersive-scene .growth-night{position:absolute;inset:0;width:100%;height:100%}
+.app.quest-app .home-immersive-scene .growth-night .forest-night-full{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center bottom;transform:none}
+.app.quest-app:has(.home-immersive-scene) .home-focus-goal{margin-top:16px!important;margin-bottom:16px!important;padding:10px 16px}
+.app.quest-app:has(.home-immersive-scene) .home-quest-summary{margin-top:0!important;margin-bottom:0!important;padding:14px 16px}
+.app.quest-app:has(.home-immersive-scene) .home-quest-summary h2{font-size:18px;margin:6px 0}
+.app.quest-app:has(.home-immersive-scene) .home-quest-summary .q-primary{min-height:44px;margin-top:12px}
+
+/* Shared typography and alignment for the two home information cards. */
+.app.quest-app:has(.home-immersive-scene) .home-focus-goal>div>span,
+.app.quest-app:has(.home-immersive-scene) .home-quest-summary .q-kicker{
+ font-size:12px;line-height:18px;color:var(--q-muted);letter-spacing:-.02em!important;
+}
+.app.quest-app:has(.home-immersive-scene) .home-focus-goal>div>span:first-child,
+.app.quest-app:has(.home-immersive-scene) .home-quest-summary .q-kicker{font-weight:500}
+.app.quest-app:has(.home-immersive-scene) .home-quest-summary p{
+ display:flex;align-items:baseline;justify-content:space-between;gap:4px 12px;flex-wrap:wrap;
+}
+.app.quest-app:has(.home-immersive-scene) .home-quest-summary p>.home-activity-count{
+ font-size:14px!important;line-height:21px;color:var(--q-muted);white-space:nowrap;
+}
+.app.quest-app:has(.home-immersive-scene) .home-quest-summary p>span{float:none}
+
+

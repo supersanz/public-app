@@ -1,0 +1,10 @@
+/* Original sprite colors and painted scene colors remain unfiltered. */
+.app.quest-app :is(.traveler-home,.journey-bundle){--scene-paint:none}
+.app.quest-app .quest-scene-card .growth-night .forest-night-full{filter:none!important}
+.app.quest-app .quest-scene-card .traveler-home.desert-home[data-background="white"]:not(.night-home){background-image:url('../assets/backgrounds/character-style-v1/white-day-loop-a-v5.png')!important}
+.modern-city-evening{background-image:url('../assets/backgrounds/character-style-v1/city-day-loop-a-v5.png')}
+/* Each A/B boundary consists of adjacent pixels from a single painted join. */
+.app.quest-app .quest-scene-card .traveler-home .desert-pan-track{--pan-seam:0px!important;gap:0!important;filter:none!important}
+.app.quest-app .quest-scene-card .traveler-home .desert-pan-track>img,
+.app.quest-app .quest-scene-card .traveler-home .desert-pan-track>.city-pan-tile,
+.app.quest-app .quest-scene-card .traveler-home .desert-pan-track>.city-pan-tile>img{margin:0!important;mask-image:none!important;-webkit-mask-image:none!important;transform:none!important;filter:none!important;flex-shrink:0}

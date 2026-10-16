@@ -55,31 +55,26 @@ let questOnboardingActive=false;
   const current=data.travelerCharacter||'male';let choice=current;
   const dialog=document.createElement('dialog');dialog.className='character-change-dialog';
   dialog.setAttribute('aria-labelledby','character-change-title');
-  dialog.innerHTML=`<h2 id="character-change-title">캐릭터 변경</h2><p>함께할 캐릭터를 골라주세요.</p><div class="character-options">${['male','female'].map((gender,i)=>`<button class="character-option ${gender===current?'chosen':''}" data-choice="${gender}" aria-pressed="${gender===current}"><img src="${portrait(gender)}" alt="${i?'여자':'남자'} 캐릭터"><span>${i?'여자':'남자'}</span></button>`).join('')}</div><label class="name-field">이름<input data-character-name maxlength="16" value="${esc(data.questProfile?.name||'')}" placeholder="이름을 입력해 주세요" autocomplete="nickname"><small>이름만 변경하면 기존 기록이 유지돼요.</small></label><p class="character-reset-notice"><strong>성별을 변경하면 모든 정보가 초기화돼요.</strong><br>목표, 레벨·경험치, 퀘스트·활동 기록, 보상과 알람 설정이 초기화되며 되돌릴 수 없어요. 입력한 이름은 새 캐릭터에 적용돼요.</p><p role="alert"></p><button class="q-primary" data-confirm-character disabled>이름 저장</button><button class="q-text" data-close-character>취소</button>`;
+  dialog.innerHTML=`<h2 id="character-change-title">캐릭터 변경</h2><p>함께할 캐릭터를 골라주세요.</p><div class="character-options">${['male','female'].map((gender,i)=>`<button class="character-option ${gender===current?'chosen':''}" data-choice="${gender}" aria-pressed="${gender===current}"><img src="${portrait(gender)}" alt="${i?'여자':'남자'} 캐릭터"><span>${i?'여자':'남자'}</span></button>`).join('')}</div><p class="character-reset-notice"><strong>캐릭터를 변경하면 처음부터 시작해요.</strong><br>목표, 성장·활동 기록과 알람 설정이 초기화되며 복구할 수 없어요.</p><p role="alert"></p><button class="q-primary" data-confirm-character disabled>초기화하고 변경</button><button class="q-text" data-close-character>취소</button>`;
   document.body.appendChild(dialog);
   dialog.addEventListener('close',()=>dialog.remove());
   dialog.querySelector('[data-close-character]').onclick=()=>dialog.close();
-  const nameInput=dialog.querySelector('[data-character-name]');
+
   const updateSave=()=>{
    const button=dialog.querySelector('[data-confirm-character]');
-   button.textContent=choice===current?'이름 저장':'초기화하고 변경';
-   button.disabled=choice===current&&nameInput.value.trim()===(data.questProfile?.name||'');
+   button.textContent='초기화하고 변경';
+   button.disabled=choice===current;
   };
-  nameInput.addEventListener('input',updateSave);
+
   dialog.querySelectorAll('[data-choice]').forEach(button=>button.onclick=()=>{
    choice=button.dataset.choice;
    dialog.querySelectorAll('[data-choice]').forEach(item=>{item.classList.toggle('chosen',item.dataset.choice===choice);item.setAttribute('aria-pressed',String(item.dataset.choice===choice));});
    updateSave();
   });
   dialog.querySelector('[data-confirm-character]').onclick=()=>{
-   const name=nameInput.value.trim().slice(0,16);
-   let saved=false;
-   if(choice===current){
-    const previous=data.questProfile;data.questProfile={...previous,name};
-    saved=persist();if(!saved)data.questProfile=previous;
-    else render();
-   }else saved=resetForTravelerCharacter(choice,name);
-   if(saved){dialog.close();toast(choice===current?'이름을 변경했어요.':'정보를 초기화하고 캐릭터를 변경했어요.');}
+   if(choice===current)return;
+   const saved=resetForTravelerCharacter(choice,data.questProfile?.name||'');
+   if(saved){dialog.close();toast('정보를 초기화하고 캐릭터를 변경했어요.');}
    else dialog.querySelector('[role="alert"]').textContent='변경 내용을 저장하지 못했어요. 다시 시도해 주세요.';
   };
   dialog.showModal();
@@ -89,9 +84,9 @@ let questOnboardingActive=false;
   const back=step?'<button class="q-text" data-setup-back>← 이전</button>':editing?'<button class="q-text" data-setup-close>닫기</button>':'';
   let body='';
   if(step===0)body=`<div class="setup-copy"><span class="q-kicker">YOUR EVERYDAY ADVENTURE</span><h1>나의 하루를<br>경험치로 <em>+1</em></h1><p>평범한 하루도 성장의 기록이 돼요.</p></div><div class="welcome-art"><span class="welcome-orbit orbit-one">✦</span><span class="welcome-orbit orbit-two">✦</span><img src="${portrait(draft.gender)}" alt="모험을 시작하는 캐릭터"><span class="welcome-label welcome-speech"><svg viewBox="0 0 110 80" aria-hidden="true"><path d="M55 2C25 2 3 13 3 28S22 51 43 53L57 74 49 54C80 56 107 44 107 28S85 2 55 2Z"/></svg><span>작은 성취,<br>차곡차곡.</span></span></div><div class="welcome-features"><span>✓ 간단하게 남기는 오늘의 활동</span><span>✓ 기록할 때마다 쌓이는 경험치</span><span>✓ 함께 달라지는 캐릭터와 배경</span></div>`;
-  if(step===1)body=`<div class="setup-copy"><span class="q-kicker">MEET YOUR CHARACTER</span><h1>함께할 캐릭터를<br>골라주세요.</h1><p>캐릭터는 나중에도 바꿀 수 있어요.</p></div><div class="character-options">${['male','female'].map((gender,i)=>`<button class="character-option ${draft.gender===gender?'chosen':''}" data-setup-gender="${gender}" aria-pressed="${draft.gender===gender}"><img src="${portrait(gender)}" alt="${i?'여자':'남자'} 캐릭터"><span>${i?'여자':'남자'}<b>${draft.gender===gender?'✓':'○'}</b></span></button>`).join('')}</div><label class="name-field">어떤 이름으로 불러드릴까요?<input id="quest-name" maxlength="16" placeholder="닉네임 (선택)" value="${esc(draft.name)}" autocomplete="nickname"><small>비워 두면 ‘나’로 시작해요.</small></label>`;
+  if(step===1)body=`<div class="setup-copy"><span class="q-kicker">MEET YOUR CHARACTER</span><h1>함께할 캐릭터를<br>골라주세요.</h1><p>캐릭터는 나중에도 바꿀 수 있어요.</p></div><div class="character-options">${['male','female'].map((gender,i)=>`<button class="character-option ${draft.gender===gender?'chosen':''}" data-setup-gender="${gender}" aria-pressed="${draft.gender===gender}"><img src="${portrait(gender)}" alt="${i?'여자':'남자'} 캐릭터"><span>${i?'여자':'남자'}<b>${draft.gender===gender?'✓':'○'}</b></span></button>`).join('')}</div>`;
   if(step===2)body=`<div class="setup-copy"><span class="q-kicker">MAKE IT YOURS</span><h1>어떤 하루를<br>만들고 싶나요?</h1><p>집중하고 싶은 분야를 하나 골라주세요.</p></div><div class="goal-options">${categoryNames.slice(0,4).map((name,i)=>`<button data-setup-goal="${i}" class="${draft.goals.includes(i)?'chosen':''}" aria-pressed="${draft.goals.includes(i)}">${icon(categoryIcons[i])}<span>${['배우고 성장하기','꾸준히 몸 움직이기','일상 돌보기','잘 쉬어가기'][i]}</span><b>${draft.goals.includes(i)?'✓':'＋'}</b></button>`).join('')}</div><p class="setup-note">선택한 분야는 활동 경험치를 10% 더 받아요.<br>보너스는 반올림되어 자정에 함께 지급돼요.</p>`;
-  if(step===3)body=`<div class="setup-copy"><span class="q-kicker">READY WHEN YOU ARE</span><h1>${esc(draft.name.trim()||'나')}의 하루,<br>이제 시작해볼까요?</h1><p>오늘 보낸 하루를 간단하게 남겨보세요.</p></div><div class="welcome-art ready-art"><img src="${portrait(draft.gender)}" alt="선택한 캐릭터"><span class="welcome-label welcome-speech"><svg viewBox="0 0 110 80" aria-hidden="true"><path d="M55 2C25 2 3 13 3 28S22 51 43 53L57 74 49 54C80 56 107 44 107 28S85 2 55 2Z"/></svg><span>나의 하루가<br>경험치가 돼요.</span></span></div><div class="setup-tags">${draft.goals.map(i=>`<span>${categoryNames[i]}</span>`).join('')}</div>`;
+  if(step===3)body=`<div class="setup-copy"><span class="q-kicker">READY WHEN YOU ARE</span><h1>작은 모험을,<br>이제 시작해볼까요?</h1><p>오늘 보낸 하루를 간단하게 남겨보세요.</p></div><div class="welcome-art ready-art"><img src="${portrait(draft.gender)}" alt="선택한 캐릭터"><span class="welcome-label welcome-speech"><svg viewBox="0 0 110 80" aria-hidden="true"><path d="M55 2C25 2 3 13 3 28S22 51 43 53L57 74 49 54C80 56 107 44 107 28S85 2 55 2Z"/></svg><span>나의 하루가<br>경험치가 돼요.</span></span></div><div class="setup-tags">${draft.goals.map(i=>`<span>${categoryNames[i]}</span>`).join('')}</div>`;
   return `<section class="quest-setup">${progress}${body}<footer>${editing&&step===1?'<button class="q-text" data-setup-intro>처음 안내 다시 보기</button>':''}${back}<button class="q-primary" data-setup-next ${step===2&&!draft.goals.length?'disabled':''}>${step===0?'시작하기':step===3?'나의 하루 시작하기':'다음으로'}</button></footer></section>`;
  }
  const oldHistory=pages.history;
@@ -103,7 +98,7 @@ let questOnboardingActive=false;
  const home=pages.home;
  pages.home=()=>{
   const s=summary();
-  return `<header class="quest-home-heading"><div><span class="q-kicker">MY DAILY ADVENTURE</span><h1>${esc(profileName())}의 하루</h1></div><button class="q-round" data-edit-profile aria-label="캐릭터 변경">${icon('user')}</button></header><div class="quest-scene-card">${home().replace(/<div class="character-picker"[\s\S]*?<\/div>/, '')}</div><section class="home-focus-goal" aria-label="현재 목표"><div><span>현재 목표</span><strong>${categoryNames[activeFocus()]||'목표 선택'} <small>EXP +10%</small></strong><span>${goalNotice()}</span></div><button type="button" data-edit-goal>목표 변경</button></section><section class="home-quest-summary"><div><span class="q-kicker">TODAY'S ACTIVITY</span><h2>오늘의 하루를 남겨요.</h2><p>오늘 활동 <b>${s.done}개</b> <span>획득 예정 · +${s.xp} EXP</span></p></div><button class="q-primary" data-page="history">활동 기록하기 ${arrow}</button></section>`;
+  return `<div class="quest-scene-card home-immersive-scene"><button type="button" class="home-character-control" data-edit-profile aria-label="캐릭터 변경" title="캐릭터 변경">${icon('user')}</button>${home().replace(/<div class="character-picker"[\s\S]*?<\/div>/, '')}</div><section class="home-focus-goal" aria-label="현재 목표"><div><span>현재 목표</span><strong>${categoryNames[activeFocus()]||'목표 선택'} <small>EXP +10%</small></strong><span>${goalNotice()}</span></div><button type="button" data-edit-goal>목표 변경</button></section><section class="home-quest-summary"><div><h2>오늘은 무엇을 했나요?</h2><p><span class="home-activity-count">기록 <b>${s.done}개</b></span> <span>획득 예정 · +${s.xp} EXP</span></p></div><button class="q-primary" data-page="history">활동 기록하기 ${arrow}</button></section>`;
  };
  const baseRender=render;
  render=function(){
@@ -125,7 +120,7 @@ let questOnboardingActive=false;
   if(introPreview){const url=new URL(location.href);url.searchParams.delete('intro');location.replace(url.pathname+url.search+url.hash);return;}
   editing=false;page='home';render();window.scrollTo(0,0);
  }
- document.addEventListener('input',event=>{if(event.target.id==='quest-name')draft.name=event.target.value;});
+
  document.addEventListener('click',event=>{
   const button=event.target.closest('button');if(!button)return;const d=button.dataset;
   if(!Object.keys(d).some(key=>key.startsWith('quest')||key.startsWith('setup')||key==='editProfile'||key==='editGoal'))return;
@@ -161,5 +156,8 @@ let questOnboardingActive=false;
  setInterval(rollover,1000);window.addEventListener('focus',rollover);
  render();if(needsSetup())window.scrollTo(0,0);
 })();
+
+
+
 
 

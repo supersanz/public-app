@@ -1,0 +1,37 @@
+/* Every reward uses the same painterly surface, with light sampled by scene. */
+.app.quest-app :is(.traveler-home,.journey-bundle){--scene-paint:url(#scene-paint-warm);--ground-shadow:#4a3b2c70}
+.app.quest-app :is([data-background="forest"],[data-bundle="forest"]){--scene-paint:url(#scene-paint-forest);--ground-shadow:#273a2b70}
+.app.quest-app :is([data-background="deepForest"],[data-bundle="deepForest"]){--scene-paint:url(#scene-paint-stone);--ground-shadow:#30394770}
+.app.quest-app :is([data-background="runFrontier"],[data-bundle="runFrontier"]){--scene-paint:url(#scene-paint-snow);--ground-shadow:#556c854d}
+.app.quest-app :is([data-background="sky"],[data-bundle="sky"]){--scene-paint:url(#scene-paint-sky)}
+.app.quest-app :is([data-background="city"],[data-bundle="city"]){--scene-paint:url(#scene-paint-city)}
+
+/* Cover standing, walking, running and flight, both genders and reward previews.
+   Treat just the pixels, never the layout wrapper or its contact shadow. */
+.app.quest-app .quest-scene-card .traveler-home .traveler-art :is(img,canvas),
+.app.quest-app .reward-readable .journey-bundle .bundle-character :is(img,canvas),
+.app.quest-app .reward-readable .journey-bundle .reward-static-character{
+ filter:var(--scene-paint)!important;
+ image-rendering:auto!important;
+}
+.app.quest-app .quest-scene-card .traveler-home[data-background="white"] .traveler-art>img.female-standing{
+ filter:var(--scene-paint)!important;
+}
+.app.quest-app .quest-scene-card .traveler-home:not([data-background="sky"]):not([data-background="city"]) .traveler-art::before{
+ content:"";display:block;position:absolute;left:48%;bottom:2.4%;
+ width:35%;height:3%;border-radius:50%;transform:translateX(-50%);
+ background:radial-gradient(ellipse,var(--ground-shadow) 0%,transparent 75%);
+ filter:blur(1px);z-index:0;pointer-events:none;
+}
+.app.quest-app .quest-scene-card .traveler-home[data-background="white"] .traveler-art::before{
+ bottom:3%;width:28%;height:2.5%;
+}
+.app.quest-app .quest-scene-card .traveler-home[data-background="white"] .traveler-art:has(>img.female-standing)::before{
+ bottom:2.2%;width:32%;height:3%;background:radial-gradient(ellipse,var(--ground-shadow),transparent 75%);
+}
+/* The approved night illustrations already paint character and scenery together.
+   Keep them unified; soften the shared surface rather than darkening the person twice. */
+.app.quest-app .quest-scene-card .growth-night .forest-night-full{
+ filter:saturate(.92) contrast(.97)!important;
+ image-rendering:auto!important;
+}

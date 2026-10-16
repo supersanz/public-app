@@ -31,7 +31,7 @@
   if (origin === null) origin = distance - scene.clientWidth * .72;
   const x = reduced.matches ? scene.clientWidth * .72 : ((distance-origin+100)%repeat+repeat)%repeat-100;
   // Match the full flight broom's length at the grounded character scale.
-  const broomWidth = scene.clientHeight * .45;
+  const broomWidth = scene.clientHeight * .52;
   prop.style.width = broomWidth + 'px';
   prop.style.height = broomWidth * .37 + 'px';
   const half = prop.offsetWidth / 2;

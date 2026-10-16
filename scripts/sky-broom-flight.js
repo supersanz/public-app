@@ -42,7 +42,18 @@
   ex.drawImage(c,16,0,79,c.height,16,0,229,c.height);
   ex.drawImage(c,95,0,417,c.height,245,0,417,c.height);
   // Preserve the source face and original pupils without repainting them.
-  return extended;
+  // Enlarge the exposed straw fan around its binding, keeping the rider intact.
+  const wide=document.createElement('canvas');wide.width=710;wide.height=extended.height;
+  const wc=wide.getContext('2d');wc.drawImage(extended,0,0);
+  const tailX=530,tailY=female?330:417,top=female?285:365;
+  const fan=document.createElement('canvas');fan.width=extended.width;fan.height=extended.height;
+  const fc=fan.getContext('2d');
+  const boundary=ctx=>{ctx.beginPath();ctx.moveTo(tailX,tailY-9);ctx.lineTo(610,top);ctx.lineTo(662,top);ctx.lineTo(662,extended.height);ctx.lineTo(tailX,tailY+23);ctx.closePath();};
+  fc.save();boundary(fc);fc.clip();fc.drawImage(extended,0,0);fc.restore();
+  wc.save();boundary(wc);wc.clip();wc.clearRect(tailX,top,132,extended.height-top);wc.restore();
+  wc.save();wc.translate(tailX,tailY);wc.scale(1.36,1.22);
+  wc.drawImage(fan,-tailX,-tailY);
+  wc.restore();return wide;
  }
  // Build a continuous wind loop from a single registered pose. No cross-fade ghosts.
  async function windFrames(source,female){
