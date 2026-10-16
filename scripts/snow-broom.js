@@ -4,7 +4,7 @@
  pages.home = function () {
   const html = home();
   if (travelerState().background !== 'runFrontier' || data.magicBroom?.acquired) return html;
- const prop = '<button type="button" class="snow-broom-discovery" data-broom-discover aria-label="눈 속에 묻힌 빗자루 꺼내기" title="눈 속에 무언가 묻혀 있어요" style="visibility:hidden"><img src="assets/props/old-magic-broom-buried-v9.png" alt="" draggable="false"><span class="broom-glint" aria-hidden="true"></span><span class="broom-dust broom-dust-one" aria-hidden="true"></span><span class="broom-dust broom-dust-two" aria-hidden="true"></span></button>';
+ const prop = '<button type="button" class="snow-broom-discovery" data-broom-discover aria-label="눈 속에 묻힌 빗자루 꺼내기" title="눈 속에 무언가 묻혀 있어요" style="visibility:hidden"><img src="assets/props/old-magic-broom-buried-v10.png" alt="" draggable="false"><span class="broom-glint" aria-hidden="true"></span><span class="broom-dust broom-dust-one" aria-hidden="true"></span><span class="broom-dust broom-dust-two" aria-hidden="true"></span></button>';
   return html.replace(/(<section\b[^>]*>)/, '$1' + prop);
  };
  // Anchor to one point in the panorama loop, not to a separate animation clock.
