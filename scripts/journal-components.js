@@ -28,7 +28,7 @@
  };
  pages.alarm=()=>{
   const doc=new DOMParser().parseFromString(alarm(),'text/html'),root=doc.querySelector('.alarm-page');root.querySelector('.heading')?.remove();
-  root.insertAdjacentHTML('afterbegin',header('알람','좋은 하루가 좋은 내일을 만든다',true));
+  root.insertAdjacentHTML('afterbegin',header('알람','좋은 하루가 좋은 내일을 만든다',true).replace(decor('night'),'').replace('<div><h1>', '<div><span class="q-kicker">REST WELL, START FRESH</span><h1>'));
   const note=root.querySelector('.note');const noteText=note.textContent;note.replaceChildren();note.insertAdjacentHTML('beforeend',decor('moon'));const noteLabel=doc.createElement('span');noteLabel.className='alarm-note-text';noteLabel.textContent=noteText;note.append(noteLabel);
   root.querySelectorAll('.alarm-card').forEach(card=>card.insertAdjacentHTML('beforeend',corners));
   root.querySelectorAll('.alarm-label').forEach((label,i)=>{label.querySelector('svg')?.remove();label.insertAdjacentHTML('afterbegin',i%2?icon('moon'):'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>');});
@@ -42,7 +42,8 @@
   const title=root.querySelector('.heading'),intro=root.querySelector('.journey-intro');
   const headingEl=doc.createElement('header');headingEl.className='journal-heading journal-heading-rewards';
   const copy=doc.createElement('div'),h=doc.createElement('h1'),p=doc.createElement('p');
-  h.textContent='성장 보상';if(intro)p.append(...Array.from(intro.childNodes,node=>node.cloneNode(true)));copy.append(h,p);headingEl.append(copy);
+  const kicker=doc.createElement('span');kicker.className='q-kicker';kicker.textContent='SMALL STEPS, NEW REWARDS';
+  h.textContent='여행 지도';if(intro)p.append(...Array.from(intro.childNodes,node=>node.cloneNode(true)));copy.append(kicker,h,p);headingEl.append(copy);
   title?.remove();intro?.remove();root.prepend(headingEl);return root.outerHTML;
  };
  const touchPage=pages.touch;

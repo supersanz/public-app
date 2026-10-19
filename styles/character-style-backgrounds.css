@@ -8,3 +8,31 @@
 .app.quest-app .quest-scene-card .traveler-home .desert-pan-track>img,
 .app.quest-app .quest-scene-card .traveler-home .desert-pan-track>.city-pan-tile,
 .app.quest-app .quest-scene-card .traveler-home .desert-pan-track>.city-pan-tile>img{margin:0!important;mask-image:none!important;-webkit-mask-image:none!important;transform:none!important;filter:none!important;flex-shrink:0}
+
+/* Use the Russia scene's display box; keep the original artwork and each path's ground anchor. */
+.app.quest-app .quest-scene-card .desert-home:is([data-background="white"],[data-background="desert"],[data-background="forest"],[data-background="deepForest"],[data-background="runFrontier"],[data-background="russia"]):not(.night-home) .traveler-art:has(>canvas.approved-walk[data-gender="female"],>img.female-standing){
+ position:absolute!important;height:32%!important;width:auto!important;aspect-ratio:1!important;max-width:none!important;max-height:none!important;left:50%!important;top:auto!important;transform:translateX(-50%)!important;scale:1!important;
+}
+.app.quest-app .quest-scene-card .desert-home[data-background="white"]:not(.night-home) .traveler-art>img.female-standing{width:100%!important;height:100%!important;object-fit:contain!important;transform:none!important;scale:1!important;}
+
+/* Lv.5/10/20: same display-box scale as the snow scene. */
+.app.quest-app .quest-scene-card .desert-home:is([data-background="desert"],[data-background="forest"],[data-background="deepForest"]):not(.night-home) .traveler-art>canvas.approved-walk[data-gender="female"]{
+ width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;transform:none!important;scale:1!important;transform-origin:50% 100%!important;
+}
+
+/* Female Lv.5/10/20 scene sizing, independent from male and snow outfits. */
+.app.quest-app .quest-scene-card .desert-home:is([data-background="desert"],[data-background="forest"],[data-background="deepForest"]):not(.night-home) .traveler-art:has(>canvas.approved-walk[data-gender="female"][data-outfit="selectedSix"]){
+ height:30%!important;
+}
+
+/* Approved v16 body, new winter clothing: same display scale on snow. */
+.app.quest-app .quest-scene-card .desert-home[data-background="runFrontier"]:not(.night-home) .traveler-art:has(>canvas[data-gender="female"][data-outfit="approvedWinter"]){height:30%!important;}
+.app.quest-app .quest-scene-card .desert-home[data-background="runFrontier"]:not(.night-home) .traveler-art>canvas[data-gender="female"][data-outfit="approvedWinter"]{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;transform:none!important;scale:1!important;}
+
+/* Tokyo female: approved v16 display size and uniform proportions. */
+.app.quest-app .quest-scene-card .desert-home[data-background="japan"]:not(.night-home) .traveler-art:has(>canvas[data-gender="female"][data-outfit="kimono"]){height:30%!important;}
+.app.quest-app .quest-scene-card .desert-home[data-background="japan"]:not(.night-home) .traveler-art>canvas[data-gender="female"][data-outfit="kimono"]{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;transform:none!important;scale:1!important;}
+
+/* Moscow female uses the approved v16 display scale. */
+.app.quest-app .quest-scene-card .desert-home[data-background="russia"]:not(.night-home) .traveler-art:has(>canvas[data-gender="female"][data-outfit="russia"]){height:30%!important;}
+.app.quest-app .quest-scene-card .desert-home[data-background="russia"]:not(.night-home) .traveler-art>canvas[data-gender="female"][data-outfit="russia"]{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;transform:none!important;scale:1!important;}

@@ -39,6 +39,8 @@ const TravelerEyes=(()=>{
   requestAnimationFrame(tick);if(document.hidden)return;
   document.querySelectorAll('.traveler-art>img[src*="large-bag-v2/"],.traveler-art>img[data-refined-original*="large-bag-v2/"],.traveler-art>img[src*="idle-standing-empty-hands"],.traveler-art>img[data-refined-original*="idle-standing-empty-hands"]').forEach(img=>{
    if(!img.complete||!img.naturalWidth)return;
+   const artwork=img.dataset.refinedOriginal||img.src;
+   if(artwork.includes('/female/')||artwork.includes('female-standing'))return;
    let e=entries.get(img);
    if(!e){
     const canvas=document.createElement('canvas');canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;
@@ -65,14 +67,17 @@ const TravelerEyes=(()=>{
 (()=>{
  function freeze(){
   document.querySelectorAll('.journey-bundle .bundle-character canvas').forEach(canvas=>{
-   if(!canvas.width||!canvas.height)return;
+   if(!canvas.width||!canvas.height||canvas.dataset.freezing)return;
    const ctx=canvas.getContext('2d');if(!ctx)return;
    const pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data;
    let painted=false;for(let i=3;i<pixels.length;i+=4){if(pixels[i]>100){painted=true;break;}}
    if(!painted)return;
    const img=new Image();img.alt=canvas.getAttribute('aria-label')||'캐릭터 미리보기';
-   img.className='reward-static-character';img.style.cssText='width:100%;height:100%;object-fit:contain';
-   img.src=canvas.toDataURL('image/png');canvas.replaceWith(img);
+    img.className='reward-static-character';img.style.cssText='width:100%;height:100%;object-fit:contain';
+    img.dataset.gender=canvas.dataset.gender||(travelerFemale()?'female':'male');
+   canvas.dataset.freezing='true';
+   img.src=canvas.toDataURL('image/png');
+   img.decode().then(()=>{if(canvas.isConnected)canvas.replaceWith(img);else delete canvas.dataset.freezing;}).catch(()=>{delete canvas.dataset.freezing;});
   });
  }
  setInterval(freeze,180);

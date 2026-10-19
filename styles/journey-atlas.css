@@ -1,0 +1,29 @@
+#map{display:block;padding:12px 16px 16px!important}.shell{padding-top:0!important}
+.top,.tabs,.intro{display:none!important}
+.gallery-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 16px}.gallery-toolbar h2{font-size:20px;font-weight:600;color:#293545;margin:0}
+.destination-current{position:relative;display:block;width:100%;aspect-ratio:1.85;border:0;border-radius:8px;overflow:hidden;padding:0;text-align:left;background:#e9eff5}.destination-current>img{width:100%;height:100%;object-fit:cover}.destination-current:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 38%,#142c48a6);pointer-events:none}.destination-current-badge{position:absolute;top:12px;left:12px;z-index:1;background:#6596ee;color:white;border-radius:5px;padding:5px 9px;font-size:11px}.destination-current-copy{position:absolute;bottom:17px;left:17px;z-index:1;color:white}.destination-current-copy small{font-size:12px;color:white}.destination-current-copy strong{display:block;font-size:24px;font-weight:600;margin-top:4px;color:white}
+.destinations-title{font-size:18px;color:#293545;margin:25px 0 17px;font-weight:600}.destination-section{margin-bottom:22px}.destination-section h3{font-size:13px;font-weight:500;color:#718097;margin:0 0 11px}.destination-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px}
+.destination-card{padding:0;min-width:0;display:block;text-align:left;border:0;border-radius:7px;background:white;font:inherit;color:#293545;overflow:hidden}.destination-image{display:block;position:relative;aspect-ratio:1.65;overflow:hidden;background:#edf1f5}.destination-image>img{display:block;width:100%;height:100%;object-fit:cover}.destination-copy{display:flex;flex-direction:column;gap:4px;padding:11px 10px 12px;border:1px solid var(--surface-border,#d3dae4);border-top:0;border-radius:0 0 7px 7px}.destination-copy small{font-size:11px;color:#718097}.destination-copy strong{font-size:14px;font-weight:600;line-height:1.5;word-break:keep-all}.destination-card.is-locked .destination-image>img{filter:brightness(.7) saturate(.65)}.destination-lock{position:absolute;right:8px;top:8px;color:white;display:block;width:18px;height:18px}.destination-lock svg{width:100%;height:100%}.destination-card:focus-visible,.destination-current:focus-visible{outline:2px solid #5788e0;outline-offset:2px}
+
+.destination-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#718097}
+
+/* Compact locked destination details. */
+#detail-copy.locked-requirements{display:flex;flex-direction:column;gap:12px;white-space:normal;margin:18px 0 20px;text-align:left}
+.requirement-line{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 14px;background:#f4f7fb;border:1px solid #e2e8f0;border-radius:12px;font-size:13px;line-height:1.6;color:#334155}
+.requirement-line span{min-width:0;word-break:keep-all;overflow-wrap:anywhere}.requirement-line strong{flex-shrink:0;font-size:13px;font-variant-numeric:tabular-nums;color:#475569}.requirement-line.is-complete strong{color:#3876bd}
+.requirement-reward{padding-top:4px;font-size:13px;font-weight:600;color:#477ac0}.requirement-offline{margin-top:-9px;font-size:11px;color:#7b8797}
+
+#detail-copy.unlocked-details{margin:16px 0 22px;white-space:normal;text-align:left}.sheet .destination-summary{margin:0 0 18px;font-size:14px;line-height:1.7;word-break:keep-all}.destination-reward{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;background:#f4f7fb;border:1px solid #e2e8f0;border-radius:10px;font-size:13px}.destination-reward span{color:#647184}.destination-reward strong{color:#477ac0;font-weight:600}.destination-offline{display:block;margin-top:8px;color:#7b8797;font-size:11px;line-height:1.6}.overlay{overscroll-behavior:contain}.overlay .sheet{max-height:calc(100dvh - 44px);overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y}html:has(#overlay:not([hidden])){overflow:hidden}
+
+/* Shared spacing for every destination detail, regardless of text length. */
+.sheet .copy{padding:22px;display:flex;flex-direction:column;align-items:stretch}
+.sheet .copy #detail-level{margin:0 0 6px;line-height:18px}
+.sheet .copy #detail-title{margin:0;font-size:23px;line-height:1.4;word-break:keep-all;overflow-wrap:anywhere}
+.sheet .copy #detail-copy{margin:16px 0 20px;line-height:1.7;min-width:0}
+.sheet .copy #detail-copy.unlocked-details{display:flex;flex-direction:column;gap:12px}
+.sheet .copy .destination-summary{margin:0;line-height:1.7;overflow-wrap:anywhere}
+.sheet .copy .destination-offline{margin:0;font-size:12px;line-height:1.6}
+.sheet .copy .destination-reward{flex-wrap:wrap;gap:6px 12px;line-height:1.6}
+.sheet .copy .destination-reward strong{white-space:nowrap}
+.sheet .copy #detail-action{margin:0;min-height:48px;line-height:24px;padding:12px}
+@media(max-width:360px){.sheet .copy{padding:18px}.sheet .copy #detail-title{font-size:21px}}

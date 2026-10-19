@@ -1,7 +1,28 @@
 // Individual square assets share a 24px transparent margin on a 256px canvas.
 function activityIcon(name,id){
+ if(id===61)return '<img class="activity-image painted-activity" src="assets/activity-icons/fruit-painted-v2.png" alt="" aria-hidden="true" width="52" height="52" draggable="false">';
+ const extraIds=[50,51,53,55,57,59,60,62,63,66,68];
+ const cell=extraIds.indexOf(id);
+ if(cell>=0){
+  // The breakfast plate is wider than its row is tall. Clip the row separately
+  // and center it in a square, preserving both plate edges without adjacent art.
+  if(id===60)return '<svg class="activity-image painted-activity" viewBox="0 0 360 360" width="52" height="52" aria-hidden="true" focusable="false"><svg x="0" y="29" width="360" height="302" viewBox="728 404 360 302" style="overflow:hidden!important;width:360px;height:302px"><image href="assets/activity-icons/daily-painted-atlas-v2.png" width="1448" height="1086"/></svg></svg>';
+  // Per-icon square viewports avoid cutting tall silhouettes at atlas row seams.
+  const rects=[[0,35,365],[365,35,365],[725,35,365],[1072,23,376],[0,398,345],[365,400,355],[745,400,310],[1088,398,358],[10,715,350],[365,715,360],[735,707,350]];
+  const [x,y,size]=rects[cell];
+  // Crop in source pixels; one uniform scale preserves the original aspect ratio.
+  return `<svg class="activity-image painted-activity" viewBox="${x} ${y} ${size} ${size}" width="52" height="52" overflow="hidden" aria-hidden="true" focusable="false"><image href="assets/activity-icons/daily-painted-atlas-v2.png" width="1448" height="1086"/></svg>`;
+ }
+
  const keys=['academy','book','computer','language','certificate','running','dumbbell','pilates','heart','swimming','cycling','hiking','food','home','history','coffee','energyCan','tonicBottle','water','leaf','game','film','headphones','mic','moon'];
  const assetKey=id===18?'language':id===41?'certificate':id===21||id===39?'water':name;
+ const variedKeys=['academy','book','computer','language','certificate','running','dumbbell','pilates','game','film','headphones','mic'];
+ const variedIndex=variedKeys.indexOf(assetKey);
+ if(variedIndex>=0){
+  const crops=[[15,30,365,355],[385,85,340,290],[725,90,365,295],[1090,95,350,280],[20,420,355,285],[385,400,340,305],[725,450,365,230],[1090,425,350,280],[15,750,375,280],[395,705,315,325],[725,705,365,335],[1115,705,315,335]];
+  const [x,y,w,h]=crops[variedIndex];
+  return `<svg class="activity-image painted-activity" viewBox="0 0 420 420" width="52" height="52" aria-hidden="true" focusable="false"><svg x="${(420-w)/2}" y="${(420-h)/2}" width="${w}" height="${h}" viewBox="${x} ${y} ${w} ${h}" style="overflow:hidden!important;width:${w}px;height:${h}px"><image href="assets/activity-icons/activity-varied-v1.png" width="1448" height="1086"/></svg></svg>`;
+ }
  if(keys.includes(assetKey))return `<img class="activity-image" src="assets/activity-icons/fitted-v6/${assetKey}.png" alt="" aria-hidden="true" width="58" height="58" draggable="false">`;
  const drawings={
   running:'<circle cx="14" cy="4" r="2"/><path d="m7 10 4-3 4 3 4 1m-8-4-2 7 5 3 1 5M9 14l-3 5H2"/>',

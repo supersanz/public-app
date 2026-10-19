@@ -1,0 +1,13 @@
+/* Shared neutral outline for app and embedded travel screens. */
+:root{--surface-border:#d3dae4;--surface-border-width:1px}
+.app.quest-app{--q-line:var(--surface-border)}
+.app.quest-app :is(.home-focus-goal,.home-quest-summary,.quest-scene-card,.quest-progress-card,.alarm-card,.alarm-entry,.reward-complete,.panel,.character-change-dialog,.wheel-modal){border-color:var(--surface-border)!important;border-width:var(--surface-border-width)!important}
+.app.quest-app .quest-card:not(.is-complete){border-color:var(--surface-border)!important;border-width:var(--surface-border-width)!important}
+.app.quest-app .growth-cards.reward-readable .journey-bundle{border:0!important;box-shadow:none!important}
+.app.quest-app .growth-cards.reward-readable .journey-bundle:after{display:none!important}
+.app.quest-app .growth-cards.reward-readable .journey-bundle>.journey-art{border:0!important}
+.app.quest-app .growth-cards.reward-readable .journey-bundle>.journey-card-copy{border:var(--surface-border-width) solid var(--surface-border)!important;border-top:0!important;border-radius:0 0 10px 10px!important;box-sizing:border-box!important}
+.atlas-frame,.atlas-controls{border-color:var(--surface-border)!important;border-width:var(--surface-border-width)!important}
+/* Keep the thin lower outline inside the scroll clipping boundary. */
+.app.quest-app .growth-cards.reward-readable .reward-carousel .journey-bundle>.journey-card-copy{width:calc(100% - 2px)!important;margin:0 1px!important;border:0!important;box-shadow:inset 1px 0 var(--surface-border),inset -1px 0 var(--surface-border),inset 0 -1px var(--surface-border)!important}
+.app.quest-app .growth-cards.reward-readable .reward-carousel .journey-bundle>.journey-art{width:calc(100% - 2px)!important;margin:0 1px!important}

@@ -1,0 +1,89 @@
+
+#auth-screen{position:fixed;inset:0;z-index:20000;display:grid;place-items:center;padding:24px;background:linear-gradient(150deg,#f5f0e7,#e7eee7);overflow:auto}
+#auth-screen[hidden]{display:none}
+.auth-card{width:min(100%,390px);box-sizing:border-box;padding:40px 28px;border:1px solid #ded9cd;border-radius:24px;background:#fffdf8;text-align:center;box-shadow:0 18px 60px #344e3612;font-family:system-ui,sans-serif;color:#293c31}
+.auth-symbol{font-size:42px;color:#8b9873}.auth-kicker{font-size:12px;letter-spacing:.12em;color:#78806f}.auth-card h1{font-size:30px;letter-spacing:-1.5px;margin:18px 0 12px}.auth-tagline{font-size:14px;color:#687463}.auth-message{font-size:14px;line-height:1.7;margin:32px 0 22px;white-space:pre-line}.auth-actions{display:grid;gap:10px}.auth-actions button{border:1px solid #c9d0c3;border-radius:12px;background:#fff;padding:14px;font-size:14px;color:#293c31;cursor:pointer}.auth-actions button:first-child{background:#344e40;color:white}.auth-actions button:disabled{opacity:.5;cursor:wait}
+.account-panel{position:fixed;right:12px;top:10px;z-index:1000;font:12px system-ui;color:#293c31}.account-panel summary{cursor:pointer;border:1px solid #cfd5cb;border-radius:14px;padding:7px 11px;background:#fffffff0;list-style:none}.account-panel>div{margin-top:8px;background:#fffdf8;border:1px solid #ddd;border-radius:12px;padding:16px;max-width:260px;box-shadow:0 6px 24px #0002}.account-panel button{padding:8px 12px;background:#f2f4ee;border:1px solid #cbd0c4;border-radius:8px;margin:4px}.account-panel p{line-height:1.6}
+
+.account-panel{right:auto;top:auto;width:40px}.account-panel[hidden]{display:none}.account-panel summary{display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:40px;height:40px;padding:0;border-radius:50%;box-shadow:0 2px 8px #0002}.account-panel summary::-webkit-details-marker{display:none}.account-panel summary:focus-visible{outline:2px solid #344e40;outline-offset:3px}.account-panel>div{position:absolute;right:0;bottom:48px;width:240px;max-width:calc(100vw - 40px);margin:0;box-sizing:border-box}
+
+.account-panel>.account-menu{width:240px;padding:18px;background:#fffefa;border:1px solid #d9dfd6;border-radius:16px;box-shadow:0 8px 28px #233c2924}.account-name{display:block;font-size:15px;line-height:1.4;overflow-wrap:anywhere}.account-autosave{display:block;font-size:12px;line-height:1.5;color:#687463;margin-top:5px}.account-panel #cloud-save-status{font-size:13px;font-weight:600;margin:14px 0;padding:10px 12px;background:#eef3ed;color:#344e40;border-radius:8px}.account-panel #cloud-save-status[data-state="error"]{background:#fff0e6;color:#8a421e}.account-panel #cloud-save-status[data-state="saving"]{background:#edf2fa;color:#365575}.account-panel button[data-cloud-save]{display:block;width:100%;margin:0;min-height:40px;background:#344e40;color:#fff;border:0;font-size:13px;font-weight:600;cursor:pointer}.account-panel button[data-cloud-save]:disabled{opacity:.65;cursor:wait}.account-panel button[data-cloud-logout]{display:block;margin:10px auto 0;padding:5px 10px;background:none;border:0;color:#687463;font-size:12px;cursor:pointer}
+
+.account-save-help{display:block;margin-top:8px;text-align:center;font-size:11px;line-height:1.6;color:#687463}
+
+/* Match the app's shared white surfaces, blue actions and Pretendard typography. */
+.account-panel{font-family:Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;color:#293545}
+.account-panel summary{background:#fff;border-color:var(--surface-border,#d3dae4);color:#52647c;box-shadow:none}
+.account-panel summary:focus-visible,.account-panel button:focus-visible{outline:2px solid #5788e0;outline-offset:3px}
+.account-panel>.account-menu{background:#fff;border:var(--surface-border-width,1px) solid var(--surface-border,#d3dae4);border-radius:16px;color:#293545}
+.account-provider{display:flex;align-items:center;gap:7px;color:#718097;font-size:11px;line-height:18px;margin-bottom:10px}
+.account-provider svg{flex:none}.account-name{font-size:15px;font-weight:600}
+.account-panel button{font-family:inherit}
+.account-autosave,.account-save-help{color:#718097}
+.account-panel #cloud-save-status{background:#f5f7fa;color:#365575;font-weight:500;border:1px solid var(--surface-border,#d3dae4)}
+.account-panel button[data-cloud-save]{background:#6b99ed;color:#fff;border:1px solid #5788e0;border-radius:12px;font-size:14px;font-weight:600;min-height:44px}
+.account-panel button[data-cloud-save]:not(:disabled):hover{background:#608cdd}
+.account-panel button[data-cloud-logout]{color:#718097}
+
+/* Account menu spacing: one consistent vertical rhythm. */
+.account-panel>.account-menu{width:256px;padding:20px;max-width:calc(100vw - 32px);max-height:calc(100dvh - 80px);overflow-y:auto;box-sizing:border-box}
+.account-provider{margin:0 0 10px;gap:8px;line-height:20px}
+.account-name{margin:0;line-height:22px;letter-spacing:-.2px}
+.account-autosave{margin:6px 0 0;font-size:12px;line-height:18px;word-break:keep-all;overflow-wrap:anywhere}
+.account-panel #cloud-save-status{margin:16px 0 12px;padding:10px 12px;min-height:40px;box-sizing:border-box;font-size:13px;line-height:20px;word-break:keep-all;overflow-wrap:anywhere}
+.account-panel button[data-cloud-save]{margin:0;padding:11px 12px;min-height:44px;line-height:20px}
+.account-save-help{margin:8px 0 0;font-size:11px;line-height:17px;word-break:keep-all}
+.account-panel button[data-cloud-logout]{width:100%;min-height:40px;margin:12px 0 0;padding:10px 0 0;border-top:1px solid var(--surface-border,#d3dae4);border-radius:0;line-height:20px}
+@media(max-width:360px){.account-panel>.account-menu{width:240px;padding:16px}}
+
+/* Compact account popover. */
+.account-panel>.account-menu{width:224px;padding:16px;border-radius:12px}
+.account-provider{margin-bottom:6px;line-height:18px}
+.account-name{font-size:14px;line-height:20px}
+.account-autosave{margin-top:4px;font-size:11px;line-height:17px}
+.account-panel #cloud-save-status{margin:12px 0 10px;padding:8px 10px;min-height:36px;line-height:18px}
+.account-panel button[data-cloud-save]{min-height:40px;padding:9px 10px;border-radius:10px}
+.account-save-help{margin-top:6px;line-height:16px}
+.account-panel button[data-cloud-logout]{margin-top:8px;min-height:36px;padding-top:8px}
+@media(max-width:360px){.account-panel>.account-menu{width:216px;padding:14px}}
+
+/* Account control replaces the home scene's former character button. */
+.account-panel>.account-menu{top:48px;bottom:auto}
+.account-panel .account-provider,.account-panel .account-name{padding-right:0}
+
+/* Quiet scene control matching the home overlay controls. */
+.account-panel summary{width:40px;height:40px;border:1px solid #ffffff66;border-radius:10px;background:#172b4266;color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 2px 8px #0002;transition:background .15s ease}
+.account-panel summary svg{width:20px;height:20px;stroke-width:1.7}
+.account-panel summary:hover,.account-panel[open] summary{background:#172b4299}
+.account-panel summary:focus-visible{outline:2px solid #fff;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.account-panel summary{transition:none}}
+
+/* Crisp, centered account control and aligned menu content. */
+.account-panel summary{display:grid;place-items:center;padding:0;width:40px;height:40px;box-sizing:border-box;background:#203b58d9;border:1px solid #ffffff8c;border-radius:10px;color:#fff;line-height:1;box-shadow:0 2px 6px #10263c26}
+.account-panel summary svg{display:block;width:22px;height:22px;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin:0}
+.account-panel summary:hover,.account-panel[open] summary{background:#254969}
+.account-panel>.account-menu{text-align:left}
+.account-provider{align-items:center;gap:8px}.account-provider svg{display:block;width:16px;height:16px}
+.account-name{color:#293545}.account-autosave,.account-save-help{color:#5f6f83}
+.account-panel #cloud-save-status{display:flex;align-items:center;justify-content:flex-start;line-height:20px}
+.account-panel button[data-cloud-save],.account-panel button[data-cloud-logout]{display:flex;align-items:center;justify-content:center;box-sizing:border-box;text-align:center}
+.account-panel button[data-cloud-logout]{color:#52647c}
+
+/* Compact account popup: aligned content and clear hierarchy. */
+.account-panel>.account-menu{width:232px;padding:18px;display:flex;flex-direction:column;align-items:stretch;gap:0;background:#fff;border:1px solid var(--surface-border,#d3dae4);border-radius:12px;text-align:left}
+.account-panel:not([open])>.account-menu{display:none}
+.account-menu .account-provider{margin:0 0 8px;padding:0;font-size:11px;line-height:18px;color:#64748b}
+.account-menu .account-name{margin:0;padding:0;font-size:15px;font-weight:600;line-height:22px;color:#263445}
+.account-menu .account-autosave{margin:6px 0 0;padding:0;font-size:12px;line-height:18px;color:#64748b;word-break:keep-all}
+.account-menu #cloud-save-status{margin:14px 0 12px;padding:10px 8px;min-height:40px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;line-height:20px;border-radius:8px;box-sizing:border-box}
+.account-menu button[data-cloud-save]{width:100%;min-height:42px;margin:0;padding:10px 12px;font-size:14px;line-height:20px;border-radius:8px}
+.account-menu .account-save-help{margin:8px 0 0;padding:0;text-align:center;font-size:11px;line-height:17px;color:#64748b}
+.account-menu button[data-cloud-logout]{width:100%;min-height:38px;margin:14px 0 0;padding:12px 0 0;border-top:1px solid var(--surface-border,#d3dae4);border-radius:0;font-size:12px;line-height:20px;color:#52647c}
+@media(max-width:360px){.account-panel>.account-menu{width:220px;padding:16px}}
+
+/* Restore the translucent home icon; keep the popup layout. */
+.account-panel summary{background:#172b4266;border:1px solid #ffffff66;color:#fff;box-shadow:0 2px 8px #0002;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.account-panel summary svg{width:20px;height:20px;stroke-width:1.7}
+.account-panel summary:hover,.account-panel[open] summary{background:#172b4299}
+
+.presentation-dialog{width:min(380px,calc(100vw - 32px));box-sizing:border-box;padding:22px;border:1px solid #d3dae4;border-radius:16px;background:#fff;color:#293545;font-family:Pretendard,sans-serif;max-height:85dvh;overflow:auto}.presentation-dialog h2{margin:0 0 8px;font-size:20px}.presentation-dialog p{font-size:12px;line-height:1.6;color:#64748b}.presentation-dialog h3{font-size:13px;margin:20px 0 10px}.presentation-dialog .presentation-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.presentation-dialog button{min-height:40px;font:inherit;font-size:12px;background:#f5f7fa;border:1px solid #d3dae4;border-radius:8px;padding:8px;color:#293545;cursor:pointer}.presentation-dialog footer{display:flex;gap:8px;margin-top:20px}.presentation-dialog footer button:first-child{flex:1;background:#6b99ed;color:white}#presentation-banner{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:1100;border:1px solid #5788e0;border-radius:18px;padding:8px 14px;background:#fff;color:#365575;font:12px Pretendard,sans-serif;white-space:nowrap;box-shadow:0 2px 8px #0002;cursor:pointer}

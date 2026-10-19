@@ -2,22 +2,12 @@
 (()=>{
  const panorama=travelerPanorama;
  travelerPanorama=id=>['sky','flightFrontier'].includes(id)?'assets/backgrounds/growth-v2/07-alpine-castle-v2.png':panorama(id);
- const change=changeTravelerReward;
- changeTravelerReward=function(action,id){
-  if(action==='equip'&&['sky','flightFrontier','city','fly'].includes(id)&&!data.magicBroom?.acquired){
-   if(document.querySelector('.broom-required'))return false;
-   const dialog=document.createElement('dialog');dialog.className='broom-required';
-   dialog.innerHTML='<h2>마법 빗자루가 필요해요</h2><p>설산에 묻힌 마법 빗자루를 획득하세요.</p><button type="button">확인</button>';
-   document.body.append(dialog);dialog.querySelector('button').onclick=()=>dialog.close();dialog.onclose=()=>dialog.remove();dialog.showModal();return false;
-  }
-  return change(action,id);
- };
  const art=travelerArt;
  const sprite=(preview=false)=>`<canvas class="winter-broom-flight" width="512" height="512" data-female="${travelerFemale()}" data-preview="${preview}" role="img" aria-label="겨울옷을 입고 편안하게 빗자루를 타는 ${travelerFemale()?'여자':'남자'}"></canvas>`;
  travelerArt=()=>travelerState().motion==='fly'&&!travelerVisualNight()?sprite():art();
  const card=travelerBundleCard;
  travelerBundleCard=function(bg){let html=card(bg);if(['sky','flightFrontier','city'].includes(bg))html=html.replace(/<canvas\b[^>]*><\/canvas>/g,sprite(true));return html;};
- const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ // Explicitly requested flight playback; preview cards keep their fixed pose.
  const prepared={};
  const windFrameCount=32,windFrameMs=90;
  // Isolate every pose before drawing: adjacent rows can otherwise leak bow/shoe fragments.
@@ -34,7 +24,12 @@
   }
   const keep=new Uint8Array(count);
   for(const a of largest){const x=a%512,y=Math.floor(a/512);for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++)if(x+dx>=0&&x+dx<512&&y+dy>=0&&y+dy<c.height)keep[a+dy*512+dx]=1;}
-  for(let i=0;i<count;i++)if(!keep[i])p[i*4+3]=0;ctx.putImageData(data,0,0);
+  for(let i=0;i<count;i++){
+   const a=p[i*4+3];
+   if(!keep[i])p[i*4+3]=0;
+   else if(female)p[i*4+3]=a<230?0:a>=250?255:Math.round((a-230)*255/20);
+  }
+  ctx.putImageData(data,0,0);
   // Only the free wooden handle is elongated; anatomy, hands and bristles keep their proportions.
   const extended=document.createElement('canvas');extended.width=662;extended.height=c.height;
   const ex=extended.getContext('2d');ex.imageSmoothingEnabled=true;ex.imageSmoothingQuality='high';
@@ -149,14 +144,45 @@
   else ctx.drawImage(main,445,0,340,280,241.6,1,231.2,190.4);
   ctx.restore();return pose;
  }
+ // Restore the bow above the female row boundary and enlarge only the satchel.
+ function finishFemaleFrame(frame,source){
+  const pad=20,c=document.createElement('canvas');c.width=frame.width;c.height=frame.height+pad;
+  const ctx=c.getContext('2d');ctx.drawImage(frame,0,pad);
+  // The source bow starts at y=494; the historical crop started at y=500.
+  // Recover its top directly from the original sheet, without including the male row.
+  const cap=document.createElement('canvas');cap.width=180;cap.height=pad;
+  const cc=cap.getContext('2d',{willReadFrequently:true});cc.drawImage(source,170,480,180,pad,0,0,180,pad);
+  const pixels=cc.getImageData(0,0,180,pad);
+  for(let i=3;i<pixels.data.length;i+=4){const a=pixels.data[i];pixels.data[i]=a<230?0:a>=250?255:Math.round((a-230)*255/20);}
+  // Keep only the ribbon component; the row above contains the male rider's boots.
+  const keep=new Uint8Array(180*pad),queue=[];
+  for(let y=12;y<pad;y++)for(let x=0;x<90;x++){const a=y*180+x,i=a*4;
+   if(pixels.data[i+3]>0&&pixels.data[i]>pixels.data[i+1]*1.7&&pixels.data[i]>pixels.data[i+2]*1.5){keep[a]=1;queue.push(a);}
+  }
+  for(let q=0;q<queue.length;q++){const a=queue[q],x=a%180;
+   for(const b of [x?a-1:-1,x<179?a+1:-1,a-180,a+180])if(b>=0&&b<keep.length&&!keep[b]&&pixels.data[b*4+3]>0){keep[b]=1;queue.push(b);}
+  }
+  for(let a=0;a<keep.length;a++)if(!keep[a])pixels.data[a*4+3]=0;
+  cc.putImageData(pixels,0,0);ctx.drawImage(cap,320,0);
+  // Keep the strap attachment fixed and grow the bag outward by 10%.
+  const bag=document.createElement('canvas');bag.width=frame.width;bag.height=frame.height;
+  const bc=bag.getContext('2d');bc.save();bc.beginPath();
+  bc.moveTo(448,232);bc.bezierCurveTo(485,212,543,202,559,233);
+  bc.bezierCurveTo(581,250,592,292,568,310);bc.bezierCurveTo(548,326,512,326,483,314);
+  bc.bezierCurveTo(471,289,465,262,448,232);bc.closePath();bc.clip();bc.drawImage(frame,0,0);bc.restore();
+  ctx.save();ctx.translate(457,232+pad);ctx.scale(1.1,1.1);ctx.drawImage(bag,-457,-232);ctx.restore();
+  return c;
+ }
  async function load(female){
   // One coherent body asset contains lapels, shoulder seam, strap, satchel,
   // hands and broom. Do not resize or recolor individual body fragments.
-  const img=new Image();img.src='assets/characters/large-bag-v2/'+(female?'female':'male')+'-flight-connected-v1.png';await img.decode();
+  const img=new Image();img.src='assets/characters/large-bag-v2/'+(female?'female-flight-canonical-v9.png':'male-flight-connected-v1.png');await img.decode();
   const source=document.createElement('canvas');source.width=1536;source.height=1024;
   source.getContext('2d').drawImage(img,0,0,1536,1024);
-  const pose=await mainCharacterHead(isolate(source,0,female),female);
-  prepared[female?'female':'male']=await windFrames(pose,female);
+  const isolated=isolate(source,0,female);
+  const pose=female?isolated:await mainCharacterHead(isolated,female);
+  const frames=await windFrames(pose,female);
+  prepared[female?'female':'male']=female?frames.map(frame=>finishFemaleFrame(frame,source)):frames;
  }
  load(false).catch(console.error);load(true).catch(console.error);
  let clock=0,last=0;
@@ -170,6 +196,7 @@
  }
 
  function drawFlightBlink(ctx,source,female,amount){
+  if(female)return; // Retain the eyes painted into the coherent female pose.
   // Eye outlines are registered to the same standing artwork as the head.
   const scale=female?.48:.68,ox=female?76.5:-61,oy=female?2:1;
   const eyes=female?[[526,237,13,22],[583,236,25,22]]:[[535,192,17,22],[588,191,27,22]];
@@ -188,11 +215,11 @@
    ctx.strokeStyle='#67402f';ctx.lineWidth=1.05;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x-rx*.78,lid);ctx.quadraticCurveTo(x,lid+2.2,x+rx*.78,lid-.3);ctx.stroke();ctx.restore();
   }
  }
- function tick(now){requestAnimationFrame(tick);const dt=last?Math.min(now-last,50):0;last=now;if(document.hidden)return;if(!reduced.matches)clock+=dt;
+ function tick(now){requestAnimationFrame(tick);const dt=last?Math.min(now-last,50):0;last=now;if(document.hidden)return;clock+=dt;
   const frame=Math.floor(clock/windFrameMs)%windFrameCount;
   for(const canvas of document.querySelectorAll('.winter-broom-flight')){
    const female=canvas.dataset.female==='true',frames=prepared[female?'female':'male'];if(!frames)continue;
-   const still=canvas.dataset.preview==='true'||reduced.matches;
+   const still=canvas.dataset.preview==='true'||!!canvas.closest('.journey-bundle');
    const scene=canvas.closest('.traveler-home');
    if(scene&&!still&&!scene.querySelector('.flight-cloud-pass')){
     const clouds=document.createElement('div');clouds.className='flight-cloud-pass';clouds.setAttribute('aria-hidden','true');clouds.innerHTML='<i></i><i></i><i></i>';scene.append(clouds);
@@ -202,7 +229,7 @@
    // A shared flight path carries rider and broom together; wind remains local.
    const glide=clock/1150;
    const shift=still?0:Math.sin(glide*.72)*8;
-   const dx=(512-image.width*scale)/2-shift*scale,dy=(512-image.height*scale)/2+(still?0:Math.sin(glide)*10+Math.sin(glide*2+.4)*1.5);
+   const dx=(512-image.width*scale)/2-shift*scale,dy=(512-image.height*scale)/2-(female?10*scale:0)+(still?0:Math.sin(glide)*10+Math.sin(glide*2+.4)*1.5);
    ctx.clearRect(0,0,512,512);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
    // Air moves toward the trailing broom end. Sparse, fading strokes stay behind the actor.
    if(!still){ctx.save();ctx.lineWidth=1.8;ctx.lineCap='round';
@@ -223,3 +250,4 @@
  requestAnimationFrame(tick);
  if(page==='home'||page==='rewards')render();
 })();
+

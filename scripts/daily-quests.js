@@ -48,6 +48,8 @@ const DailyQuests=(()=>{
  }
  function weeklyProgress(data,date,rule){
   const start=weekStart(date),seen=new Map();
+  const forced=data.developerStrongWeeks?.[start];
+  if(rule.activities.includes(4)&&rule.activities.includes(5)&&typeof forced==='boolean')return {count:forced?rule.target:0,target:rule.target};
   for(const log of data.logs){
    if(log.source!=='daily-quest'||log.date<start||log.date>date)continue;
    for(const id of log.ids||[])if(rule.activities.includes(id)){
@@ -90,11 +92,14 @@ const DailyQuests=(()=>{
  }
  function weeklyOffering(data,date){
   const pool=[32,33,36,37,38,39,45],week=weekStart(date);
+  // Always offer the reading/fitness missions used by the released travel maps.
+  const travelMissions=[32,33];
   const offset=((Math.floor((Date.parse(week+'T00:00:00Z')-Date.parse('2026-09-28T00:00:00Z'))/604800000)*3)%pool.length+pool.length)%pool.length;
   // Keep this week's pre-existing commitments during rollout; refresh next Monday.
   const kept=(data.weeklyChallenges?.[week]||[]).filter(id=>pool.includes(id));
   for(const id of pool)if(weeklyStatus(data,date,id).done)kept.push(id);
-  return [...new Set([...kept,...pool.map((_,i)=>pool[(offset+i)%pool.length])])].slice(0,4);
+  const committed=[...new Set(kept)];
+  return [...new Set([...travelMissions,...committed,...pool.map((_,i)=>pool[(offset+i)%pool.length])])].slice(0,Math.max(4,new Set([...travelMissions,...committed]).size));
  }
  return {status,change,save,weekStart,weeklyStatus,saveWeekly,weeklyProgress,syncWeekly,saveWithWeekly,coffeeCups,saveCoffeeCups,weeklyOffering};
 })();

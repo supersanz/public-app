@@ -4,7 +4,7 @@ function travelerFemale(){return data.travelerCharacter==='female'}
 function resetForTravelerCharacter(value,name=''){
  if(!['male','female'].includes(value)||value===(data.travelerCharacter||'male'))return false;
  const previous=data;
- data={disableScenePreview:true,logs:[],worn:0,skin:2,friends:[],alarms:[['07:00','23:30',true,true],['09:00','00:30',true,true]],travelerCharacter:value,travelerJourney:TravelerRewards.state({}),walkExp:0,playerResetEarned:0,levelBaseline:[0,0,0,0,0],levelCurveVersion:3,petProgressVersion:2,questProfile:{version:1,onboardingCompleted:true,name:String(name).trim().slice(0,16),goals:[0,1,2,3]}};
+ data={disableScenePreview:true,logs:[],worn:0,skin:2,friends:[],alarms:[['07:00','23:30',true,true],['09:00','00:30',true,true]],travelerCharacter:value,travelerJourney:TravelerRewards.state({}),walkExp:0,playerResetEarned:0,levelBaseline:[0,0,0,0,0],levelCurveVersion:3,petProgressVersion:2,questProfile:{version:1,onboardingCompleted:true,name:String(name).trim().slice(0,16),goals:[]}};
  if(!persist()){data=previous;return false;}
  Object.assign(travelerPreviewEquipment,{background:'white',motion:'still'});
  selected.clear();recordDate='';modal='';travelerNightOverride=null;
@@ -18,7 +18,7 @@ function setTravelerCharacter(value){
 }
 (()=>{
  const art=travelerArt,home=pages.home,nightWorld=travelerNightWorld,cafe=travelerCafeScene,card=travelerBundleCard,scene=travelerScene;
- const standing='<img class="female-standing" src="assets/characters/large-bag-v2/female-standing.png" alt="왼쪽을 바라보며 서 있는 여자 마법사" draggable="false">';
+ const standing='<img class="female-standing" src="assets/characters/large-bag-v2/female-standing-natural-v4.png" alt="왼쪽을 바라보며 서 있는 여자 마법사" draggable="false">';
  const sprite=(motion,preview=false)=>`<canvas class="female-motion" data-motion="${motion}" data-preview="${preview}" width="256" height="256" role="img" aria-label="여자 캐릭터 ${motion==='fly'?'빗자루 타기':motion==='walk'?'걷기':'달리기'}"></canvas>`;
  travelerArt=function(){
   if(travelerState().motion==='officeWork')return '';
@@ -68,7 +68,7 @@ function setTravelerCharacter(value){
   if(!travelerFemale())return markup;
   markup=markup.replace('class="coffee-flight"','class="coffee-flight female-coffee-flight"');
   markup=markup.replace(/<canvas class="(?:traveler-flight flight-preview|reward-ground-motion)"[^>]*><\/canvas>/g,sprite(TravelerRewards.bundles[bg],true));
-  return markup.replace(travelerStanding,'assets/characters/large-bag-v2/female-standing.png');
+  return markup.replace(travelerStanding,'assets/characters/large-bag-v2/female-standing-natural-v4.png');
  };
  pages.home=function(){
   const female=travelerFemale();
@@ -81,3 +81,6 @@ function setTravelerCharacter(value){
  },true);
  render();
 })();
+
+
+

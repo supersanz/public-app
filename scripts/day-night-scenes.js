@@ -1,15 +1,7 @@
 'use strict';
 let travelerNightOverride=null;
-function travelerScheduledNight(now=new Date()){
- const alarms=Array.isArray(data.alarms)&&data.alarms.length>=2?data.alarms:[['07:00','22:00',true,true],['07:00','22:00',true,true]];
- // Notification switches must not disable the character sleep schedule.
- return petSleepState(now,alarms.map(row=>[row[0],row[1],true,true])).sleeping;
-}
-function travelerNightAt(now=new Date()){
- const scheduled=travelerScheduledNight(now);
- if(travelerNightOverride&&travelerNightOverride.scheduled!==scheduled)travelerNightOverride=null;
- return travelerNightOverride?travelerNightOverride.night:scheduled;
-}
+function travelerScheduledNight(){return false;}
+function travelerNightAt(){return false;}
 const travelerDayHome=pages.home;
 function travelerNightScene(background){
  return ({desert:['assets/characters/male/desert-night.png','별빛 사막에서 마시멜로 굽기'],forest:['assets/characters/male/forest-night.png','달빛 숲의 해먹에서 쉬기'],deepForest:['assets/characters/male/ancient-forest-night.png','고대숲의 텐트에서 책 읽기'],sky:['assets/characters/male/sky-night.png','하늘 섬에서 베개를 베고 잠자기']})[background];
@@ -50,7 +42,7 @@ document.addEventListener('click',e=>{
  travelerNightOverride={night:!travelerNightAt(),scheduled:travelerScheduledNight()};
  transitionTravelerNight();
 },true);
-setInterval(syncTravelerNight,1000);
+
 window.addEventListener('focus',syncTravelerNight);
 render();
 
