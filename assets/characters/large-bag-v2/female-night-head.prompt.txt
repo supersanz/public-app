@@ -1,1 +1,0 @@
-Built-in image_gen local edits: female wasteland-flat-v11 and meadow-rest-v4 plus female-standing reference. Reduce head/hair/bow about15 percent, match daytime ratio, retain body lengths and flat torso, pose, equipment and backgrounds.

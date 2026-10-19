@@ -9,15 +9,15 @@ function dueAppAlarms(now, settings, configured){
 }
 (function(){
  let audio=null,timer=null,timeout=null,notice=null,active=false,previousFocus=null;
- const seen=new Set();
+ const seen=new Set(),oscillators=new Set();
  async function unlock(){
   try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return false;audio=audio||new Audio();await audio.resume();return audio.state==='running'}catch{return false}
  }
  function tone(){
   if(!audio||audio.state!=='running')return;
-  [0,.35,.7].forEach((delay,i)=>{const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime+delay;o.type='sine';o.frequency.value=[660,830,990][i];g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.12,t+.025);g.gain.exponentialRampToValueAtTime(.001,t+.28);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.3)});
+  [0,.35,.7].forEach((delay,i)=>{const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime+delay;o.type='sine';o.frequency.value=[660,830,990][i];g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.12,t+.025);g.gain.exponentialRampToValueAtTime(.001,t+.28);o.connect(g);g.connect(audio.destination);oscillators.add(o);o.onended=()=>{oscillators.delete(o);o.disconnect();g.disconnect()};o.start(t);o.stop(t+.3)});
  }
- function stop(){clearInterval(timer);clearTimeout(timeout);notice?.close();notice=null;active=false;document.getElementById('live-alarm')?.remove();previousFocus?.isConnected&&previousFocus.focus();}
+ function stop(){clearInterval(timer);clearTimeout(timeout);for(const o of oscillators){try{o.stop()}catch{}}oscillators.clear();notice?.close();notice=null;active=false;document.getElementById('live-alarm')?.remove();previousFocus?.isConnected&&previousFocus.focus();}
  function ring(kind,test=false){
   stop();active=true;previousFocus=document.activeElement;
   const title=test?'알람 소리 · 알림 테스트':kind===0?'일어날 시간이에요':'잠자리에 들 시간이에요';
@@ -36,8 +36,8 @@ function dueAppAlarms(now, settings, configured){
  }
  const before=pages.alarm;
  pages.alarm=()=>before().replace('</section>','<button class="secondary alarm-test-button" data-test-live-alarm>알람 소리 · 알림 테스트</button></section>');
- document.addEventListener('pointerdown',()=>{unlock()},{once:true,capture:true});
- document.addEventListener('keydown',e=>{if(active&&e.key==='Escape')stop();if(active&&e.key==='Tab'){e.preventDefault();document.querySelector('[data-stop-live-alarm]')?.focus()}},{capture:true});
+ document.addEventListener('pointerdown',()=>{unlock()},{capture:true});
+ document.addEventListener('keydown',e=>{unlock();if(active&&e.key==='Escape')stop();if(active&&e.key==='Tab'){e.preventDefault();document.querySelector('[data-stop-live-alarm]')?.focus()}},{capture:true});
  document.addEventListener('click',async e=>{
   const b=e.target.closest('button');if(!b)return;
   if('stopLiveAlarm'in b.dataset)stop();
@@ -45,9 +45,10 @@ function dueAppAlarms(now, settings, configured){
    b.disabled=true;
    try{
     const sound=unlock();
-    const permission='Notification'in window&&Notification.permission==='default'
-     ?Notification.requestPermission().catch(()=>null):Promise.resolve(null);
-    await sound;await permission;ring(0,true);
+    if('Notification'in window&&Notification.permission==='default'){
+     try{Promise.resolve(Notification.requestPermission()).catch(()=>null)}catch{}
+    }
+    await sound;ring(0,true);
    }finally{b.disabled=false}
   }
  });

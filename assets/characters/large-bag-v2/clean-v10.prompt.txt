@@ -1,1 +1,0 @@
-Built-in image_gen edit. Clean male v6 and female v9 degraded mottled/ghosted textures, coherent outlines and smooth painted gradients, preserve composition and equipment. Additional female edit referenced female-standing.png: simple flat clothed torso, remove raised chest contour/shadows, retain face, proportions, clothing, blanket hem and scene.

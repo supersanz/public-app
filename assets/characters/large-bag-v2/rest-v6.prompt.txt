@@ -1,1 +1,0 @@
-Built-in image_gen localized edit. Inputs each gender wasteland-rest-v4 plus main standing portrait. Preserve full sleeping character screen size and horizontal span, approximately 4.5 to 5 head heights, match main character identity/proportions without miniature chibi deformation. Retain extended limbs, visible hands, pillow, upright golden bag, mini lantern and landscape.
