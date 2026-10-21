@@ -269,6 +269,7 @@ function travelerOutfit(bg){
  let last=0;
  const actorTimes=new WeakMap();
  const groundOffsets=new WeakMap();
+ const walkBackgroundPixelsPerSecond=20;
  function tick(now){
   requestAnimationFrame(tick);
   const delta=last?Math.min(now-last,50):0;last=now;
@@ -305,16 +306,15 @@ function travelerOutfit(bg){
    canvas.dataset.frame=String(index);
    canvas.dataset.ready='true';canvas.dataset.eyeCount=String(f.eyes.length);
   }
-  for(const actor of document.querySelectorAll('.traveler-home canvas.approved-walk')){
+  for(const actor of document.querySelectorAll('.traveler-home canvas.approved-walk[data-preview="false"]')){
   const track=actor.closest('.traveler-home')?.querySelector('.desert-pan-track');
   if(track&&(!reduced.matches||['regular','winter','kimono','selectedSix','approvedWinter','russia'].includes(actor.dataset.outfit||'regular'))){
    const sheet=sheets[actor.dataset.gender+'-'+(actor.dataset.outfit||'regular')],repeat=travelerTrackRepeat(track);
-   // Match a restrained stride to sprite height; both scenes share the gait clock.
-   // Derive distance from the same clock as the legs, so cadence changes stay in sync.
-   if(sheet&&repeat>0){
+   // Every walking destination uses the same screen-space ground speed.
+   if(sheet&&repeat>0&&track.dataset.panReady==='true'){
     // Integrate travel instead of multiplying total elapsed time by the current
     // size: resizing the scene must not jump the ground beneath planted feet.
-    const distance=(groundOffsets.get(track)||0)+delta/sheet.cycle*actor.getBoundingClientRect().height*.34;
+    const distance=(groundOffsets.get(track)||0)+delta/1000*walkBackgroundPixelsPerSecond;
     groundOffsets.set(track,distance%repeat);
     track.style.transform=`translateX(${-2*repeat+distance%repeat}px)`;
    }

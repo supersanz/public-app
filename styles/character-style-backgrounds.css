@@ -40,3 +40,6 @@
 /* Do not expose the legacy desert or unmeasured panorama tiles on scene changes. */
 .app.quest-app .quest-scene-card .traveler-home:has(>.desert-pan-track[data-loop-tiles]){background-image:var(--scene-preview)!important;background-size:cover;background-position:center;isolation:isolate;overflow:hidden}
 .app.quest-app .quest-scene-card .traveler-home>.desert-pan-track[data-loop-tiles]:not([data-pan-ready="true"]){visibility:hidden;animation-play-state:paused!important}
+
+/* Walking uses one JS speed; destination CSS loops remain for scooter/flight. */
+.app.quest-app .quest-scene-card .traveler-home:has(.traveler-art>canvas.approved-walk[data-preview="false"])>.desert-pan-track{animation:none!important}
