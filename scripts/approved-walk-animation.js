@@ -23,9 +23,10 @@ function travelerOutfit(bg){
  async function loadCoherent(gender,outfit){
   if(gender==='female'&&['selectedSix','approvedWinter','kimono','russia'].includes(outfit)){
    const image=new Image();image.src=outfit==='russia'?'assets/characters/female-approved-moscow-v1.png?v=1':outfit==='kimono'?'assets/characters/female-approved-tokyo-v1.png?v=1':outfit==='approvedWinter'?'assets/characters/female-approved-winter-v2.png?v=1':'assets/characters/female-standing-proportions-v2.png?v=1';await image.decode();
-   // Repair only winter poses 1 and 8; every other pose keeps its original artwork.
-   let winterArmRepair=null;
-   if(outfit==='approvedWinter'){winterArmRepair=new Image();winterArmRepair.src='assets/characters/female-approved-winter-arms-v3.png';await winterArmRepair.decode();}
+   // Match the base gait's far-arm occlusion in poses 1, 2 and 8 only.
+   const armSources={approvedWinter:'female-winter-occlusion-v4.png',kimono:'female-tokyo-occlusion-v2.png',russia:'female-moscow-occlusion-v2.png'};
+   let armOcclusionRepair=null;
+   if(armSources[outfit]){armOcclusionRepair=new Image();armOcclusionRepair.src='assets/characters/'+armSources[outfit];await armOcclusionRepair.decode();}
    // Measure the same 512px display box used by the Lv.1 standing image.
    const reference=new Image();reference.src='assets/characters/large-bag-v2/female-standing-natural-v4.png';await reference.decode();
    const referenceCanvas=document.createElement('canvas');referenceCanvas.width=referenceCanvas.height=512;
@@ -38,7 +39,7 @@ function travelerOutfit(bg){
    }
    const poses=Array.from({length:8},(_,n)=>{
     const c=document.createElement('canvas');c.width=c.height=512;
-    const frameSource=winterArmRepair&&(n===0||n===7)?winterArmRepair:image;
+    const frameSource=armOcclusionRepair&&[0,1,7].includes(n)?armOcclusionRepair:image;
     const w=frameSource.width/4,h=frameSource.height/2;
     const ctx=c.getContext('2d');
     ctx.drawImage(frameSource,(n%4)*w,Math.floor(n/4)*h,w,h,64,0,384,512);
