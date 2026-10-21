@@ -10,6 +10,8 @@ let questOnboardingActive=false;
  let draft={name:data.questProfile?.name||'',gender:data.travelerCharacter||'male',goals:[]};
  // Only completing all four introduction steps dismisses first-launch setup.
  const needsSetup=()=>data.questProfile?.version!==1||data.questProfile?.onboardingCompleted!==true;
+ window.addEventListener('quest-show-intro',()=>{step=0;editing=true;draft={name:'',gender:'male',goals:[]};render();window.scrollTo(0,0);});
+ window.addEventListener('quest-presentation-change',()=>{if(!window.QuestPresentationActive){editing=false;step=0;}});
  const profileName=()=>data.questProfile?.name||'나';
  const removedQuestIds=new Set([12,13,1,19,20,22,24,25,26,27,28,29,30,31,34,35,36,37,38,39,40,42,43,44,49,52,54,56,57,58,64,65,67,69,70,71,72]); // Keep historical activity IDs intact.
  const ids=(period='daily')=>period==='weekly'?DailyQuests.weeklyOffering(data,today()):acts.map((_,id)=>id).filter(id=>!removedQuestIds.has(id)&&(QuestCatalog[id]?.period||'daily')===period);

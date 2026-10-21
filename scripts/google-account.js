@@ -39,10 +39,11 @@
  }
  async function start(){
   if(started)return;started=true;
-  gate.hidden=true;app.inert=false;window.QuestSessionPaused=false;
+  screen('화면을 준비하고 있어요…');
   const sources=await Promise.all(manifest.scripts.map(async src=>{const response=await fetch(src);if(!response.ok)throw new Error('script-load');return {src,text:await response.text()};}));
   // Install all classic modules in one task before animation timers can run.
   for(const source of sources){const script=document.createElement('script');script.textContent=source.text+'\n//# sourceURL='+source.src;document.body.append(script);}
+  gate.hidden=true;app.inert=false;window.QuestSessionPaused=false;
   const panel=document.createElement('details');panel.className='account-panel';
   panel.innerHTML='<summary aria-label="계정 및 저장" title="계정 및 저장"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg></summary><div class="account-menu">'+(user?"<span class=\"account-provider\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path fill=\"#4285F4\" d=\"M21.6 12.23c0-.71-.06-1.39-.18-2.05H12v3.88h5.38a4.6 4.6 0 0 1-2 3.02v2.51h3.24c1.9-1.75 2.98-4.33 2.98-7.36Z\"/><path fill=\"#34A853\" d=\"M12 22c2.7 0 4.96-.9 6.62-2.41l-3.24-2.51c-.9.6-2.05.96-3.38.96-2.6 0-4.8-1.76-5.59-4.12H3.07v2.59A10 10 0 0 0 12 22Z\"/><path fill=\"#FBBC05\" d=\"M6.41 13.92a6 6 0 0 1 0-3.84V7.49H3.07a10 10 0 0 0 0 9.02l3.34-2.59Z\"/><path fill=\"#EA4335\" d=\"M12 5.96c1.47 0 2.79.51 3.83 1.51L18.7 4.6A9.62 9.62 0 0 0 12 2a10 10 0 0 0-8.93 5.49l3.34 2.59C7.2 7.72 9.4 5.96 12 5.96Z\"/></svg>Google 계정</span>":'')+'<strong class="account-name">'+escape(user?.displayName||'기기 저장 모드')+'</strong><small class="account-autosave">'+(user?'변경 내용은 자동으로 저장됩니다.':'이 기기에 저장됩니다.')+'</small><p id="cloud-save-status" role="status">'+(user?'서버 기록 불러옴':'Firebase 연결 전 · 이 기기에만 저장')+'</p><button type="button" data-cloud-save aria-describedby="manual-save-help">지금 저장</button><small id="manual-save-help" class="account-save-help">바로 저장하고 싶을 때 누르는<br>수동 저장 버튼입니다.</small><button type="button" data-cloud-logout>'+(user?'로그아웃':'로그인 화면')+'</button></div>';
   document.body.append(panel);
@@ -121,7 +122,7 @@
      });}
     }});
     const saved=await store.load();
-    window.QuestAccountStorage={read:()=>saved||null,write:value=>store.save(value)};
+    window.QuestAccountStorage={read:()=>saved||null,write:value=>store.save(value),async reset(value){store.save(value);await store.flush();}};
     const begin=async()=>{await start();if(store.dirty)store.flush().catch(()=>{});};
     if(!saved){
      let legacy=null;
