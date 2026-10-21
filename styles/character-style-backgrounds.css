@@ -36,3 +36,7 @@
 /* Moscow female uses the approved v16 display scale. */
 .app.quest-app .quest-scene-card .desert-home[data-background="russia"]:not(.night-home) .traveler-art:has(>canvas[data-gender="female"][data-outfit="russia"]){height:30%!important;}
 .app.quest-app .quest-scene-card .desert-home[data-background="russia"]:not(.night-home) .traveler-art>canvas[data-gender="female"][data-outfit="russia"]{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;transform:none!important;scale:1!important;}
+
+/* Do not expose the legacy desert or unmeasured panorama tiles on scene changes. */
+.app.quest-app .quest-scene-card .traveler-home:has(>.desert-pan-track[data-loop-tiles]){background-image:var(--scene-preview)!important;background-size:cover;background-position:center;isolation:isolate;overflow:hidden}
+.app.quest-app .quest-scene-card .traveler-home>.desert-pan-track[data-loop-tiles]:not([data-pan-ready="true"]){visibility:hidden;animation-play-state:paused!important}

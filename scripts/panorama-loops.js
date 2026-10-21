@@ -6,12 +6,19 @@
  const seen=new WeakSet();
  function measure(track){
   const cycle=travelerTrackRepeat(track);
-  if(cycle>0)track.style.setProperty('--pan-cycle',cycle+'px');
+  if(cycle<=0)return false;
+  track.style.setProperty('--pan-cycle',cycle+'px');
+  if(track.dataset.panReady!=='true')track.style.transform=`translateX(${-2*cycle}px)`;
+  return true;
  }
  const sizes=new ResizeObserver(entries=>entries.forEach(({target})=>measure(target)));
  function scan(){for(const track of document.querySelectorAll('.desert-pan-track[data-loop-tiles]')){
   if(seen.has(track))continue;seen.add(track);sizes.observe(track);
-  track.querySelectorAll('img').forEach(img=>img.addEventListener('load',()=>measure(track),{once:true}));measure(track);
+  const images=Array.from(track.querySelectorAll('img'));
+  Promise.all(images.map(img=>img.decode())).then(()=>{
+   if(!track.isConnected||!images.every(img=>img.naturalWidth>0))return;
+   if(measure(track))track.dataset.panReady='true';
+  }).catch(()=>{/* Keep the destination's static background if a tile fails. */});
  }}
  new MutationObserver(scan).observe(document.body,{childList:true,subtree:true});scan();
 })();
