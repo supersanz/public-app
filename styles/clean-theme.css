@@ -1377,3 +1377,8 @@ html{scrollbar-gutter:stable}
  68%{opacity:1;transform:translate(50%,-3px) scale(1);animation-timing-function:ease-in}
  100%{opacity:0;transform:translate(50%,-11px) scale(.98)}
 }
+
+/* Fit home to the available viewport instead of capping the scene at 480px. */
+.app.quest-app:has(>.home-immersive-scene){display:grid;grid-template-rows:auto minmax(180px,1fr) auto auto;height:100dvh;min-height:0!important;box-sizing:border-box;padding-bottom:calc(94px + env(safe-area-inset-bottom))!important;overflow:visible}
+.app.quest-app>.quest-scene-card.home-immersive-scene{align-self:stretch;min-height:180px!important;height:auto!important;position:relative}
+.app.quest-app>.quest-scene-card.home-immersive-scene>:is(.traveler-home,.night-home){position:absolute!important;inset:0;height:100%!important;min-height:0!important}
